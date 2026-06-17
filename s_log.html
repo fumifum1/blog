@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>スプレーアート -全て“イイね”という意味のスタンプ集- | fumi Exhibition</title>
+    <!-- Tailwind CSS for modern structure -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons for clean, minimalist UI -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Serif+JP:wght@200;400;500&family=Outfit:wght@300;400;600&display=swap');
+
+        :root {
+            /* Elegant Nuance Backgrounds matching the stickers with raw textures */
+            --bg-gallery-light: #f6f5f1;   /* Gallery Ivory (Warm, classic) */
+            --bg-gallery-green: #8ba3c7;   /* GREENBACK: LINE Classic Blue (Based on 1234.jpg) */
+            --bg-gallery-dark: #121416;    /* Midnight Velvet (Deep neon contrast) */
+
+            --current-bg: var(--bg-gallery-light);
+            --text-main: #25282a;
+            --text-sub: #5f6368;
+            --border-color: rgba(37, 40, 42, 0.1);
+            
+            /* Responsive Chat System variables for visibility */
+            --chat-bg: #e3e1da;
+            --chat-friend-bg: #ffffff;
+            --chat-friend-text: #25282a;
+            --chat-my-bg: #ffffff;
+            --chat-my-text: #25282a;
+            --chat-read-color: #7c8085; 
+        }
+
+        body {
+            font-family: 'Noto Serif JP', serif;
+            color: var(--text-main);
+            background-color: var(--current-bg);
+            transition: background-color 1.5s cubic-bezier(0.25, 1, 0.5, 1), color 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+
+        .font-outfit {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Responsive variables for Text colors that change with theme */
+        .text-main-var {
+            color: var(--text-main);
+            transition: color 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .text-sub-var {
+            color: var(--text-sub);
+            transition: color 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Beautiful fluid transitions */
+        .smooth-transition {
+            transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Subtle neon glow for street-art vibes on dark background */
+        .neon-glow {
+            filter: drop-shadow(0 0 12px var(--glow-color, rgba(239, 68, 68, 0.3)));
+        }
+
+        /* Gentle levitation animation to make spray art float */
+        @keyframes subtleFloat {
+            0%, 100% { transform: translateY(0px) rotate(0.5deg); }
+            50% { transform: translateY(-6px) rotate(-0.5deg); }
+        }
+
+        .floating-art {
+            animation: subtleFloat 6s ease-in-out infinite;
+        }
+
+        /* Raw concrete texture overlay (Mist noise) */
+        .concrete-texture {
+            background-image: 
+                radial-gradient(rgba(0, 0, 0, 0.15) 1px, transparent 1px),
+                radial-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+            background-size: 8px 8px, 16px 16px;
+            background-position: 0 0, 4px 4px;
+            opacity: 0.12;
+            mix-blend-mode: overlay;
+        }
+
+        /* Raw plaster wall texture overlay */
+        .plaster-texture {
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.5) 0%, rgba(0, 0, 0, 0.05) 100%);
+            opacity: 0.25;
+            mix-blend-mode: color-burn;
+        }
+
+        /* Midnight Brick Wall CSS */
+        .brick-texture {
+            background-image: 
+                linear-gradient(335deg, rgba(255, 255, 255, 0.02) 23px, transparent 23px),
+                linear-gradient(155deg, rgba(0, 0, 0, 0.4) 23px, transparent 23px),
+                linear-gradient(335deg, rgba(255, 255, 255, 0.02) 23px, transparent 23px),
+                linear-gradient(155deg, rgba(0, 0, 0, 0.4) 23px, transparent 23px);
+            background-size: 58px 58px;
+            background-position: 0 0, 4px 4px, 30px 30px, 34px 34px;
+            opacity: 0.35;
+            mix-blend-mode: multiply;
+        }
+
+        /* Dynamic background elements */
+        .ambient-orb {
+            filter: blur(60px);
+            opacity: 0.12;
+            transition: background-color 1.5s ease, transform 3s ease;
+        }
+
+        /* Simple Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+        }
+        .dark-theme-active ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+        }
+    </style>
+</head>
+<body class="selection:bg-neutral-200">
+
+    <!-- Street/Gallery Raw Texture Overlays -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div id="texture-plaster" class="absolute inset-0 plaster-texture smooth-transition"></div>
+        <div id="texture-concrete" class="absolute inset-0 concrete-texture opacity-0 smooth-transition"></div>
+        <div id="texture-brick" class="absolute inset-0 brick-texture opacity-0 smooth-transition"></div>
+        
+        <!-- Background Ambient Orbs (Resized for mobile viewport safety) -->
+        <div id="orb-1" class="absolute top-1/4 -left-1/4 w-72 h-72 md:w-96 md:h-96 rounded-full bg-red-100 ambient-orb"></div>
+        <div id="orb-2" class="absolute bottom-1/4 -right-1/4 w-72 h-72 md:w-96 md:h-96 rounded-full bg-blue-100 ambient-orb"></div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="fixed top-0 left-0 w-full z-50 px-4 py-4 md:px-12 flex justify-between items-center mix-blend-difference text-white">
+        <span class="font-cinzel tracking-[0.2em] text-[10px] md:text-sm font-semibold">FUMI EXHIBITION</span>
+        <span class="text-[8px] md:text-xs tracking-[0.15em] font-light">SPRAY ART</span>
+    </header>
+
+    <!-- Main Content -->
+    <main class="relative z-10">
+
+        <!-- 1. Hero Gallery View -->
+        <section class="min-h-screen flex flex-col justify-between pt-20 pb-8 px-4 md:px-12 max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center my-auto">
+                
+                <!-- Hero Left Info -->
+                <div class="lg:col-span-6 space-y-6 lg:space-y-8 order-2 lg:order-1 text-center lg:text-left">
+                    <div class="space-y-3">
+                        <p class="text-[10px] md:text-xs tracking-[0.35em] text-sub-var font-cinzel">DIGITAL STREET GALLERY</p>
+                        <h1 class="text-2xl md:text-4xl lg:text-5xl leading-relaxed md:leading-loose font-normal tracking-wider text-main-var">
+                            スプレーアート<br class="hidden md:block">
+                            <span class="opacity-70 text-base md:text-xl font-light tracking-[0.15em] block mt-2 md:mt-4">全て“イイね”という意味のスタンプ。</span>
+                        </h1>
+                    </div>
+                    <p class="text-xs md:text-base text-sub-var leading-relaxed md:leading-loose max-w-md mx-auto lg:mx-0 font-light font-serif">
+                        言葉よりも先に伝わる、直感の色彩。<br class="hidden md:block">
+                        日常のなにげない肯定や共感を、ストリートアートのようなスプレー文字で表現した、少し自由でスタイリッシュなスタンプセットです。
+                    </p>
+                    <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6">
+                        <a href="#gallery" class="text-xs tracking-[0.2em] text-main-var border-b border-current pb-1 hover:opacity-60 transition-opacity duration-300">
+                            展示を見てみる →
+                        </a>
+                        <span class="text-xs text-sub-var/30 hidden sm:inline">|</span>
+                        <a href="https://store.line.me/stickershop/product/34204255/ja" target="_blank" rel="noopener noreferrer" class="text-xs tracking-[0.2em] text-main-var hover:opacity-60 transition-opacity duration-300">
+                            LINE STORE をそっと覗く
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Right: Dynamic Glowing Graffiti Graphic featuring the real sticker -->
+                <div class="lg:col-span-6 flex justify-center order-1 lg:order-2 py-4 lg:py-0">
+                    <div class="relative w-48 h-48 sm:w-72 sm:h-72 md:w-96 md:h-96 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-neutral-200/10 rounded-full blur-2xl scale-90"></div>
+                        
+                        <!-- Floating Container showing actual sticker image with splattered street glow -->
+                        <div class="relative w-44 h-44 sm:w-64 sm:h-64 md:w-80 md:h-80 floating-art flex items-center justify-center">
+                            <!-- Raw spray paint visual effect surrounding the image -->
+                            <div class="absolute inset-2 rounded-full border-2 border-dashed border-red-500/10 animate-spin" style="animation-duration: 25s;"></div>
+                            
+                            <!-- Real stamp image from LINE Store CDN with fallback to custom vector -->
+                            <img src="https://stickershop.line-scdn.net/stickershop/v1/sticker/847836810/iPhone/sticker@2x.png" 
+                                 alt="Good / Cool Spray Art" 
+                                 class="w-36 h-36 sm:w-48 sm:h-48 md:w-60 md:h-60 object-contain z-10 neon-glow drop-shadow-xl"
+                                 style="--glow-color: rgba(6, 182, 212, 0.45);"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/240x240/f6f5f1/25282a?text=GOOD';">
+                            
+                            <!-- Soft drop shadow indicator underneath the art -->
+                            <div class="absolute -bottom-2 w-28 h-1 bg-black/10 rounded-full blur-sm"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="flex justify-between items-center mt-6 text-[10px] md:text-xs text-sub-var font-light font-outfit">
+                <div class="flex items-center gap-3">
+                    <span id="theme-indicator-text" class="tracking-[0.15em] smooth-transition font-cinzel">SCENE 01: PLASTER STUDIO</span>
+                    <div class="flex gap-1">
+                        <span id="dot-0" class="w-1.5 h-1.5 rounded-full bg-neutral-800 smooth-transition"></span>
+                        <span id="dot-1" class="w-1.5 h-1.5 rounded-full bg-neutral-300 smooth-transition"></span>
+                        <span id="dot-2" class="w-1.5 h-1.5 rounded-full bg-neutral-300 smooth-transition"></span>
+                    </div>
+                </div>
+                <div class="animate-bounce">
+                    <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Concept Detail Section -->
+        <section class="py-16 md:py-24 px-4 md:px-12 max-w-4xl mx-auto text-center space-y-8 md:space-y-12">
+            <div class="w-8 h-[1px] bg-neutral-400 mx-auto opacity-50"></div>
+            <h2 class="text-lg md:text-2xl tracking-[0.18em] font-normal leading-relaxed text-main-var">
+                上品に息づく、<br class="sm:hidden">
+                ストリートのざらつきと肯定。
+            </h2>
+            <div class="text-xs md:text-base leading-relaxed md:leading-loose text-sub-var font-light font-serif space-y-4 md:space-y-6 max-w-2xl mx-auto">
+                <p>
+                    この作品集に収録されたすべての言葉は、何らかの肯定を伝える「英語のイイね（Good, Cool, Awesome...）」です。<br class="hidden md:block">
+                    きれいに整ったデジタル文字でもなく、気取った敬語でもない。
+                </p>
+                <p>
+                    壁にスプレーを吹き付けたときのような自由でざらりとした色彩と、心地よいラフなエッセンス。<br class="hidden md:block">
+                    上品な白壁の上、あるいは無機質なコンクリートの上に飾られたグラフィティアートのように、あなたのトークを鮮やか彩ります。
+                </p>
+            </div>
+            <div class="w-8 h-[1px] bg-neutral-400 mx-auto opacity-50"></div>
+        </section>
+
+        <!-- 3. Dynamic Exhibition Space with Atmosphere Switcher -->
+        <section id="gallery" class="py-12 md:py-20 px-4 md:px-12 max-w-7xl mx-auto space-y-12 md:space-y-16">
+            
+            <div class="text-center space-y-3">
+                <span class="text-[10px] tracking-[0.3em] text-sub-var font-cinzel">ROOM ATMOSPHERE</span>
+                <h2 class="text-xl md:text-2xl tracking-widest font-normal text-main-var">飾る壁（トーク背景）の素材と空間の調光</h2>
+                <p class="text-xs text-sub-var font-light font-serif">飾る壁面（トーク背景のテクスチャ）が変わると、スプレーアートの存在感も変化します。</p>
+            </div>
+
+            <!-- Atmosphere Switches (Perfect touch targets for mobile) -->
+            <div class="flex flex-col sm:flex-row justify-center gap-2 max-w-xl mx-auto">
+                <button onclick="window.switchTheme(0)" class="theme-btn w-full py-3.5 px-4 rounded-xl border border-neutral-300 bg-white/40 backdrop-blur-sm text-[10px] md:text-xs tracking-[0.15em] hover:bg-white/80 transition-all duration-300 shadow-sm font-outfit text-main-var">
+                    01. PLASTER
+                </button>
+                <button onclick="window.switchTheme(1)" class="theme-btn w-full py-3.5 px-4 rounded-xl border border-transparent bg-neutral-200/40 backdrop-blur-sm text-[10px] md:text-xs tracking-[0.15em] hover:bg-white/80 transition-all duration-300 font-outfit text-main-var">
+                    02. GREENBACK
+                </button>
+                <button onclick="window.switchTheme(2)" class="theme-btn w-full py-3.5 px-4 rounded-xl border border-transparent bg-neutral-200/40 backdrop-blur-sm text-[10px] md:text-xs tracking-[0.15em] hover:bg-white/80 transition-all duration-300 font-outfit text-main-var">
+                    03. NIGHT BRICK
+                </button>
+            </div>
+
+            <!-- Sticker Gallery Grid using actual URLs from product 34204255 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto">
+                
+                <!-- Sticker 1 -->
+                <div class="card-bg rounded-2xl p-4 md:p-6 border flex flex-col items-center justify-between group hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+                    <span class="text-[8px] md:text-[9px] tracking-widest text-sub-var font-outfit">EXHIBIT #01 / EX-847836809</span>
+                    <div class="w-24 h-24 sm:w-32 sm:h-32 my-3 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-yellow-400/5 rounded-full blur-xl group-hover:scale-125 transition-transform duration-500"></div>
+                        <img src="https://stickershop.line-scdn.net/stickershop/v1/sticker/847836809/iPhone/sticker@2x.png" 
+                             alt="Sticker 01" class="w-20 h-20 sm:w-24 sm:h-24 object-contain relative z-10 filter group-hover:scale-110 transition-transform duration-300"
+                             onerror="this.onerror=null; this.src='https://placehold.co/120x120/f6f5f1/25282a?text=YEAH';">
+                    </div>
+                    <span class="text-[11px] md:text-xs text-sub-var font-light font-serif">定番 of 定番の「GOOD」</span>
+                </div>
+
+                <!-- Sticker 2 -->
+                <div class="card-bg rounded-2xl p-4 md:p-6 border flex flex-col items-center justify-between group hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+                    <span class="text-[8px] md:text-[9px] tracking-widest text-sub-var font-outfit">EXHIBIT #02 / EX-847836811</span>
+                    <div class="w-24 h-24 sm:w-32 sm:h-32 my-3 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-cyan-400/5 rounded-full blur-xl group-hover:scale-125 transition-transform duration-500"></div>
+                        <img src="https://stickershop.line-scdn.net/stickershop/v1/sticker/847836811/iPhone/sticker@2x.png" 
+                             alt="Sticker 02" class="w-20 h-20 sm:w-24 sm:h-24 object-contain relative z-10 filter group-hover:scale-110 transition-transform duration-300"
+                             onerror="this.onerror=null; this.src='https://placehold.co/120x120/f6f5f1/25282a?text=NICE';">
+                    </div>
+                    <span class="text-[11px] md:text-xs text-sub-var font-light font-serif">やったね！という意味の「RIGHTON」</span>
+                </div>
+
+                <!-- Sticker 3 -->
+                <div class="card-bg rounded-2xl p-4 md:p-6 border flex flex-col items-center justify-between group hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+                    <span class="text-[8px] md:text-[9px] tracking-widest text-sub-var font-outfit">EXHIBIT #03 / EX-847836812</span>
+                    <div class="w-24 h-24 sm:w-32 sm:h-32 my-3 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-lime-400/5 rounded-full blur-xl group-hover:scale-125 transition-transform duration-500"></div>
+                        <img src="https://stickershop.line-scdn.net/stickershop/v1/sticker/847836812/iPhone/sticker@2x.png" 
+                             alt="Sticker 03" class="w-20 h-20 sm:w-24 sm:h-24 object-contain relative z-10 filter group-hover:scale-110 transition-transform duration-300"
+                             onerror="this.onerror=null; this.src='https://placehold.co/120x120/f6f5f1/25282a?text=GREAT';">
+                    </div>
+                    <span class="text-[11px] md:text-xs text-sub-var font-light font-serif">おもしろいね！としても使える「LOVE it」</span>
+                </div>
+
+                <!-- Sticker 4 -->
+                <div class="card-bg rounded-2xl p-4 md:p-6 border flex flex-col items-center justify-between group hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+                    <span class="text-[8px] md:text-[9px] tracking-widest text-sub-var font-outfit">EXHIBIT #04 / EX-847836819</span>
+                    <div class="w-24 h-24 sm:w-32 sm:h-32 my-3 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-fuchsia-400/5 rounded-full blur-xl group-hover:scale-125 transition-transform duration-500"></div>
+                        <img src="https://stickershop.line-scdn.net/stickershop/v1/sticker/847836819/iPhone/sticker@2x.png" 
+                             alt="Sticker 04" class="w-20 h-20 sm:w-24 sm:h-24 object-contain relative z-10 filter group-hover:scale-110 transition-transform duration-300 neon-glow"
+                             style="--glow-color: rgba(6, 182, 212, 0.4);"
+                             onerror="this.onerror=null; this.src='https://placehold.co/120x120/f6f5f1/25282a?text=PERFECT';">
+                    </div>
+                    <span class="text-[11px] md:text-xs text-sub-var font-light font-serif">確かな同意「PERFECT」</span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. Interactive Simulation (Virtual Live Preview) -->
+        <section class="py-16 md:py-24 px-4 md:px-12 max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                
+                <!-- Chat Description -->
+                <div class="lg:col-span-5 space-y-4 md:space-y-6 text-center lg:text-left">
+                    <span class="text-[10px] md:text-xs tracking-[0.3em] text-sub-var font-cinzel">SIMULATION PREVIEW</span>
+                    <h2 class="text-xl md:text-2xl tracking-widest font-normal text-main-var">トークに、ラフな呼吸を。</h2>
+                    <div class="text-xs md:text-sm text-sub-var leading-relaxed md:leading-loose font-light font-serif space-y-5">
+                        <p>
+                            気遣いは不要。直感のままに、<br>
+                            トーク画面をグラフィティで埋め尽くせ！
+                        </p>
+                        <p>
+                            ストリートアートのように、もっとラフに。<br>
+                            ペタペタとスタンプを重ねてみてください。<br>
+                            収録されているのは、すべて相手を肯定する言葉だけ。
+                        </p>
+                        <p>
+                            「良いな」と思ったら1つ。「最高！」なら2つ、3つ。<br>
+                            重ねるほど、ポジティブな想いがブーストしていきます。
+                        </p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row lg:flex-col gap-2 justify-center lg:justify-start">
+                        <button onclick="window.simulateMessage('調子はどうよ')" class="w-full sm:w-auto px-4 py-2.5 rounded-full border border-neutral-300 text-xs text-main-var bg-white/40 hover:bg-white dark:hover:bg-neutral-800 transition-all font-serif">「調子はどうよ」と送る</button>
+                        <button onclick="window.simulateMessage('プレゼンはどう思った？')" class="w-full sm:w-auto px-4 py-2.5 rounded-full border border-neutral-300 text-xs text-main-var bg-white/40 hover:bg-white dark:hover:bg-neutral-800 transition-all font-serif">「プレゼンはどう思った？」と送る</button>
+                    </div>
+                </div>
+
+                <!-- Live Chat Simulator Mockup -->
+                <div class="lg:col-span-7 flex justify-center w-full">
+                    <div class="w-full max-w-sm bg-white/30 backdrop-blur-xl rounded-[36px] md:rounded-[40px] border border-white/20 p-3 md:p-4 shadow-xl relative overflow-hidden transition-all duration-1000">
+                        
+                        <!-- Screen Frame -->
+                        <div id="phone-chat-screen" class="rounded-[28px] md:rounded-[32px] h-[400px] md:h-[480px] flex flex-col justify-between overflow-hidden relative shadow-inner transition-colors duration-1000" style="background-color: var(--chat-bg);">
+                            
+                            <!-- Chat Top Bar -->
+                            <div class="bg-black/10 backdrop-blur-sm px-4 py-3 flex items-center gap-3 text-main-var border-b border-black/5">
+                                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                                <div class="text-[10px] md:text-xs font-light tracking-widest font-outfit">VIRTUAL GALLERY ROOM</div>
+                            </div>
+
+                            <!-- Chat Messages (Scrollable) -->
+                            <div id="chat-box" class="flex-1 p-3 md:p-4 overflow-y-auto space-y-3 md:space-y-4 text-[11px] md:text-xs font-light">
+                                
+                                <!-- Friend Bubble -->
+                                <div class="flex items-start gap-2">
+                                    <div class="w-7 h-7 rounded-full bg-neutral-300 flex items-center justify-center text-[10px] font-semibold text-neutral-600 font-cinzel">F</div>
+                                    <div class="space-y-1">
+                                        <div class="rounded-2xl rounded-tl-none px-3.5 py-2 max-w-[180px] md:max-w-[200px] leading-relaxed relative" style="background-color: var(--chat-friend-bg); color: var(--chat-friend-text);">
+                                            LINEにスプレーアートのスタンプを貼るの、かっこいいかも。
+                                            <!-- Tiny speech bubble tail -->
+                                            <div class="absolute top-0 left-0 -ml-1.5 w-3 h-3 bg-current transform rotate-45" style="color: var(--chat-friend-bg); clip-path: polygon(100% 0, 0 0, 100% 100%);"></div>
+                                        </div>
+                                        <span class="text-[8px] md:text-[9px] text-neutral-500 block font-outfit">10:14 PM</span>
+                                    </div>
+                                </div>
+
+                                <!-- Self Bubble (Initial Sticker) -->
+                                <div class="flex items-start justify-end gap-2">
+                                    <div class="space-y-1 flex flex-col items-end">
+                                        <div class="bg-transparent p-0.5 max-w-[100px] md:max-w-[120px]">
+                                            <!-- OK sticker preview -->
+                                            <img src="https://stickershop.line-scdn.net/stickershop/v1/sticker/847836812/iPhone/sticker@2x.png" 
+                                                 alt="OK Stamp" class="w-16 h-16 md:w-20 md:h-20 object-contain bg-black/10 rounded-2xl p-1 border border-white/5 drop-shadow-lg"
+                                                 onerror="this.onerror=null; this.src='https://placehold.co/100x100/121416/ffffff?text=OK';">
+                                        </div>
+                                        <span class="text-[8px] md:text-[9px] font-outfit transition-colors duration-1000" style="color: var(--chat-read-color);">既読 10:15 PM</span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Interactive Sticker Keyboard Trigger -->
+                            <div class="bg-neutral-900/90 p-3 space-y-2 border-t border-white/5">
+                                <div class="text-[8px] md:text-[9px] text-neutral-400 tracking-wider text-center font-serif">お好きな“イイね”スタンプをタップして返信する</div>
+                                <div class="flex justify-around items-center gap-1 pt-1">
+                                    
+                                    <!-- Mini Sticker Buttons using CDN assets (Optimized sizes for thumb tap) -->
+                                    <button onclick="window.sendSticker('847836809')" class="p-1.5 hover:bg-white/5 rounded-xl transition-all duration-300 border border-white/5 hover:border-yellow-400/30">
+                                        <img src="https://stickershop.line-scdn.net/stickershop/v1/sticker/847836809/iPhone/sticker@2x.png" class="w-8 h-8 md:w-10 md:h-10 object-contain" alt="YEAH Mini" onerror="this.onerror=null; this.src='https://placehold.co/40x40/000/fff?text=YEAH';">
+                                    </button>
+                                    <button onclick="window.sendSticker('847836811')" class="p-1.5 hover:bg-white/5 rounded-xl transition-all duration-300 border border-white/5 hover:border-cyan-400/30">
+                                        <img src="https://stickershop.line-scdn.net/stickershop/v1/sticker/847836811/iPhone/sticker@2x.png" class="w-8 h-8 md:w-10 md:h-10 object-contain" alt="NICE Mini" onerror="this.onerror=null; this.src='https://placehold.co/40x40/000/fff?text=NICE';">
+                                    </button>
+                                    <button onclick="window.sendSticker('847836812')" class="p-1.5 hover:bg-white/5 rounded-xl transition-all duration-300 border border-white/5 hover:border-lime-400/30">
+                                        <img src="https://stickershop.line-scdn.net/stickershop/v1/sticker/847836812/iPhone/sticker@2x.png" class="w-8 h-8 md:w-10 md:h-10 object-contain" alt="OK Mini" onerror="this.onerror=null; this.src='https://placehold.co/40x40/000/fff?text=OK';">
+                                    </button>
+                                    <button onclick="window.sendSticker('847836819')" class="p-1.5 hover:bg-white/5 rounded-xl transition-all duration-300 border border-white/5 hover:border-fuchsia-400/30">
+                                        <img src="https://stickershop.line-scdn.net/stickershop/v1/sticker/847836819/iPhone/sticker@2x.png" class="w-8 h-8 md:w-10 md:h-10 object-contain" alt="PERFECT Mini" onerror="this.onerror=null; this.src='https://placehold.co/40x40/000/fff?text=PERFECT';">
+                                    </button>
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. Quiet Call to Action -->
+        <section class="py-20 md:py-24 px-4 text-center max-w-xl mx-auto space-y-8 md:space-y-12">
+            <div class="space-y-4">
+                <span class="text-[10px] md:text-xs tracking-[0.4em] text-sub-var font-cinzel">OFFICIAL OUTLET</span>
+                <h3 class="text-lg md:text-2xl tracking-[0.15em] font-normal font-serif text-main-var">いつもの場所に、小さな彩りを</h3>
+                <p class="text-xs md:text-sm text-sub-var leading-relaxed md:leading-loose font-light font-serif">
+                    言葉のやり取りをもう少しだけポップに、<br class="sm:hidden">
+                    心地よくラフに彩るためのスプレーアート。<br>
+                    もしよろしければ、ストアにてすべてのデザインをご覧ください。
+                </p>
+            </div>
+
+            <div class="pt-2">
+                <a href="https://store.line.me/stickershop/product/34204255/ja" target="_blank" rel="noopener noreferrer" class="inline-block py-4 px-10 rounded-full border border-neutral-400 text-xs tracking-[0.2em] font-outfit text-main-var bg-white/10 hover:bg-neutral-800 hover:text-white hover:border-neutral-800 hover:shadow-lg transition-all duration-500">
+                    LINE STORE を見る
+                </a>
+            </div>
+
+            <p class="text-[9px] md:text-[10px] text-sub-var font-light font-serif">※LINE STOREの公式ストアページへ遷移します。</p>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-12 md:py-16 border-t border-neutral-300/30 text-center text-[8px] md:text-[10px] text-sub-var tracking-[0.15em] font-light font-outfit">
+        <p>&copy; 2026 FUMI SPRAY ART COLLECTION. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Initialize Lucide icon tags
+        lucide.createIcons();
+
+        // High-end atmospheric backgrounds, overlay controls & element colors
+        const themes = [
+            {
+                name: "SCENE 01: PLASTER STUDIO",
+                bgColor: "#f6f5f1",
+                textMain: "#25282a",
+                textSub: "#5f6368",
+                borderColor: "rgba(37, 40, 42, 0.1)",
+                cardBg: "rgba(255, 255, 255, 0.45)",
+                isDark: false,
+                orbs: ["#ffd2d2", "#d2e0ff"],
+                textures: [1, 0, 0], // [Plaster, Concrete, Brick]
+                // Chat styling for Plaster (Classic crisp clean style)
+                chatBg: "#e3e1da",
+                chatFriendBg: "#ffffff",
+                chatFriendText: "#25282a",
+                chatMyBg: "#ffffff",
+                chatMyText: "#25282a",
+                chatReadColor: "#7c8085"
+            },
+            {
+                name: "SCENE 02: GREENBACK",
+                bgColor: "#8ba3c7", // LINE Classic blue background directly from 1234.jpg
+                textMain: "#0f1f33", // Ultra-dark contrast text for maximum readability
+                textSub: "#384e6b", // Mid-dark contrast text (Matches the '既読' from 1234.jpg)
+                borderColor: "rgba(15, 31, 51, 0.12)",
+                cardBg: "rgba(255, 255, 255, 0.6)",
+                isDark: false,
+                orbs: ["#a1caf1", "#e3f0ff"],
+                textures: [0, 1, 0],
+                // Chat styling for Greenback (LINE official look matching 1234.jpg)
+                chatBg: "#8ba3c7",
+                chatFriendBg: "#ffffff",
+                chatFriendText: "#2c3139",
+                chatMyBg: "#5ce65c", // Vivid yellowish-green bubble from 1234.jpg
+                chatMyText: "#000000",
+                chatReadColor: "#384e6b" // Clearly visible read indicator text from 1234.jpg
+            },
+            {
+                name: "SCENE 03: NIGHT BRICK",
+                bgColor: "#090a0c",
+                textMain: "#e8ecef",
+                textSub: "#a1aab4", /* Enhanced contrast on small dark screens */
+                borderColor: "rgba(255, 255, 255, 0.08)",
+                cardBg: "rgba(255, 255, 255, 0.03)",
+                isDark: true,
+                orbs: ["#f43f5e", "#06b6d4"],
+                textures: [0, 0, 1],
+                // Chat styling for Night Brick (Stealth street look)
+                chatBg: "#111317",
+                chatFriendBg: "#2d3139",
+                chatFriendText: "#e2e8f0",
+                chatMyBg: "#2d3139",
+                chatMyText: "#e2e8f0",
+                chatReadColor: "#8b949e"
+            }
+        ];
+
+        let currentThemeIndex = 0;
+        let cycleInterval = null;
+
+        function updateExhibitionUI(index) {
+            const theme = themes[index];
+            currentThemeIndex = index;
+
+            // Apply color and layout styles gracefully
+            const body = document.body;
+            document.documentElement.style.setProperty('--current-bg', theme.bgColor);
+            document.documentElement.style.setProperty('--text-main', theme.textMain);
+            document.documentElement.style.setProperty('--text-sub', theme.textSub);
+            
+            // Set individual custom variables for chat frame dynamically
+            document.documentElement.style.setProperty('--chat-bg', theme.chatBg);
+            document.documentElement.style.setProperty('--chat-friend-bg', theme.chatFriendBg);
+            document.documentElement.style.setProperty('--chat-friend-text', theme.chatFriendText);
+            document.documentElement.style.setProperty('--chat-my-bg', theme.chatMyBg);
+            document.documentElement.style.setProperty('--chat-my-text', theme.chatMyText);
+            document.documentElement.style.setProperty('--chat-read-color', theme.chatReadColor);
+
+            if (theme.isDark) {
+                body.classList.add('dark-theme-active', 'dark');
+            } else {
+                body.classList.remove('dark-theme-active', 'dark');
+            }
+
+            // Smooth updates of display text
+            const indicatorText = document.getElementById('theme-indicator-text');
+            indicatorText.innerText = theme.name;
+
+            // Handle street textures opacity transitions
+            document.getElementById('texture-plaster').style.opacity = theme.textures[0] ? '0.25' : '0';
+            document.getElementById('texture-concrete').style.opacity = theme.textures[1] ? '0.12' : '0';
+            document.getElementById('texture-brick').style.opacity = theme.textures[2] ? '0.35' : '0';
+
+            // Change atmospheric background orbs
+            const orb1 = document.getElementById('orb-1');
+            const orb2 = document.getElementById('orb-2');
+            orb1.style.backgroundColor = theme.orbs[0];
+            orb2.style.backgroundColor = theme.orbs[1];
+
+            // Change cards styling
+            const cards = document.querySelectorAll('.card-bg');
+            cards.forEach(card => {
+                card.style.backgroundColor = theme.cardBg;
+                card.style.borderColor = theme.borderColor;
+            });
+
+            // Navigation dots
+            for (let i = 0; i < 3; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                if (i === index) {
+                    dot.classList.remove('bg-neutral-300');
+                    dot.classList.add('bg-neutral-800');
+                    if (theme.isDark) {
+                        dot.classList.remove('bg-neutral-800');
+                        dot.classList.add('bg-white');
+                    }
+                    dot.style.transform = "scale(1.2)";
+                } else {
+                    dot.classList.remove('bg-neutral-800', 'bg-white');
+                    dot.classList.add('bg-neutral-300');
+                    dot.style.transform = "scale(1.0)";
+                }
+            }
+
+            // Style buttons to show selected state
+            const buttons = document.querySelectorAll('.theme-btn');
+            buttons.forEach((btn, bIdx) => {
+                if (bIdx === index) {
+                    btn.style.borderColor = theme.textMain;
+                    btn.style.backgroundColor = theme.isDark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.85)';
+                } else {
+                    btn.style.borderColor = 'rgba(128,128,128,0.2)';
+                    btn.style.backgroundColor = theme.isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)';
+                }
+            });
+        }
+
+        // BIND FUNCTIONS EXPLICITLY TO WINDOW OBJECT TO PREVENT REFERENCEERRORS IN IFRAME PREVIEW
+        window.switchTheme = function(index) {
+            updateExhibitionUI(index);
+            clearInterval(cycleInterval);
+            startAutoCycle();
+        };
+
+        // Graceful automatic cycle
+        function startAutoCycle() {
+            cycleInterval = setInterval(() => {
+                let next = (currentThemeIndex + 1) % themes.length;
+                updateExhibitionUI(next);
+            }, 8000);
+        }
+
+        // Live Chat Simulator logic with beautifully styled speech bubble tail
+        window.simulateMessage = function(text) {
+            const chatBox = document.getElementById('chat-box');
+            const messageHtml = `
+                <div class="flex items-start gap-2 animate-fade-in">
+                    <div class="w-7 h-7 rounded-full bg-neutral-300 flex items-center justify-center text-[10px] font-semibold text-neutral-600 font-cinzel">F</div>
+                    <div class="space-y-1">
+                        <div class="rounded-2xl rounded-tl-none px-3.5 py-2 max-w-[180px] md:max-w-[200px] leading-relaxed relative" style="background-color: var(--chat-friend-bg); color: var(--chat-friend-text);">
+                            ${text}
+                            <div class="absolute top-0 left-0 -ml-1.5 w-3 h-3 bg-current transform rotate-45" style="color: var(--chat-friend-bg); clip-path: polygon(100% 0, 0 0, 100% 100%);"></div>
+                        </div>
+                        <span class="text-[8px] md:text-[9px] text-neutral-500 block font-outfit">Just now</span>
+                    </div>
+                </div>
+            `;
+            chatBox.insertAdjacentHTML('beforeend', messageHtml);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        };
+
+        // Send Sticker preview in the mockup chat dynamically using CDN images
+        window.sendSticker = function(stickerId) {
+            const chatBox = document.getElementById('chat-box');
+            const imgSrc = `https://stickershop.line-scdn.net/stickershop/v1/sticker/${stickerId}/iPhone/sticker@2x.png`;
+            
+            const stickerHtml = `
+                <div class="flex items-start justify-end gap-2 animate-fade-in">
+                    <div class="space-y-1 flex flex-col items-end">
+                        <div class="bg-transparent p-0.5 max-w-[100px] md:max-w-[120px]">
+                            <img src="${imgSrc}" 
+                                 class="w-16 h-16 md:w-20 md:h-20 object-contain bg-black/10 rounded-2xl p-1 border border-white/5 drop-shadow-lg"
+                                 alt="Sticker ${stickerId}"
+                                 onerror="this.onerror=null; this.src='https://stickershop.line-scdn.net/stickershop/v1/sticker/${stickerId}/iPhone/sticker@2x.png';">
+                        </div>
+                        <span class="text-[8px] md:text-[9px] font-outfit" style="color: var(--chat-read-color);">既読 たった今</span>
+                    </div>
+                </div>
+            `;
+            chatBox.insertAdjacentHTML('beforeend', stickerHtml);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        };
+
+        // Boot
+        window.onload = function() {
+            updateExhibitionUI(0);
+            startAutoCycle();
+        };
+    </script>
+</body>
+</html>

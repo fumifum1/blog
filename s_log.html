@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/fumifum1/main/main/jpg/ico.ico">
     <title>スプレーアート -全て“イイね”という意味のスタンプ集- | fumi Exhibition</title>
+    <!-- 検索・シェア用メタタグ -->
+    <meta name="description" content="スプレーアートの質感を再現した、全て『イイね』を伝えるLINEスタンプ集。">
+    <meta property="og:title" content="スプレーアート -全て“イイね”という意味のスタンプ集- | fumi Exhibition">
+    <meta property="og:description" content="日常の肯定をストリートアートで表現したスタンプコレクション。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://stickershop.line-scdn.net/stickershop/v1/sticker/847836810/iPhone/sticker@2x.png">
     <!-- Tailwind CSS for modern structure -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons for clean, minimalist UI -->
@@ -149,9 +156,28 @@
 
     <!-- Header Navigation -->
     <header class="fixed top-0 left-0 w-full z-50 px-4 py-4 md:px-12 flex justify-between items-center mix-blend-difference text-white">
-        <span class="font-cinzel tracking-[0.2em] text-[10px] md:text-sm font-semibold">FUMI EXHIBITION</span>
-        <span class="text-[8px] md:text-xs tracking-[0.15em] font-light">SPRAY ART</span>
+        <div class="flex items-center gap-4">
+            <span class="font-cinzel tracking-[0.2em] text-[10px] md:text-sm font-semibold">FUMI EXHIBITION</span>
+            <span class="text-[8px] md:text-xs tracking-[0.15em] font-light">SPRAY ART</span>
+        </div>
+        <!-- Hamburger button -->
+        <button id="hamburger-button" class="p-2 rounded-md hover:bg-white/20 transition-colors duration-300">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
     </header>
+
+    <!-- Overlay Menu -->
+    <nav id="mobile-menu" class="fixed right-0 top-0 bottom-0 w-3/4 md:w-1/4 bg-black/80 backdrop-blur-md z-50 flex flex-col items-center justify-center space-y-8 transform translate-x-full transition-transform duration-500 ease-in-out">
+        <button id="close-menu-button" class="absolute top-4 right-4 p-2 rounded-md hover:bg-white/20 text-white transition-colors duration-300">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        <ul class="text-white text-2xl md:text-3xl font-cinzel tracking-widest text-center space-y-6">
+            <li><a href="https://fumifum1.github.io/main/index.html" class="hover:text-neutral-300 transition-colors duration-300">Profile</a></li>
+            <li><a href="https://fumifum1.github.io/main/game.html" class="hover:text-neutral-300 transition-colors duration-300">Games</a></li>
+            <li><a href="https://fumifum1.github.io/main/music.html" class="hover:text-neutral-300 transition-colors duration-300">Music</a></li>
+            <li><a href="https://fumifum1.github.io/main/other.html" class="hover:text-neutral-300 transition-colors duration-300">Others</a></li>
+        </ul>
+    </nav>
 
     <!-- Main Content -->
     <main class="relative z-10">
@@ -448,8 +474,8 @@
     </main>
 
     <!-- Footer -->
-    <footer class="py-12 md:py-16 border-t border-neutral-300/30 text-center text-[8px] md:text-[10px] text-sub-var tracking-[0.15em] font-light font-outfit">
-        <p>&copy; 2026 FUMI SPRAY ART COLLECTION. ALL RIGHTS RESERVED.</p>
+    <footer style="margin-top: 2rem; font-size: 0.7rem; color: #94a3b8; text-align: center;">
+        &copy; 2026 Synapse Creations. fumi Exhibition _ver1.0.0 <a href="https://fumifum1.github.io/main/index.html" style="color: inherit; text-decoration: none;">Creator/fumifumi</a>
     </footer>
 
     <!-- JavaScript Logic -->
@@ -656,6 +682,29 @@
             updateExhibitionUI(0);
             startAutoCycle();
         };
+
+        // Hamburger menu logic
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const closeMenuButton = document.getElementById('close-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        hamburgerButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('translate-x-full');
+            mobileMenu.classList.add('translate-x-0');
+        });
+
+        closeMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('translate-x-0');
+            mobileMenu.classList.add('translate-x-full');
+        });
+
+        // Close menu if a link is clicked
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('translate-x-0');
+                mobileMenu.classList.add('translate-x-full');
+            });
+        });
     </script>
 </body>
 </html>

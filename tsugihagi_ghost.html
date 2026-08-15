@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/fumifum1/main/main/jpg/ico.ico">
+    <title>ツギハギゴースト -壊れた心をつなぐ、やさしい幽霊のLINEスタンプ- | fumi Exhibition</title>
+    <!-- 検索・シェア用メタタグ -->
+    <meta name="description" content="捨てられたぬいぐるみが幽霊になった「ツギハギゴースト」の日常LINEスタンプ、全40種。1セット190円。">
+    <meta property="og:title" content="ツギハギゴースト -壊れた心をつなぐ、やさしい幽霊のLINEスタンプ-">
+    <meta property="og:description" content="捨てられたぬいぐるみが幽霊になった「ツギハギゴースト」。誰かの優しい気持ちに触れて、少しずつ元の姿に戻ろうとしています。全40種、190円。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://raw.githubusercontent.com/fumifum1/blog/main/assets/tsugihagi-ghost/main.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Maru+Gothic:wght@400;500;700;900&family=Outfit:wght@300;400;600&display=swap');
+
+        :root {
+            --paper: #f6ecd8;
+            --paper-deep: #efe0bd;
+            --card: #fffaf0;
+            --ink: #3d3125;
+            --ink-soft: #7a6c58;
+            --green: #3f8f6a;
+            --green-deep: #2c6b4d;
+            --yellow: #ecc84a;
+            --pink: #dd5f78;
+            --purple: #b7a2da;
+            --purple-soft: #ece5f7;
+            --border: rgba(61, 49, 37, 0.16);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Zen Maru Gothic', sans-serif;
+            color: var(--ink);
+            background-color: var(--paper);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-hand { font-family: 'Yomogi', cursive; }
+        .font-outfit { font-family: 'Outfit', sans-serif; }
+
+        /* Paper grain texture */
+        .paper-texture {
+            background-image:
+                radial-gradient(rgba(61, 49, 37, 0.06) 1px, transparent 1px),
+                radial-gradient(rgba(61, 49, 37, 0.04) 1px, transparent 1px);
+            background-size: 3px 3px, 7px 7px;
+            background-position: 0 0, 2px 2px;
+            mix-blend-mode: multiply;
+        }
+
+        /* Stitched dashed border, like the patchwork seams */
+        .stitch-border {
+            border: 2px dashed rgba(61, 49, 37, 0.35);
+        }
+
+        .stitch-card {
+            background: var(--card);
+            border: 2px dashed rgba(61, 49, 37, 0.28);
+            border-radius: 1.25rem;
+            position: relative;
+        }
+        .stitch-card::before,
+        .stitch-card::after {
+            content: "✕";
+            position: absolute;
+            font-size: 10px;
+            color: rgba(61, 49, 37, 0.35);
+            font-family: 'Outfit', sans-serif;
+        }
+        .stitch-card::before { top: 6px; left: 10px; }
+        .stitch-card::after { bottom: 6px; right: 10px; }
+
+        /* Solid dark panel for the slide-in menu (Tailwind's bg-[var(...)]/opacity
+           syntax doesn't resolve against a hex custom property, so it's set here). */
+        .menu-panel {
+            background-color: #2c2318;
+        }
+
+        .label-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: var(--ink);
+            color: var(--paper);
+            padding: 0.35rem 1rem;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Gentle floating like a ghost drifting */
+        @keyframes ghostFloat {
+            0%, 100% { transform: translateY(0px) rotate(-1deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+        .ghost-float { animation: ghostFloat 5s ease-in-out infinite; }
+
+        @keyframes mistDrift {
+            0%, 100% { transform: translate(0,0) scale(1); opacity: 0.35; }
+            50% { transform: translate(6px, -8px) scale(1.08); opacity: 0.55; }
+        }
+        .mist-orb { animation: mistDrift 7s ease-in-out infinite; filter: blur(38px); }
+
+        .glow-purple {
+            filter: drop-shadow(0 0 22px rgba(183, 162, 218, 0.55));
+        }
+
+        .gallery-card {
+            background: var(--card);
+            border: 2px dashed rgba(61, 49, 37, 0.22);
+            border-radius: 1.1rem;
+            transition: transform .35s cubic-bezier(.25,1,.5,1), box-shadow .35s ease, border-color .35s ease;
+        }
+        .gallery-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 18px 34px -12px rgba(61, 49, 37, 0.25);
+            border-color: var(--green);
+            cursor: pointer;
+        }
+
+        .price-tag {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: var(--green);
+            color: #fff8ec;
+            box-shadow: 0 10px 24px -8px rgba(44, 107, 77, 0.55);
+        }
+        .btn-primary:hover { background: var(--green-deep); }
+
+        .btn-disabled {
+            background: rgba(61, 49, 37, 0.08);
+            color: var(--ink-soft);
+            cursor: not-allowed;
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(61, 49, 37, 0.2); border-radius: 4px; }
+
+        .fade-in { animation: fadeIn .4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: translateY(0);} }
+    </style>
+</head>
+<body class="selection:bg-[var(--purple-soft)]">
+
+    <!-- Background texture + ambient mist -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute inset-0 paper-texture opacity-40"></div>
+        <div class="absolute top-1/4 -left-20 w-72 h-72 md:w-96 md:h-96 rounded-full bg-[var(--purple)] mist-orb"></div>
+        <div class="absolute bottom-1/4 -right-20 w-72 h-72 md:w-96 md:h-96 rounded-full bg-[var(--yellow)] mist-orb" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 w-full z-50 px-4 py-4 md:px-12 flex justify-between items-center text-[var(--ink)]">
+        <div class="flex items-center gap-2 bg-[var(--paper)]/85 backdrop-blur-sm px-3 py-1.5 rounded-full border border-[var(--border)]">
+            <span class="font-hand text-sm md:text-base font-bold">ツギハギゴースト</span>
+        </div>
+        <button id="hamburger-button" class="p-2 rounded-full bg-[var(--paper)]/85 backdrop-blur-sm border border-[var(--border)] hover:bg-white transition-colors duration-300">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+    </header>
+
+    <!-- Overlay Menu -->
+    <nav id="mobile-menu" class="menu-panel fixed right-0 top-0 bottom-0 w-3/4 md:w-1/4 backdrop-blur-md z-50 flex flex-col items-center justify-center space-y-8 transform translate-x-full transition-transform duration-500 ease-in-out">
+        <button id="close-menu-button" class="absolute top-4 right-4 p-2 rounded-md hover:bg-white/10 text-[var(--paper)] transition-colors duration-300">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        <ul class="text-[var(--paper)] text-xl md:text-2xl font-hand text-center space-y-6">
+            <li><a href="https://fumifum1.github.io/main/index.html" class="hover:text-[var(--yellow)] transition-colors duration-300">Profile</a></li>
+            <li><a href="s_log.html" class="hover:text-[var(--yellow)] transition-colors duration-300">他のスタンプ</a></li>
+            <li><a href="https://fumifum1.github.io/main/game.html" class="hover:text-[var(--yellow)] transition-colors duration-300">Games</a></li>
+            <li><a href="https://fumifum1.github.io/main/music.html" class="hover:text-[var(--yellow)] transition-colors duration-300">Music</a></li>
+            <li><a href="https://fumifum1.github.io/main/other.html" class="hover:text-[var(--yellow)] transition-colors duration-300">Others</a></li>
+        </ul>
+    </nav>
+
+    <main class="relative z-10">
+
+        <!-- 1. Hero -->
+        <section class="min-h-screen flex flex-col justify-center pt-24 pb-10 px-4 md:px-12 max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+                <!-- Hero Left -->
+                <div class="lg:col-span-6 space-y-6 order-2 lg:order-1 text-center lg:text-left">
+                    <span class="label-tag bg-[var(--pink)]">
+                        <i data-lucide="clock" class="w-3 h-3"></i>
+                        LINE Creators Market 申請中
+                    </span>
+                    <h1 class="text-3xl md:text-5xl leading-snug font-black text-[var(--ink)]">
+                        こわれた心を、<br>
+                        <span class="font-hand text-[var(--green-deep)]">そっと縫いあわせる。</span>
+                    </h1>
+                    <p class="text-sm md:text-base text-[var(--ink-soft)] leading-loose max-w-md mx-auto lg:mx-0">
+                        捨てられたぬいぐるみが、悲しみと想いで幽霊になった姿「ツギハギゴースト」。<br class="hidden md:block">
+                        誰かのやさしい気持ちに触れることで、少しずつ元の姿に戻れると信じています。<br>
+                        そんな不器用でやさしい幽霊の、まいにち使えるLINEスタンプ全40種です。
+                    </p>
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
+                        <div class="stitch-card px-5 py-2.5 flex items-baseline gap-1">
+                            <span class="text-xs text-[var(--ink-soft)]">1セット</span>
+                            <span class="price-tag text-2xl text-[var(--pink)]">190</span>
+                            <span class="text-xs text-[var(--ink-soft)]">円(税込) / 全40種</span>
+                        </div>
+                    </div>
+                    <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
+                        <a href="#gallery" class="inline-block py-3.5 px-8 rounded-full btn-primary text-sm font-bold tracking-wide transition-all duration-300 hover:-translate-y-0.5">
+                            スタンプを見てみる →
+                        </a>
+                        <a href="#price" class="text-xs tracking-wider text-[var(--ink-soft)] border-b border-current pb-1 hover:opacity-60 transition-opacity duration-300">
+                            販売開始情報を確認する
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Right -->
+                <div class="lg:col-span-6 flex justify-center order-1 lg:order-2 py-2">
+                    <div class="relative w-56 h-56 sm:w-72 sm:h-72 md:w-80 md:h-80 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-[var(--purple)]/15 rounded-full blur-2xl scale-90"></div>
+                        <img src="assets/tsugihagi-ghost/main.png" alt="ツギハギゴースト メインキャラクター"
+                             class="relative w-48 h-48 sm:w-64 sm:h-64 md:w-72 md:h-72 object-contain ghost-float glow-purple z-10">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Concept / Profile -->
+        <section class="py-14 md:py-20 px-4 md:px-12 max-w-4xl mx-auto space-y-10">
+            <div class="text-center space-y-3">
+                <span class="label-tag bg-[var(--green)]">CHARACTER</span>
+                <h2 class="text-xl md:text-2xl font-bold text-[var(--ink)]">ツギハギゴーストって、どんな子？</h2>
+            </div>
+            <p class="text-xs md:text-sm text-[var(--ink-soft)] leading-loose max-w-2xl mx-auto text-center">
+                かつて大切にされていたぬいぐるみが、壊れて捨てられてしまった。<br class="hidden md:block">
+                その悲しみと想いが幽霊となり、ツギハギの姿でさまよっている。<br class="hidden md:block">
+                壊れた心を直すために、「誰かの優しい気持ち」を探し続けている──。<br>
+                心を見つけるたびに、体の縫い目が少しずつ元に戻っていくらしい。
+            </p>
+
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 max-w-3xl mx-auto">
+                <div class="stitch-card px-3 py-4 text-center space-y-1">
+                    <div class="text-[10px] text-[var(--ink-soft)] font-outfit tracking-widest">種族</div>
+                    <div class="text-xs md:text-sm font-bold">ゴースト<br class="md:hidden">（ぬいぐるみの魂）</div>
+                </div>
+                <div class="stitch-card px-3 py-4 text-center space-y-1">
+                    <div class="text-[10px] text-[var(--ink-soft)] font-outfit tracking-widest">性格</div>
+                    <div class="text-xs md:text-sm font-bold">さみしがりや<br>優しい・純粋</div>
+                </div>
+                <div class="stitch-card px-3 py-4 text-center space-y-1">
+                    <div class="text-[10px] text-[var(--ink-soft)] font-outfit tracking-widest">好きなもの</div>
+                    <div class="text-xs md:text-sm font-bold">温かい心<br>ぬいぐるみ・星</div>
+                </div>
+                <div class="stitch-card px-3 py-4 text-center space-y-1">
+                    <div class="text-[10px] text-[var(--ink-soft)] font-outfit tracking-widest">嫌いなもの</div>
+                    <div class="text-xs md:text-sm font-bold">壊されること<br>孤独・冷たい場所</div>
+                </div>
+                <div class="stitch-card px-3 py-4 text-center space-y-1 col-span-2 md:col-span-1">
+                    <div class="text-[10px] text-[var(--ink-soft)] font-outfit tracking-widest">特技</div>
+                    <div class="text-xs md:text-sm font-bold">心を感じ取ること<br>浮遊・すり抜け</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Selling points -->
+        <section class="py-10 md:py-16 px-4 md:px-12 max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                <div class="stitch-card p-6 text-center space-y-2">
+                    <div class="w-10 h-10 mx-auto rounded-full bg-[var(--purple-soft)] flex items-center justify-center">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-[var(--green-deep)]"></i>
+                    </div>
+                    <h3 class="text-sm font-bold">全40種の豊富な表情</h3>
+                    <p class="text-xs text-[var(--ink-soft)] leading-relaxed">挨拶から日常の相槌、感情表現までこれ一つでカバー。</p>
+                </div>
+                <div class="stitch-card p-6 text-center space-y-2">
+                    <div class="w-10 h-10 mx-auto rounded-full bg-[var(--purple-soft)] flex items-center justify-center">
+                        <i data-lucide="heart-crack" class="w-5 h-5 text-[var(--pink)]"></i>
+                    </div>
+                    <h3 class="text-sm font-bold">ちょっと不器用で愛おしい</h3>
+                    <p class="text-xs text-[var(--ink-soft)] leading-relaxed">ツギハギだらけの、でも一生懸命なやさしい表情。</p>
+                </div>
+                <div class="stitch-card p-6 text-center space-y-2">
+                    <div class="w-10 h-10 mx-auto rounded-full bg-[var(--purple-soft)] flex items-center justify-center">
+                        <i data-lucide="paintbrush" class="w-5 h-5 text-[var(--green-deep)]"></i>
+                    </div>
+                    <h3 class="text-sm font-bold">手描き風の温かいタッチ</h3>
+                    <p class="text-xs text-[var(--ink-soft)] leading-relaxed">絵本のような色鉛筆タッチで、トーク画面をやさしく彩る。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Gallery -->
+        <section id="gallery" class="py-14 md:py-20 px-4 md:px-12 max-w-6xl mx-auto space-y-10">
+            <div class="text-center space-y-3">
+                <span class="label-tag bg-[var(--green)]">ALL 40 STAMPS</span>
+                <h2 class="text-xl md:text-2xl font-bold text-[var(--ink)]">まいにちのトークに、ゴーストの気持ちを。</h2>
+                <p class="text-xs text-[var(--ink-soft)]">タップすると、下のトーク画面に届きます。</p>
+            </div>
+
+            <div id="gallery-main" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 gap-4 md:gap-5">
+                <!-- 16 curated stickers injected below -->
+            </div>
+
+            <div class="text-center">
+                <button id="toggle-gallery" class="inline-flex items-center gap-2 text-xs tracking-wider text-[var(--ink-soft)] border border-[var(--border)] px-5 py-2.5 rounded-full hover:bg-white transition-colors duration-300">
+                    <span id="toggle-gallery-label">残り24種もすべて見る</span>
+                    <i data-lucide="chevron-down" id="toggle-gallery-icon" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <div id="gallery-extra" class="hidden grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-3 md:gap-4">
+                <!-- 24 remaining stickers injected below -->
+            </div>
+        </section>
+
+        <!-- 5. Chat mockup -->
+        <section class="py-14 md:py-20 px-4 md:px-12 max-w-4xl mx-auto">
+            <div class="text-center space-y-3 mb-8">
+                <span class="label-tag bg-[var(--pink)]">PREVIEW</span>
+                <h2 class="text-xl md:text-2xl font-bold text-[var(--ink)]">トークで使うと、こんな感じ。</h2>
+            </div>
+            <div class="flex justify-center">
+                <div class="w-full max-w-sm bg-white/50 backdrop-blur-xl rounded-[36px] border border-[var(--border)] p-3 shadow-xl">
+                    <div class="rounded-[28px] h-[420px] flex flex-col justify-between overflow-hidden bg-[var(--paper-deep)] shadow-inner">
+                        <div class="bg-[var(--ink)]/85 px-4 py-3 flex items-center gap-2 text-[var(--paper)]">
+                            <img src="assets/tsugihagi-ghost/tab.png" alt="" class="w-5 h-5 object-contain">
+                            <div class="text-[11px] font-outfit tracking-wider">ツギハギゴースト</div>
+                        </div>
+                        <div id="chat-box" class="flex-1 p-3 overflow-y-auto space-y-3 text-xs">
+                            <div class="flex items-start gap-2">
+                                <div class="w-7 h-7 rounded-full bg-[var(--purple-soft)] flex items-center justify-center text-[10px] font-bold text-[var(--green-deep)]">友</div>
+                                <div class="rounded-2xl rounded-tl-none px-3.5 py-2 max-w-[200px] leading-relaxed bg-white">
+                                    このスタンプ、なんかクセになるね
+                                </div>
+                            </div>
+                            <div class="flex items-start justify-end gap-2">
+                                <img src="assets/tsugihagi-ghost/18.png" alt="ナイス" class="w-20 h-20 object-contain drop-shadow-lg">
+                            </div>
+                        </div>
+                        <div class="bg-[var(--ink)]/90 p-3 space-y-2 border-t border-white/5">
+                            <div class="text-[9px] text-[var(--paper)]/70 tracking-wider text-center">スタンプをタップして送る</div>
+                            <div id="chat-picker" class="flex justify-around items-center gap-1 pt-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Price / CTA -->
+        <section id="price" class="py-16 md:py-24 px-4 text-center max-w-xl mx-auto space-y-8">
+            <div class="stitch-card p-8 md:p-10 space-y-5">
+                <span class="label-tag bg-[var(--ink)]">PRICE</span>
+                <div class="flex items-end justify-center gap-2">
+                    <span class="price-tag text-5xl md:text-6xl text-[var(--pink)]">190</span>
+                    <span class="text-base text-[var(--ink-soft)] pb-2">円（税込）</span>
+                </div>
+                <p class="text-xs text-[var(--ink-soft)] leading-loose">
+                    一度購入すれば、全40種類が使い放題。<br>
+                    送るたびに、ツギハギゴーストの気持ちが少しずつ元に戻っていきます。
+                </p>
+                <div class="pt-2">
+                    <span class="inline-flex items-center gap-2 py-4 px-10 rounded-full btn-disabled text-xs tracking-widest font-bold w-full sm:w-auto justify-center">
+                        <i data-lucide="hourglass" class="w-4 h-4"></i>
+                        現在、審査中のためもう少しお待ちください
+                    </span>
+                </div>
+                <p class="text-[10px] text-[var(--ink-soft)]">
+                    ※LINE Creators Marketにて審査申請中です。承認され次第、このページからLINE STOREへご案内します。
+                </p>
+            </div>
+        </section>
+
+        <!-- 7. Other stamps -->
+        <section class="py-14 md:py-20 px-4 md:px-12 max-w-4xl mx-auto space-y-8">
+            <div class="text-center space-y-3">
+                <span class="label-tag bg-[var(--green)]">MORE STAMPS</span>
+                <h2 class="text-xl md:text-2xl font-bold text-[var(--ink)]">他にも、LINEスタンプを作っています。</h2>
+                <p class="text-xs text-[var(--ink-soft)]">よろしければ、こちらも覗いてみてください。</p>
+            </div>
+
+            <a href="s_log.html" class="group block stitch-card p-5 md:p-6 hover:border-[var(--green)] transition-colors duration-300">
+                <div class="flex items-center gap-5">
+                    <div class="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 rounded-2xl bg-[var(--paper-deep)] flex items-center justify-center overflow-hidden">
+                        <img src="https://stickershop.line-scdn.net/stickershop/v1/sticker/847836810/iPhone/sticker@2x.png"
+                             alt="スプレーアートスタンプ" class="w-16 h-16 md:w-20 md:h-20 object-contain group-hover:scale-110 transition-transform duration-300"
+                             onerror="this.onerror=null; this.src='https://placehold.co/80x80/f6ecd8/3d3125?text=GOOD';">
+                    </div>
+                    <div class="flex-1 text-left space-y-1">
+                        <div class="text-[10px] font-outfit tracking-widest text-[var(--ink-soft)]">発売中</div>
+                        <h3 class="text-sm md:text-base font-bold">スプレーアート -全て"イイね"という意味のスタンプ集-</h3>
+                        <p class="text-xs text-[var(--ink-soft)]">ストリートアート風の、直感的な肯定・共感を伝えるスタンプ。</p>
+                    </div>
+                    <i data-lucide="arrow-right" class="w-5 h-5 text-[var(--ink-soft)] group-hover:translate-x-1 transition-transform duration-300 flex-shrink-0"></i>
+                </div>
+            </a>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer style="margin-top: 2rem; font-size: 0.7rem; color: #94806a; text-align: center; padding-bottom: 2rem;">
+        &copy; 2026 Synapse Creations. fumi Exhibition _ver1.0.0 <a href="https://fumifum1.github.io/main/index.html" style="color: inherit; text-decoration: none;">Creator/fumifumi</a>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // ---- Sticker data ----
+        const BASE = 'assets/tsugihagi-ghost/';
+        const curated = [
+            { n: '01', label: 'いってきます' },
+            { n: '02', label: 'ただいま' },
+            { n: '05', label: '遊ぼう' },
+            { n: '07', label: 'がんばれ！' },
+            { n: '08', label: 'ありがとう' },
+            { n: '09', label: 'いいよ〜' },
+            { n: '10', label: 'ダメ！' },
+            { n: '12', label: 'あけおめ' },
+            { n: '13', label: '了解！' },
+            { n: '16', label: 'おはよう' },
+            { n: '17', label: 'すご！！' },
+            { n: '18', label: 'ナイス' },
+            { n: '20', label: '大丈夫？' },
+            { n: '25', label: 'おつかれ' },
+            { n: '30', label: 'おやすみ' },
+            { n: '40', label: 'ごめんなさい' }
+        ];
+        const extraNums = ['03','04','06','11','14','15','19','21','22','23','24','26','27','28','29','31','32','33','34','35','36','37','38','39'];
+
+        const galleryMain = document.getElementById('gallery-main');
+        curated.forEach(s => {
+            const el = document.createElement('div');
+            el.className = 'gallery-card p-3 flex flex-col items-center text-center';
+            el.innerHTML = `
+                <img src="${BASE}${s.n}.png" alt="${s.label}" loading="lazy" class="w-full h-20 sm:h-24 object-contain">
+                <span class="text-[10px] sm:text-xs text-[var(--ink-soft)] mt-2 font-bold">${s.label}</span>
+            `;
+            el.addEventListener('click', () => sendSticker(`${BASE}${s.n}.png`, s.label));
+            galleryMain.appendChild(el);
+        });
+
+        const galleryExtra = document.getElementById('gallery-extra');
+        extraNums.forEach(n => {
+            const el = document.createElement('div');
+            el.className = 'gallery-card p-2 flex items-center justify-center';
+            el.innerHTML = `<img src="${BASE}${n}.png" alt="スタンプ ${n}" loading="lazy" class="w-full h-16 sm:h-20 object-contain">`;
+            el.addEventListener('click', () => sendSticker(`${BASE}${n}.png`, ''));
+            galleryExtra.appendChild(el);
+        });
+
+        // Toggle full gallery
+        const toggleBtn = document.getElementById('toggle-gallery');
+        const toggleLabel = document.getElementById('toggle-gallery-label');
+        const toggleIcon = document.getElementById('toggle-gallery-icon');
+        let expanded = false;
+        toggleBtn.addEventListener('click', () => {
+            expanded = !expanded;
+            galleryExtra.classList.toggle('hidden', !expanded);
+            galleryExtra.classList.toggle('grid');
+            toggleLabel.textContent = expanded ? '閉じる' : '残り24種もすべて見る';
+            toggleIcon.style.transform = expanded ? 'rotate(180deg)' : 'rotate(0deg)';
+            if (expanded) galleryExtra.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        // Mini picker in chat mockup (reuse a handful of curated stickers)
+        const pickerNums = ['08','09','17','01'];
+        const chatPicker = document.getElementById('chat-picker');
+        pickerNums.forEach(n => {
+            const label = (curated.find(s => s.n === n) || {}).label || '';
+            const btn = document.createElement('button');
+            btn.className = 'p-1.5 hover:bg-white/10 rounded-xl transition-all duration-300 border border-white/5';
+            btn.innerHTML = `<img src="${BASE}${n}.png" class="w-8 h-8 md:w-9 md:h-9 object-contain" alt="${label}">`;
+            btn.addEventListener('click', () => sendSticker(`${BASE}${n}.png`, label));
+            chatPicker.appendChild(btn);
+        });
+
+        function sendSticker(src, label) {
+            const chatBox = document.getElementById('chat-box');
+            const bubble = document.createElement('div');
+            bubble.className = 'flex items-start justify-end gap-2 fade-in';
+            bubble.innerHTML = `<img src="${src}" alt="${label}" class="w-20 h-20 object-contain drop-shadow-lg">`;
+            chatBox.appendChild(bubble);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Hamburger menu
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const closeMenuButton = document.getElementById('close-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        hamburgerButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('translate-x-full');
+            mobileMenu.classList.add('translate-x-0');
+        });
+        closeMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('translate-x-0');
+            mobileMenu.classList.add('translate-x-full');
+        });
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('translate-x-0');
+                mobileMenu.classList.add('translate-x-full');
+            });
+        });
+    </script>
+</body>
+</html>

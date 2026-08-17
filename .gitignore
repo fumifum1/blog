@@ -1,5 +1,6 @@
 # --- 公開停止中のページ ---
 # ブレイン教材との整合性をとるため、一時的に公開を停止しています。
-# 再公開するときは、下の1行を削除して `git add gothic-fantasy-boy.html` してください。
-# （画像 assets/gothic-fantasy-boy/ は「近日公開」カードで使うため、公開したままにしています）
+# 再公開するときは、該当の1行を削除して `git add <ファイル名>` してください。
+# （画像 assets/ 配下は「近日公開」カードで使うため、公開したままにしています）
 gothic-fantasy-boy.html
+tsugihagi_ghost.html

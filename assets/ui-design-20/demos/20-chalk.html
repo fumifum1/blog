@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>20 Chalkboard | Synapse Creations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yusei+Magic&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--board:#2d4a3a;--chalk:#f4f1e6;--y:#ffe680;--p:#ffb3c7;--b:#a9dcff;--wood:#8a5a32}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:hidden}
+body{background:#d9c8a9;color:var(--chalk);font-family:'Yusei Magic',sans-serif;padding:20px 14px 110px}
+a{color:inherit;text-decoration:none}
+.board{position:relative;max-width:1100px;margin:0 auto;padding:clamp(22px,4vw,48px);border-radius:10px;border:18px solid var(--wood);box-shadow:inset 0 0 80px rgba(0,0,0,.45),0 20px 40px rgba(60,30,10,.35);background:var(--board);overflow:hidden}
+.board::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.35;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence baseFrequency='.02 .4' numOctaves='3'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .06 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>")}
+canvas{position:absolute;inset:0;z-index:3;cursor:crosshair;touch-action:none;pointer-events:none}
+body.draw canvas{pointer-events:auto}
+.tray .mode{background:#fff;color:#333;border:2px dashed #333}
+body.draw .tray .mode{background:var(--y)}
+.content{position:relative;z-index:2}
+.chalk{text-shadow:0 0 1px rgba(255,255,255,.6),0 0 6px rgba(255,255,255,.15)}
+/* チョークのかすれは大きな見出しだけに（小さい文字や画像は読みやすさ優先） */
+.rough{filter:url(#rough)}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.date{font-size:15px;line-height:1.7;text-align:right;border-left:2px dashed rgba(255,255,255,.4);padding-left:14px}
+.date b{color:var(--y)}
+h1{font-size:clamp(44px,8vw,100px);line-height:1;margin:20px 0 10px}
+h1 .u{position:relative;display:inline-block}
+h1 .u::after{content:'';position:absolute;left:-2%;right:-2%;bottom:-6px;height:6px;border-radius:6px;background:var(--y);opacity:.85;transform:rotate(-1deg)}
+.sub{font-size:20px;color:var(--b)}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:40px}
+.card{display:block;padding:12px;border:2px dashed rgba(255,255,255,.55);border-radius:10px;transform:rotate(var(--r,0deg));transition:transform .3s}
+.card:hover{transform:rotate(0) scale(1.03)}
+.card img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:6px;filter:grayscale(.25) sepia(.15) brightness(.95);display:block}
+.card h3{font-size:22px;margin-top:8px;color:var(--y)}
+.card p{font-size:14px}
+.music{display:flex;align-items:center;gap:18px;margin-top:40px;flex-wrap:wrap}
+.music img{width:84px;height:84px;border-radius:50%;object-fit:cover;border:3px solid var(--chalk)}
+.music ol{font-size:18px;line-height:1.9;padding-left:1.4em}
+.note{margin-top:30px;display:flex;align-items:center;gap:14px;font-size:16px;color:var(--p)}
+.note img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px dashed var(--p)}
+.tray{position:relative;max-width:1100px;margin:-6px auto 0;height:26px;background:linear-gradient(#a06b3c,#6f4422);border-radius:0 0 8px 8px;display:flex;justify-content:center;gap:12px;align-items:flex-start;padding-top:2px}
+.tray button{all:unset;cursor:pointer;height:16px;padding:0 14px;border-radius:4px;font-family:'Caveat';font-size:15px;line-height:16px;color:#333;transform:translateY(-6px);transition:transform .2s}
+.tray button:hover{transform:translateY(-10px)}
+.tray .c1{background:#fff}.tray .c2{background:var(--y)}.tray .c3{background:var(--p)}.tray .c4{background:var(--b)}
+.tray .er{background:#3b3b3b;color:#fff;border-top:6px solid #c9a46b}
+.tray .sel{outline:2px solid #333;transform:translateY(-12px)}
+.hint{text-align:center;color:#5b4632;font-size:14px;margin-top:22px}
+@media (max-width:820px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><filter id="rough"><feTurbulence baseFrequency=".9" numOctaves="1" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="1.6"/></filter></svg>
+<div class="board" id="board">
+  <canvas id="cv"></canvas>
+  <div class="content">
+    <div class="top">
+      <div class="chalk sub">きょうの じかんわり ✎</div>
+      <div class="date chalk" id="date">10月10日（金）<br>日直：<b>Mitama</b></div>
+    </div>
+    <h1 class="chalk rough"><span class="u">Synapse</span><br>Creations</h1>
+    <p class="chalk sub">音と映像、そしてAIが織りなす無限の可能性。</p>
+    <div class="row">
+      <a class="card chalk" style="--r:-1.5deg" href="https://fumifum1.github.io/game/bingo.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/bingo.jpg" alt=""><h3>1時間目　BINGO</h3><p>台紙と抽選がいっしょに。</p></a>
+      <a class="card chalk" style="--r:1deg" href="https://fumifum1.github.io/game/rv.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/rv.jpg" alt=""><h3>2時間目　リバーシ</h3><p>AIと対戦。</p></a>
+      <a class="card chalk" style="--r:-.5deg" href="https://fumifum1.github.io/works/kippoui-navi/" target="_blank"><img src="https://fumifum1.github.io/main/jpg/k_n.png" alt=""><h3>3時間目　吉方位</h3><p>旅立つ日の方角を調べよう。</p></a>
+    </div>
+    <div class="music chalk"><img src="https://fumifum1.github.io/main/jpg/y_b.jpg" alt=""><ol><li>そのまま進め、ゆっくり歩いていこう</li><li>Hamburg steak recipe</li><li>ありのままで2</li></ol></div>
+    <div class="note chalk"><img src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt="">「黒板に らくがき していいよ。消すのは ぼくがやるから」— Mitama</div>
+  </div>
+</div>
+<div class="tray">
+  <button class="mode" id="mode">✎ らくがきモード</button><button class="c1 sel" data-c="#f4f1e6">しろ</button><button class="c2" data-c="#ffe680">きいろ</button><button class="c3" data-c="#ffb3c7">ピンク</button><button class="c4" data-c="#a9dcff">みずいろ</button><button class="er" id="er">黒板けし</button>
+</div>
+<p class="hint">「らくがきモード」かチョークを選ぶと、黒板に らくがき できます。もう一度押すと、カードを押せるモードに戻ります。</p>
+<script>
+const d = new Date(), wd = '日月火水木金土'[d.getDay()];
+document.getElementById('date').innerHTML = `${d.getMonth() + 1}月${d.getDate()}日（${wd}）<br>日直：<b>Mitama</b>`;
+// チョークで描けるキャンバス（かすれ感は点を少しずつばらつかせて表現）
+const board = document.getElementById('board'), cv = document.getElementById('cv'), cx = cv.getContext('2d');
+const size = () => { const r = board.getBoundingClientRect(), img = cx.getImageData(0, 0, cv.width || 1, cv.height || 1); cv.width = r.width - 36; cv.height = r.height - 36; cx.putImageData(img, 0, 0); };
+size(); addEventListener('resize', size);
+let color = '#f4f1e6', down = false, lx = 0, ly = 0;
+const dot = (x, y) => { for (let i = 0; i < 6; i++) { cx.globalAlpha = .25 + Math.random() * .5; cx.fillStyle = color; cx.fillRect(x + (Math.random() - .5) * 5, y + (Math.random() - .5) * 5, 2, 2); } };
+cv.addEventListener('pointerdown', e => {
+  down = true; cv.setPointerCapture(e.pointerId); lx = e.offsetX; ly = e.offsetY; dot(lx, ly);
+});
+cv.addEventListener('pointermove', e => {
+  if (!down) return;
+  const dx = e.offsetX - lx, dy = e.offsetY - ly, n = Math.max(1, Math.hypot(dx, dy) / 2);
+  for (let i = 0; i < n; i++) dot(lx + dx * i / n, ly + dy * i / n);
+  lx = e.offsetX; ly = e.offsetY;
+});
+cv.addEventListener('pointerup', () => down = false);
+document.getElementById('mode').addEventListener('click', () => document.body.classList.toggle('draw'));
+document.querySelectorAll('.tray [data-c]').forEach(b => b.addEventListener('click', () => { color = b.dataset.c; document.body.classList.add('draw'); document.querySelectorAll('.tray [data-c]').forEach(x => x.classList.toggle('sel', x === b)); }));
+// 黒板けし：上から順にふわっと消す
+document.getElementById('er').addEventListener('click', () => {
+  let y = 0; const step = () => { cx.clearRect(0, y, cv.width, 30); y += 30; if (y < cv.height) requestAnimationFrame(step); }; step();
+});
+</script>
+<script src="music.js" data-tracks=".music li, .music img"></script>
+<script src="nav.js"></script>
+</body>
+</html>

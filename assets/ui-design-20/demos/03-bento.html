@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03 Bento Box | Synapse Creations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--bg:#edebe6;--tile:#fff;--ink:#17171a;--mute:#8d8a84;--c:#00bcd0;--warm:#ff7a59;--r:28px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:'Inter','Zen Maru Gothic',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:inherit;text-decoration:none}
+.top{max-width:1180px;margin:0 auto;padding:22px 24px 6px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.top b{font-weight:700;display:flex;align-items:center;gap:8px}
+.top b i{width:10px;height:10px;border-radius:3px;background:var(--c);transform:rotate(45deg)}
+.top span{color:var(--mute);font-family:'Zen Maru Gothic'}
+.bento{max-width:1180px;margin:0 auto;padding:14px 24px 100px;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:200px;gap:14px;perspective:1200px}
+.t{position:relative;background:var(--tile);border-radius:var(--r);padding:24px;overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;transform-style:preserve-3d;will-change:transform}
+.t:hover{box-shadow:0 24px 50px -24px rgba(0,0,0,.25)}
+.lab{font-size:12px;font-weight:600;color:var(--mute);letter-spacing:.06em;text-transform:uppercase;display:flex;justify-content:space-between}
+.w2{grid-column:span 2}.h2{grid-row:span 2}
+
+/* Hero */
+.hero{background:var(--ink);color:#fff;display:flex;flex-direction:column;justify-content:space-between}
+.hero h1{font-size:clamp(40px,5vw,68px);line-height:.95;letter-spacing:-.045em;font-weight:700}
+.hero h1 em{font-style:normal;color:var(--c)}
+.hero p{font-family:'Zen Maru Gothic';color:#a9a9b2;font-size:15px;margin-top:14px}
+.navs{display:flex;gap:8px;flex-wrap:wrap}
+.navs a{padding:9px 16px;border-radius:999px;background:rgba(255,255,255,.08);font-size:13px;transition:.25s}
+.navs a:hover{background:var(--c);color:#002}
+.blinky{position:absolute;right:26px;top:26px;width:12px;height:12px;border-radius:50%;background:var(--c);box-shadow:0 0 0 0 rgba(0,188,208,.6);animation:ping 2s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 16px rgba(0,188,208,0)}100%{box-shadow:0 0 0 0 rgba(0,188,208,0)}}
+
+/* Me */
+.me{padding:0;background:#e6e6e6;cursor:pointer}
+.me img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.3,1.6,.5,1)}
+.me:hover img{transform:scale(1.08) rotate(-4deg)}
+.me .cap{position:absolute;left:14px;right:14px;bottom:14px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border-radius:18px;padding:12px 14px;font-size:13px}
+.me .cap b{display:block;font-size:15px}
+.me .cap small{color:var(--mute);font-family:'Zen Maru Gothic'}
+.bubble{position:absolute;top:22px;left:18px;background:var(--ink);color:#fff;font-family:'Zen Maru Gothic';font-size:13px;padding:8px 12px;border-radius:16px 16px 16px 4px;opacity:0;transform:scale(.6) translateY(10px);transform-origin:bottom left;transition:.35s cubic-bezier(.3,1.6,.5,1)}
+.me.talk .bubble{opacity:1;transform:none}
+
+/* Now playing */
+.play{display:flex;flex-direction:column;gap:14px;background:#fdf3ee}
+.play .cv{aspect-ratio:1;border-radius:20px;overflow:hidden;box-shadow:0 18px 30px -18px rgba(0,0,0,.5);transition:border-radius .6s}
+.play .cv img{width:100%;height:100%;object-fit:cover;transition:transform 8s linear}
+.play.on .cv{border-radius:50%}
+.play.on .cv img{transform:rotate(720deg)}
+.play h3{font-family:'Zen Maru Gothic';font-size:15px;line-height:1.4}
+.play small{color:var(--mute);font-size:12px}
+.ctrl{display:flex;align-items:center;gap:12px;margin-top:auto}
+.ctrl button{all:unset;cursor:pointer;width:44px;height:44px;border-radius:50%;background:var(--warm);color:#fff;display:grid;place-items:center;transition:transform .2s}
+.ctrl button:active{transform:scale(.9)}
+.bar{flex:1;height:5px;border-radius:5px;background:rgba(0,0,0,.08);overflow:hidden}
+.bar i{display:block;height:100%;width:30%;background:var(--warm);border-radius:5px}
+.play.on .bar i{animation:prog 12s linear infinite}
+@keyframes prog{from{width:0}to{width:100%}}
+
+/* Games stack */
+.games{display:flex;justify-content:space-between;align-items:stretch;background:#e8f8fa}
+.games .big{font-size:76px;font-weight:700;letter-spacing:-.06em;line-height:1;margin-top:auto}
+.games .info{display:flex;flex-direction:column}
+.games .info p{font-family:'Zen Maru Gothic';font-size:13px;color:var(--mute)}
+.stack{position:relative;width:52%}
+.stack img{position:absolute;right:0;top:50%;width:170px;aspect-ratio:4/3;object-fit:cover;border-radius:16px;border:4px solid #fff;box-shadow:0 10px 24px -10px rgba(0,0,0,.4);transition:transform .5s cubic-bezier(.3,1.5,.5,1)}
+.stack img:nth-child(1){transform:translate(-30px,-50%) rotate(-8deg)}
+.stack img:nth-child(2){transform:translate(-15px,-50%) rotate(-2deg)}
+.stack img:nth-child(3){transform:translate(0,-50%) rotate(5deg)}
+.games:hover .stack img:nth-child(1){transform:translate(-190px,-58%) rotate(-12deg)}
+.games:hover .stack img:nth-child(2){transform:translate(-95px,-42%) rotate(-3deg)}
+.games:hover .stack img:nth-child(3){transform:translate(0,-55%) rotate(8deg)}
+
+/* Luck */
+.luck{display:flex;flex-direction:column;align-items:center;justify-content:space-between;cursor:pointer;text-align:center;user-select:none}
+.dial{position:relative;width:92px;height:92px;border-radius:50%;border:1.5px solid #e2dfd8;display:grid;place-items:center}
+.dial span{position:absolute;font-size:10px;color:var(--mute)}
+.dial .n{top:3px}.dial .s{bottom:3px}.dial .e{right:5px}.dial .w{left:5px}
+.needle{width:6px;height:70px;transition:transform 1.6s cubic-bezier(.2,1.3,.3,1)}
+.needle::before,.needle::after{content:'';display:block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent}
+.needle::before{border-bottom:35px solid var(--warm)}
+.needle::after{border-top:35px solid #cfcbc3}
+.luck b{font-family:'Zen Maru Gothic';font-size:18px}
+.luck small{font-size:11px;color:var(--mute)}
+
+/* Bug */
+.bug{background:#fff8d9;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer}
+.bug h3{font-family:'Zen Maru Gothic';font-size:20px;line-height:1.35}
+.bug .b{position:absolute;font-size:24px;left:60%;top:60%;transition:left .5s cubic-bezier(.2,.8,.2,1),top .5s cubic-bezier(.2,.8,.2,1);animation:wig .3s infinite alternate}
+@keyframes wig{to{rotate:12deg}}
+.bug small{font-size:12px;color:var(--mute)}
+
+/* Tools */
+.tools{display:flex;flex-direction:column;justify-content:space-between}
+.tools h3{font-size:26px;letter-spacing:-.03em}
+.tools h3 small{font-size:13px;color:var(--mute);font-weight:500;margin-left:6px}
+.ico{display:flex;gap:10px}
+.ico a{position:relative;width:64px;height:64px;border-radius:18px;overflow:hidden;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.ico a img{width:100%;height:100%;object-fit:cover}
+.ico a:hover{transform:translateY(-10px) rotate(-6deg) scale(1.08)}
+.ico a::after{content:attr(data-n);position:absolute;left:50%;bottom:-26px;transform:translateX(-50%);font-size:11px;white-space:nowrap;color:var(--ink);opacity:0;transition:.25s}
+
+/* Blog */
+.blog{display:grid;grid-template-columns:1fr 1.2fr;gap:20px;padding:14px}
+.blog .im{border-radius:18px;overflow:hidden;background:#f3f1ec}
+.blog .im img{width:100%;height:100%;object-fit:contain;transition:transform .6s}
+.blog:hover .im img{transform:scale(1.06) rotate(3deg)}
+.blog .tx{display:flex;flex-direction:column;justify-content:center;padding-right:10px}
+.blog h3{font-size:22px;letter-spacing:-.02em;margin:8px 0 6px}
+.blog p{font-family:'Zen Maru Gothic';font-size:13px;color:var(--mute);line-height:1.7}
+.blog .more{margin-top:14px;font-size:13px;font-weight:600;color:var(--c)}
+
+/* Social */
+.social{display:flex;flex-direction:column;justify-content:space-between;background:var(--c);color:#002}
+.social .row{display:flex;gap:8px}
+.social .row a{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.35);display:grid;place-items:center;font-size:18px;transition:.25s}
+.social .row a:hover{background:#fff;transform:translateY(-3px)}
+.social h3{font-size:22px;line-height:1.1;letter-spacing:-.03em}
+
+/* Footer tile */
+.foot{grid-column:1/-1;height:auto;display:flex;justify-content:space-between;align-items:center;background:transparent;padding:6px 6px;font-size:13px;color:var(--mute)}
+
+@media (max-width:900px){
+  .bento{grid-template-columns:repeat(2,1fr);grid-auto-rows:180px}
+  .hero{grid-column:span 2}
+  .blog,.tools,.games{grid-column:span 2}
+  .stack img{width:120px}
+}
+</style>
+</head>
+<body>
+<div class="top"><b><i></i>Synapse Creations</b><span>おべんとう箱みたいに、ぜんぶ一画面。</span></div>
+<main class="bento">
+  <div class="t hero w2 h2" data-tilt>
+    <span class="blinky"></span>
+    <div>
+      <div class="lab" style="color:#777">AI-Powered Artistry</div>
+    </div>
+    <div>
+      <h1>Synapse<br><em>Creations</em></h1>
+      <p>音と映像、そしてAIが織りなす無限の可能性。</p>
+    </div>
+    <div class="navs"><a href="https://fumifum1.github.io/main/game.html" target="_blank" rel="noopener">Games</a><a href="https://fumifum1.github.io/main/music.html" target="_blank" rel="noopener">Music</a><a href="https://fumifum1.github.io/main/other.html" target="_blank" rel="noopener">Tools</a><a href="https://fumifum1.github.io/main/blog.html" target="_blank" rel="noopener">Blog</a></div>
+  </div>
+
+  <div class="t me h2" data-tilt id="me">
+    <img src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt="fumifumi">
+    <div class="bubble">べーっ👅 クリックしてみて</div>
+    <div class="cap"><b>fumifumi</b><small>AIと一緒に、つくる人。</small></div>
+  </div>
+
+  <div class="t play h2" data-tilt id="play">
+    <div class="lab"><span>Now Playing</span><span>♪</span></div>
+    <div class="cv"><img src="https://fumifum1.github.io/main/jpg/y_b.jpg" alt=""></div>
+    <div><h3>そのまま進め、ゆっくり歩いていこう</h3><small>BEAR BEER BEAT</small></div>
+    <div class="ctrl"><button id="pbtn"><i class="fa-solid fa-play"></i></button><div class="bar"><i></i></div></div>
+  </div>
+
+  <a class="t games w2" data-tilt href="https://fumifum1.github.io/main/game.html" target="_blank" rel="noopener">
+    <div class="info"><div class="lab">Games</div><div class="big">03</div><p>広告なしで暇つぶし。</p></div>
+    <div class="stack"><img src="https://fumifum1.github.io/main/jpg/bingo.jpg" alt=""><img src="https://fumifum1.github.io/main/jpg/rv.jpg" alt=""><img src="https://fumifum1.github.io/main/jpg/game-thumbnail2.jpg" alt=""></div>
+  </a>
+
+  <div class="t luck" data-tilt id="luck">
+    <div class="lab" style="width:100%"><span>今日のラッキー方位</span></div>
+    <div class="dial"><span class="n">N</span><span class="e">E</span><span class="s">S</span><span class="w">W</span><div class="needle" id="needle"></div></div>
+    <div><b id="dir">タップして占う</b><br><small>by Celestial Compass</small></div>
+  </div>
+
+  <div class="t bug" data-tilt id="bug">
+    <div class="lab">Policy</div>
+    <h3>広告なし。<br>バグはご愛敬。</h3>
+    <small>つかまえてみて →</small>
+    <span class="b" id="bg">🐞</span>
+  </div>
+
+  <div class="t tools w2" data-tilt>
+    <div class="lab"><span>Tools</span><span>Web Apps</span></div>
+    <h3>便利な道具たち<small>× 06</small></h3>
+    <div class="ico">
+      <a href="https://fumifum1.github.io/works/kippoui-navi/" target="_blank" rel="noopener" data-n="Compass"><img src="https://fumifum1.github.io/main/jpg/k_n.png" alt=""></a>
+      <a href="https://fumifum1.github.io/works/GraffitiStudio.html" target="_blank" rel="noopener" data-n="Graffiti"><img src="https://fumifum1.github.io/main/jpg/v_p.jpg" alt=""></a>
+      <a href="https://fumifum1.github.io/works/tarot_g.html" target="_blank" rel="noopener" data-n="Tarot"><img src="https://fumifum1.github.io/main/jpg/c_t.png" alt=""></a>
+      <a href="https://fumifum1.github.io/GeoScope/QuickShot.html" target="_blank" rel="noopener" data-n="QuickShot"><img src="https://fumifum1.github.io/main/jpg/q_s.jpg" alt=""></a>
+      <a href="https://fumifum1.github.io/works/qr.html" target="_blank" rel="noopener" data-n="QR"><img src="https://fumifum1.github.io/main/jpg/q_c.png" alt=""></a>
+      <a href="https://fumifum1.github.io/pdf_tool/menu.html" target="_blank" rel="noopener" data-n="PDF"><img src="https://fumifum1.github.io/main/jpg/p_t.jpg" alt=""></a>
+    </div>
+  </div>
+
+  <a class="t blog w2" data-tilt href="https://fumifum1.github.io/blog/tsugihagi_ghost.html" target="_blank">
+    <div class="im"><img src="https://fumifum1.github.io/blog/assets/tsugihagi-ghost/main.png" alt=""></div>
+    <div class="tx"><div class="lab">Latest Blog</div><h3>Tsugihagi Ghost</h3><p>捨てられたぬいぐるみから生まれた、やさしい幽霊のLINEスタンプ。</p><span class="more">READ →</span></div>
+  </a>
+
+  <div class="t social w2" data-tilt>
+    <div class="lab" style="color:#004a52">Follow</div>
+    <h3>つながろう。<br>シナプスみたいに。</h3>
+    <div class="row"><a href="https://x.com/_fum1_" target="_blank"><i class="fa-brands fa-x-twitter"></i></a><a href="https://suno.com/@fum1" target="_blank"><i class="fa-solid fa-music"></i></a><a href="https://www.instagram.com/sachi.cobito/" target="_blank"><i class="fa-brands fa-instagram"></i></a><a href="https://note.com/fumifum1" target="_blank"><i class="fa-solid fa-pen-nib"></i></a></div>
+  </div>
+
+  <div class="t profile w2" data-tilt style="display:flex;flex-direction:column;justify-content:space-between">
+    <div class="lab">Toolkit</div>
+    <p style="font-family:'Zen Maru Gothic';font-size:15px;line-height:1.8">シナプスのように色々なものを取り入れ、つなげ、創作する。それが Synapse Creations の由来です。</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:12px">
+      <span style="padding:6px 12px;border-radius:999px;background:#f1efea">ChatGPT</span><span style="padding:6px 12px;border-radius:999px;background:#f1efea">Claude</span><span style="padding:6px 12px;border-radius:999px;background:#f1efea">Suno AI</span><span style="padding:6px 12px;border-radius:999px;background:#f1efea">CNP</span>
+    </div>
+  </div>
+
+  <div class="foot"><span>© 2025 Synapse Creations</span><span>Made with AI &amp; 🍱</span></div>
+</main>
+
+<script>
+// タイルを少しだけ3Dに傾ける
+document.querySelectorAll('[data-tilt]').forEach(t => {
+  t.addEventListener('pointermove', e => {
+    const r = t.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+    t.style.transform = `rotateX(${-y * 5}deg) rotateY(${x * 5}deg) translateZ(0)`;
+  });
+  t.addEventListener('pointerleave', () => t.style.transform = '');
+});
+// おばけがしゃべる
+const me = document.getElementById('me'), lines = ['べーっ👅 クリックしてみて', 'バグじゃないよ、仕様だよ', 'AIと夜ふかし中…', 'ハンマーは飾りです🔨', 'BINGO! …じゃなかった'];
+let li = 0;
+me.addEventListener('mouseenter', () => me.classList.add('talk'));
+me.addEventListener('mouseleave', () => me.classList.remove('talk'));
+me.addEventListener('click', () => { li = (li + 1) % lines.length; me.querySelector('.bubble').textContent = lines[li]; me.classList.add('talk'); });
+// 再生ボタン
+const play = document.getElementById('play'), pbtn = document.getElementById('pbtn');
+pbtn.addEventListener('click', () => { play.classList.toggle('on'); pbtn.innerHTML = play.classList.contains('on') ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>'; });
+// ラッキー方位
+const dirs = [['北', 0], ['北東', 45], ['東', 90], ['南東', 135], ['南', 180], ['南西', 225], ['西', 270], ['北西', 315]];
+let spins = 0;
+document.getElementById('luck').addEventListener('click', () => {
+  const [name, deg] = dirs[Math.floor(Math.random() * dirs.length)]; spins += 2;
+  document.getElementById('needle').style.transform = `rotate(${spins * 360 + deg}deg)`;
+  document.getElementById('dir').textContent = '…';
+  setTimeout(() => document.getElementById('dir').textContent = `今日は「${name}」が吉！`, 1300);
+});
+// てんとう虫（バグ）は逃げる
+const bug = document.getElementById('bug'), bg = document.getElementById('bg');
+let caught = 0;
+const flee = () => { bg.style.left = 10 + Math.random() * 75 + '%'; bg.style.top = 15 + Math.random() * 65 + '%'; };
+bg.addEventListener('pointerenter', () => { if (Math.random() < .85) flee(); });
+bg.addEventListener('click', e => { e.stopPropagation(); caught++; bg.textContent = '✨'; bug.querySelector('small').textContent = `つかまえた！（${caught}匹目）でもまた湧きます`; setTimeout(() => { bg.textContent = '🐞'; flee(); }, 900); });
+</script>
+<script src="music.js" data-tracks="#play"></script>
+<script src="nav.js"></script>
+</body>
+</html>

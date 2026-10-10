@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>05 Record Shop | Synapse Creations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#14110f;--bg2:#1d1916;--paper:#efe7d8;--mute:#8e8579;--o:#ff5a2a;--line:rgba(239,231,216,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--paper);font-family:'Bricolage Grotesque','Zen Kaku Gothic New',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+nav{display:flex;justify-content:space-between;align-items:center;padding:26px 0;font-size:14px}
+nav b{font-weight:800;letter-spacing:-.02em;font-size:18px}
+nav b span{color:var(--o)}
+nav ul{display:flex;gap:28px;list-style:none;color:var(--mute)}
+nav ul a:hover{color:var(--paper)}
+
+.hero{display:grid;grid-template-columns:1fr 1.05fr;gap:56px;align-items:center;padding:30px 0 80px}
+.kicker{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--o);font-weight:600}
+.hero h1{font-size:clamp(60px,8.6vw,132px);font-weight:800;line-height:.86;letter-spacing:-.055em;margin:18px 0 22px}
+.hero h1 i{font-style:normal;-webkit-text-stroke:2px var(--paper);color:transparent}
+.hero p.l{color:var(--mute);font-family:'Zen Kaku Gothic New';font-size:15px;max-width:420px;line-height:1.8}
+.side{margin-top:34px;border-top:1px solid var(--line)}
+.side h4{font-size:11px;letter-spacing:.24em;color:var(--mute);padding:14px 0 6px;font-weight:600}
+.trk{display:grid;grid-template-columns:36px 1fr auto;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer;font-family:'Zen Kaku Gothic New';transition:padding .3s,color .3s}
+.trk:hover{padding-left:8px}
+.trk .n{font-family:'Bricolage Grotesque';font-weight:600;color:var(--mute);font-size:13px}
+.trk .d{font-size:12px;color:var(--mute)}
+.trk.on{color:var(--o)}
+.trk.on .n{color:var(--o)}
+
+.deck{position:relative;aspect-ratio:1/.92;background:linear-gradient(145deg,#2a2420,#1a1613);border-radius:28px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 40px 80px -30px rgba(0,0,0,.8);display:grid;place-items:center}
+.deck::after{content:'';position:absolute;left:28px;bottom:26px;width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#3a332d,#151210);box-shadow:0 2px 6px rgba(0,0,0,.6)}
+.platter{position:relative;width:78%;aspect-ratio:1;border-radius:50%;background:#0c0b0a;box-shadow:0 0 0 8px #24201c,0 20px 40px rgba(0,0,0,.6);margin-left:-10%}
+.rec{position:absolute;inset:3%;border-radius:50%;cursor:grab;touch-action:none;background:
+  conic-gradient(from 30deg,transparent 0 10%,rgba(255,255,255,.07) 14%,transparent 20% 55%,rgba(255,255,255,.05) 60%,transparent 66%),
+  repeating-radial-gradient(circle,#121212 0 1.5px,#1c1c1c 1.5px 3px)}
+.rec:active{cursor:grabbing}
+.label{position:absolute;inset:33%;border-radius:50%;overflow:hidden;border:3px solid #111}
+.label img{width:100%;height:100%;object-fit:cover}
+.spindle{position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px;border-radius:50%;background:#ccc;box-shadow:0 0 0 2px #111}
+.arm{position:absolute;right:8%;top:9%;width:30%;height:66%;transform-origin:78% 8%;transform:rotate(-26deg);transition:transform 1s cubic-bezier(.4,1.4,.5,1);pointer-events:none}
+.arm .base{position:absolute;right:6%;top:0;width:44%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 35%,#5a524a,#2a2521);box-shadow:0 6px 14px rgba(0,0,0,.6)}
+.arm .rod{position:absolute;right:26%;top:10%;width:6px;height:82%;background:linear-gradient(90deg,#d8d0c4,#8c857c);border-radius:4px;transform:rotate(12deg);transform-origin:top}
+.arm .head{position:absolute;right:42%;bottom:2%;width:26px;height:40px;background:var(--o);border-radius:4px;transform:rotate(12deg)}
+.deck.play .arm{transform:rotate(0)}
+.deck .ctl{position:absolute;right:26px;bottom:24px;display:flex;gap:8px;align-items:center}
+.deck .ctl button{all:unset;cursor:pointer;font-size:12px;font-weight:600;padding:8px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mute)}
+.deck .ctl button.on{background:var(--o);color:#1a0800;border-color:var(--o)}
+.scratch{position:absolute;left:50%;top:12%;font-weight:800;font-size:28px;color:var(--o);transform:translate(-50%,0) rotate(-8deg) scale(.5);opacity:0;transition:.2s;pointer-events:none;letter-spacing:-.03em}
+.scratch.show{opacity:1;transform:translate(-50%,0) rotate(-8deg) scale(1)}
+
+.marq{border-block:1px solid var(--line);overflow:hidden;white-space:nowrap;padding:16px 0;font-weight:800;font-size:28px;letter-spacing:-.03em}
+.marq div{display:inline-block;animation:mq 30s linear infinite}
+.marq span{color:var(--o)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+section{padding:110px 0 0}
+.sh{display:flex;justify-content:space-between;align-items:end;margin-bottom:36px}
+.sh h2{font-size:clamp(40px,5vw,72px);font-weight:800;letter-spacing:-.05em;line-height:.9}
+.sh p{color:var(--mute);font-size:14px;font-family:'Zen Kaku Gothic New'}
+.crate{display:grid;grid-template-columns:repeat(4,1fr);gap:28px 22px}
+.slv{position:relative;display:block}
+.slv .disc{position:absolute;top:4%;left:4%;width:92%;aspect-ratio:1;border-radius:50%;background:repeating-radial-gradient(circle,#121212 0 1.5px,#1d1d1d 1.5px 3px);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.slv .disc::after{content:'';position:absolute;inset:36%;border-radius:50%;background:var(--o)}
+.slv .cv{position:relative;aspect-ratio:1;overflow:hidden;border-radius:4px;box-shadow:0 18px 30px -16px rgba(0,0,0,.8)}
+.slv .cv img{width:100%;height:100%;object-fit:cover;transition:transform .7s}
+.slv:hover .disc{transform:translateX(42%) rotate(180deg)}
+.slv:hover .cv img{transform:scale(1.04)}
+.slv h3{font-size:18px;font-weight:600;margin-top:14px;letter-spacing:-.02em}
+.slv p{font-size:12px;color:var(--mute);font-family:'Zen Kaku Gothic New';margin-top:2px}
+.slv .tag{position:absolute;top:10px;left:10px;font-size:10px;font-weight:600;letter-spacing:.14em;background:var(--paper);color:var(--bg);padding:3px 7px;border-radius:3px}
+
+.band{position:relative;border-radius:28px;overflow:hidden;min-height:440px;display:flex;align-items:flex-end}
+.band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%}
+.band::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(20,17,15,.95))}
+.band .tx{position:relative;padding:40px;max-width:640px}
+.band h2{font-size:clamp(36px,4.5vw,64px);font-weight:800;letter-spacing:-.05em;line-height:.95}
+.band p{font-family:'Zen Kaku Gothic New';color:#cfc6b8;line-height:1.8;margin-top:12px;font-size:14px}
+.btn{display:inline-block;margin-top:18px;padding:12px 20px;border-radius:999px;background:var(--o);color:#1a0800;font-weight:600;font-size:14px}
+
+footer{margin-top:120px;padding:36px 0 90px;border-top:1px solid var(--line);display:flex;justify-content:space-between;color:var(--mute);font-size:13px}
+footer div{display:flex;gap:22px}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr}
+  .crate{grid-template-columns:repeat(2,1fr)}
+  nav ul{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav><b>Synapse<span>.</span>Records</b><ul><li><a href="#crate">Works</a></li><li><a href="#bbb">Artist</a></li><li><a href="https://fumifum1.github.io/main/blog.html" target="_blank" rel="noopener">Blog</a></li></ul></nav>
+  <header class="hero">
+    <div>
+      <div class="kicker">BEAR BEER BEAT × fumifumi</div>
+      <h1>Synapse<br><i>Creations</i></h1>
+      <p class="l">音と映像、そしてAIが織りなす無限の可能性。人間の感性とAIの偶発性が交差して生まれる、誰も聴いたことのないサウンド。</p>
+      <div class="side">
+        <h4>SIDE A</h4>
+        <div class="trk on" data-img="https://fumifum1.github.io/main/jpg/y_b.jpg"><span class="n">A1</span><span>そのまま進め、ゆっくり歩いていこう</span><span class="d">Rap</span></div>
+        <div class="trk" data-img="https://fumifum1.github.io/main/jpg/song8.jpg"><span class="n">A2</span><span>Hamburg steak recipe</span><span class="d">Recipe Rap</span></div>
+        <div class="trk" data-img="https://fumifum1.github.io/main/jpg/song1-2.jpg"><span class="n">A3</span><span>ありのままで2</span><span class="d">Remix</span></div>
+        <div class="trk" data-img="https://fumifum1.github.io/main/jpg/song2.jpg"><span class="n">A4</span><span>over</span><span class="d">Rap</span></div>
+      </div>
+    </div>
+    <div class="deck" id="deck">
+      <div class="platter"><div class="rec" id="rec"><div class="label"><img id="lbl" src="https://fumifum1.github.io/main/jpg/y_b.jpg" alt=""></div><span class="spindle"></span></div></div>
+      <div class="arm"><span class="base"></span><span class="rod"></span><span class="head"></span></div>
+      <div class="scratch" id="scr">wikka-wikka!</div>
+      <div class="ctl"><button id="rpm" class="">33⅓</button><button id="go" class="on">■ STOP</button></div>
+    </div>
+  </header>
+</div>
+
+<div class="marq"><div>GAMES <span>✺</span> MUSIC <span>✺</span> TOOLS <span>✺</span> BLOG <span>✺</span> 広告なし <span>✺</span> バグはご愛敬 <span>✺</span> GAMES <span>✺</span> MUSIC <span>✺</span> TOOLS <span>✺</span> BLOG <span>✺</span> 広告なし <span>✺</span> バグはご愛敬 <span>✺</span>&nbsp;</div></div>
+
+<div class="wrap">
+  <section id="crate">
+    <div class="sh"><h2>Crate<br>Digging</h2><p>ジャケットにカーソルを乗せると、レコードが顔を出します。</p></div>
+    <div class="crate">
+      <a class="slv" href="https://fumifum1.github.io/game/bingo.html" target="_blank"><span class="disc"></span><div class="cv"><img src="https://fumifum1.github.io/main/jpg/bingo.jpg" alt=""><span class="tag">GAME</span></div><h3>BINGO</h3><p>カード台紙と抽選が同時に</p></a>
+      <a class="slv" href="https://fumifum1.github.io/game/rv.html" target="_blank"><span class="disc"></span><div class="cv"><img src="https://fumifum1.github.io/main/jpg/rv.jpg" alt=""><span class="tag">GAME</span></div><h3>Reversi</h3><p>AI対戦のリバーシ</p></a>
+      <a class="slv" href="https://fumifum1.github.io/game/" target="_blank"><span class="disc"></span><div class="cv"><img src="https://fumifum1.github.io/main/jpg/game-thumbnail2.jpg" alt=""><span class="tag">GAME</span></div><h3>Arcade Invade</h3><p>レトロゲームの定番</p></a>
+      <a class="slv" href="https://fumifum1.github.io/works/kippoui-navi/" target="_blank"><span class="disc"></span><div class="cv"><img src="https://fumifum1.github.io/main/jpg/k_n.png" alt=""><span class="tag">NEW</span></div><h3>Celestial Compass</h3><p>吉方位をわかりやすく</p></a>
+      <a class="slv" href="https://fumifum1.github.io/works/GraffitiStudio.html" target="_blank"><span class="disc"></span><div class="cv"><img src="https://fumifum1.github.io/main/jpg/v_p.jpg" alt=""><span class="tag">NEW</span></div><h3>GraffitiStudio</h3><p>画像生成AI用プロンプト</p></a>
+      <a class="slv" href="https://fumifum1.github.io/works/tarot_g.html" target="_blank"><span class="disc"></span><div class="cv"><img src="https://fumifum1.github.io/main/jpg/c_t.png" alt=""><span class="tag">TOOL</span></div><h3>Tarot</h3><p>タロット占い</p></a>
+      <a class="slv" href="https://fumifum1.github.io/GeoScope/QuickShot.html" target="_blank"><span class="disc"></span><div class="cv"><img src="https://fumifum1.github.io/main/jpg/q_s.jpg" alt=""><span class="tag">TOOL</span></div><h3>QuickShot</h3><p>記録写真に情報を書き込む</p></a>
+      <a class="slv" href="https://fumifum1.github.io/works/qr.html" target="_blank"><span class="disc"></span><div class="cv"><img src="https://fumifum1.github.io/main/jpg/q_c.png" alt=""><span class="tag">TOOL</span></div><h3>QR.create</h3><p>オリジナルQRコード作成</p></a>
+    </div>
+  </section>
+
+  <section id="bbb">
+    <div class="band">
+      <img src="https://fumifum1.github.io/main/jpg/artist1.jpg" alt="BEAR BEER BEAT">
+      <div class="tx">
+        <div class="kicker">The Artist</div>
+        <h2>BEAR BEER BEAT</h2>
+        <p>プロデューサーの fumifumi、AIリリシストの KUMA、AIビートメイカーの NAMA から成るハイブリッド音楽ユニット。</p>
+        <a class="btn" href="https://fumifum1.github.io/main/artist-profile.html">Full Profile →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer><span>© 2025 Synapse Creations</span><div><a href="https://x.com/_fum1_" target="_blank">X</a><a href="https://suno.com/@fum1" target="_blank">Suno</a><a href="https://www.instagram.com/sachi.cobito/" target="_blank">Instagram</a></div></footer>
+</div>
+
+<script>
+// レコード：再生で回転、ドラッグでスクラッチ
+const deck = document.getElementById('deck'), rec = document.getElementById('rec'), scr = document.getElementById('scr');
+let ang = 0, playing = true, rpm = 33.33, drag = null, last = performance.now();
+deck.classList.add('play');
+const center = () => { const r = rec.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
+const angOf = e => { const [cx, cy] = center(); return Math.atan2(e.clientY - cy, e.clientX - cx) * 180 / Math.PI; };
+rec.addEventListener('pointerdown', e => { rec.setPointerCapture(e.pointerId); drag = { a: angOf(e) }; });
+rec.addEventListener('pointermove', e => {
+  if (!drag) return; const a = angOf(e); let d = a - drag.a; if (d > 180) d -= 360; if (d < -180) d += 360;
+  ang += d; drag.a = a; if (Math.abs(d) > 6) { scr.classList.add('show'); clearTimeout(scr.t); scr.t = setTimeout(() => scr.classList.remove('show'), 400); }
+});
+rec.addEventListener('pointerup', () => drag = null);
+(function loop(now) {
+  const dt = now - last; last = now;
+  if (playing && !drag) ang += rpm * 6 * dt / 1000; // rpm → deg/sec
+  rec.style.transform = `rotate(${ang}deg)`;
+  requestAnimationFrame(loop);
+})(last);
+const go = document.getElementById('go');
+go.addEventListener('click', () => { playing = !playing; deck.classList.toggle('play', playing); go.classList.toggle('on', playing); go.textContent = playing ? '■ STOP' : '▶ PLAY'; });
+const rb = document.getElementById('rpm');
+rb.addEventListener('click', () => { rpm = rpm === 33.33 ? 45 : 33.33; rb.textContent = rpm === 45 ? '45' : '33⅓'; rb.classList.toggle('on', rpm === 45); });
+document.querySelectorAll('.trk').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.trk').forEach(x => x.classList.toggle('on', x === t));
+  document.getElementById('lbl').src = t.dataset.img;
+  if (!playing) go.click();
+}));
+</script>
+<script src="music.js" data-tracks=".trk"></script>
+<script src="nav.js"></script>
+</body>
+</html>

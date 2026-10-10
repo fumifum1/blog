@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>15 Clay Soft | Synapse Creations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#efe8ff;--c:#9b7bff;--c2:#ffb3d9;--ink:#3a2f5c;--mute:#7c71a0}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:'Fredoka','M PLUS Rounded 1c',sans-serif;transition:background .6s;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+/* クレイ風：外側のやわらかい影＋内側のハイライトと影で、ぷっくり立体に見せる */
+.clay{border-radius:34px;background:var(--bg);box-shadow:14px 14px 30px rgba(80,60,140,.18),-10px -10px 24px rgba(255,255,255,.9),inset 4px 4px 10px rgba(255,255,255,.75),inset -6px -6px 12px rgba(80,60,140,.12);transition:transform .25s cubic-bezier(.3,1.8,.5,1),box-shadow .25s,background .6s}
+.clay.color{background:var(--c);color:#fff;box-shadow:12px 12px 26px rgba(80,60,140,.3),-8px -8px 20px rgba(255,255,255,.8),inset 5px 5px 12px rgba(255,255,255,.45),inset -8px -8px 14px rgba(40,20,90,.25)}
+.squish:active{transform:scale(1.08,.86);box-shadow:4px 4px 10px rgba(80,60,140,.18),inset 6px 6px 14px rgba(80,60,140,.2)}
+nav{position:sticky;top:16px;z-index:10;margin:16px auto 0;width:min(1060px,calc(100% - 32px));display:flex;justify-content:space-between;align-items:center;padding:12px 14px 12px 24px;border-radius:999px}
+nav b{font-weight:700;font-size:18px}
+nav .pick{display:flex;gap:10px}
+nav .pick button{all:unset;cursor:pointer;width:30px;height:30px;border-radius:50%;box-shadow:inset 3px 3px 6px rgba(255,255,255,.6),inset -4px -4px 8px rgba(0,0,0,.18),4px 4px 10px rgba(80,60,140,.25);transition:transform .25s cubic-bezier(.3,2,.5,1)}
+nav .pick button:hover{transform:scale(1.2)}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center;max-width:1060px;margin:0 auto;padding:80px 16px 50px}
+.hero h1{font-weight:700;font-size:clamp(46px,8vw,96px);line-height:.95;letter-spacing:-.02em}
+.hero h1 span{display:inline-block;padding:0 .18em;margin-top:8px}
+.hero p{color:var(--mute);font-family:'M PLUS Rounded 1c';font-weight:700;font-size:17px;margin:26px 0 30px}
+.btn{display:inline-block;padding:16px 28px;font-weight:700;font-size:17px;cursor:pointer;border-radius:999px}
+.blob{width:min(340px,80vw);aspect-ratio:1;justify-self:center;border-radius:46% 54% 52% 48%/50% 44% 56% 50%;display:grid;place-items:center;animation:morph 9s ease-in-out infinite;cursor:pointer}
+@keyframes morph{50%{border-radius:56% 44% 42% 58%/44% 58% 42% 56%}}
+.blob img{width:62%;aspect-ratio:1;border-radius:50%;object-fit:cover;box-shadow:inset 0 0 0 6px rgba(255,255,255,.6),8px 10px 20px rgba(40,20,90,.3);transition:transform .4s cubic-bezier(.3,2,.5,1)}
+.blob.boing img{animation:boing .6s cubic-bezier(.3,1.8,.5,1)}
+@keyframes boing{30%{transform:scale(1.18,.82)}60%{transform:scale(.9,1.1)}}
+.say{margin-top:-10px;justify-self:center;padding:10px 18px;border-radius:999px;font-weight:700;font-family:'M PLUS Rounded 1c';font-size:14px}
+.wrap{max-width:1060px;margin:0 auto;padding:30px 16px 120px}
+h2{font-size:clamp(30px,4vw,44px);margin:40px 0 24px;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.card{padding:16px 16px 22px;display:block}
+.card img{width:100%;aspect-ratio:16/11;object-fit:cover;border-radius:24px;display:block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05),6px 8px 16px rgba(80,60,140,.2)}
+.card h3{font-size:20px;margin:14px 6px 2px}
+.card p{font-family:'M PLUS Rounded 1c';font-size:13px;color:var(--mute);margin:0 6px;font-weight:700}
+.card:hover{transform:translateY(-6px) rotate(-1deg)}
+.music{display:flex;gap:16px;flex-wrap:wrap}
+.chip{display:flex;align-items:center;gap:12px;padding:10px 18px 10px 10px;border-radius:999px;cursor:pointer;font-weight:600}
+.chip img{width:48px;height:48px;border-radius:50%;object-fit:cover}
+.chip.on{background:var(--c);color:#fff}
+/* ぷにぷにチャレンジ（トップ画面の上で遊ぶ） */
+button.btn{border:0;font:inherit;color:inherit;cursor:pointer}
+#pgGo small{opacity:.65;font-size:.8em;margin-left:4px}
+.pg-layer{position:fixed;inset:0;width:100vw;height:100vh;z-index:40;display:none;touch-action:none;cursor:grab}
+.pg-layer.on{display:block}
+.pg-layer.grab{cursor:grabbing}
+.pg-hud{position:fixed;left:50%;top:84px;translate:-50% 0;z-index:41;display:none;gap:18px;align-items:center;padding:8px 10px 8px 22px;border-radius:999px;font-weight:700;font-size:15px;white-space:nowrap}
+.pg-hud.on{display:flex}
+.pg-hud b{font-size:22px}
+.pg-hud button{all:unset;cursor:pointer;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(58,47,92,.08)}
+.pg-hint{position:fixed;left:50%;top:144px;translate:-50% 0;z-index:41;max-width:calc(100vw - 32px);padding:8px 16px;border-radius:999px;background:var(--ink);color:#fff;font-family:'M PLUS Rounded 1c';font-weight:700;font-size:13px;text-align:center;opacity:0;transition:opacity .5s;pointer-events:none}
+.pg-hint.on{opacity:1}
+.pg-result{position:fixed;inset:0;z-index:42;display:none;place-items:center;background:rgba(58,47,92,.25);backdrop-filter:blur(4px)}
+.pg-result.on{display:grid}
+.pg-result>div{padding:26px 30px;text-align:center;min-width:min(300px,calc(100vw - 40px));animation:pgIn .5s cubic-bezier(.3,1.8,.5,1)}
+.pg-result img{width:84px;height:84px;border-radius:50%;object-fit:cover}
+.pg-result small{display:block;letter-spacing:.14em;color:var(--mute);margin-top:8px}
+.pg-result b{display:block;font-size:46px;line-height:1.1}
+.pg-result p{font-family:'M PLUS Rounded 1c';font-weight:700;color:var(--mute);margin:4px 0}
+.pg-result .row{display:flex;gap:10px;justify-content:center;margin-top:14px}
+@keyframes pgIn{from{transform:scale(.6);opacity:0}}
+footer{text-align:center;color:var(--mute);font-size:13px;padding:30px 0 90px}
+@media (max-width:820px){.hero,.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="clay"><b>Synapse ✿</b><div class="pick" title="クレイの色をえらぶ"><button style="background:#9b7bff" data-c="#9b7bff" data-b="#efe8ff" aria-label="むらさき"></button><button style="background:#ff8fb8" data-c="#ff8fb8" data-b="#ffeef5" aria-label="ピンク"></button><button style="background:#4fc9a8" data-c="#4fc9a8" data-b="#e6f8f2" aria-label="ミント"></button><button style="background:#ffb547" data-c="#ffb547" data-b="#fff4e3" aria-label="オレンジ"></button></div></nav>
+<header class="hero">
+  <div>
+    <h1>Synapse<br><span class="clay color">Creations</span></h1>
+    <p>音と映像、そしてAIが織りなす無限の可能性。<br>さわると、ぷにっとへこむ粘土の世界。</p>
+    <a class="btn clay color squish" href="#works">あそびにいく</a>
+    <button class="btn clay squish" id="pgGo">🟣 ぷにぷにチャレンジ<small>45秒</small></button>
+  </div>
+  <div style="display:grid;gap:18px">
+    <div class="blob clay" id="blob"><img src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt="Mitama"></div>
+    <div class="say clay" id="say">ぽよん！ミタマだよ</div>
+  </div>
+</header>
+<main class="wrap">
+  <h2 id="works">Works</h2>
+  <div class="grid">
+    <a class="card clay squish" href="https://fumifum1.github.io/game/bingo.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/bingo.jpg" alt=""><h3>BINGO</h3><p>台紙と抽選がいっしょに</p></a>
+    <a class="card clay squish" href="https://fumifum1.github.io/game/rv.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/rv.jpg" alt=""><h3>Reversi</h3><p>AI対戦のリバーシ</p></a>
+    <a class="card clay squish" href="https://fumifum1.github.io/works/tarot_g.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/c_t.png" alt=""><h3>Tarot</h3><p>1日1枚のタロット</p></a>
+  </div>
+  <h2>Music</h2>
+  <div class="music">
+    <div class="chip clay squish on"><img src="https://fumifum1.github.io/main/jpg/y_b.jpg" alt="">そのまま進め、ゆっくり歩いていこう</div>
+    <div class="chip clay squish"><img src="https://fumifum1.github.io/main/jpg/song8.jpg" alt="">Hamburg steak recipe</div>
+    <div class="chip clay squish"><img src="https://fumifum1.github.io/main/jpg/song2.jpg" alt="">over</div>
+  </div>
+</main>
+<canvas class="pg-layer" id="puni" aria-label="ぷにぷにチャレンジ"></canvas>
+<div class="pg-hud clay" id="pgHud"><span>⏱ <b id="pgTime">45</b></span><span>SCORE <b id="pgScore">0</b></span><button id="pgQuit" aria-label="やめる">✕</button></div>
+<div class="pg-hint" id="pgHint">スライムを タップで つかんで、おなじ色に ぶつけよう！ 5こ分で…ポン！（ほかの色を タップで もちかえ）</div>
+<div class="pg-result" id="pgResult"><div class="clay"><img src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt="Mitama"><small>SCORE</small><b id="pgFinal">0</b><p id="pgBest">BEST 0</p><p id="pgSay"></p><div class="row"><button class="btn clay color squish" id="pgAgain">もう一回</button><button class="btn clay squish" id="pgClose">とじる</button></div></div></div>
+<footer>© 2025 Synapse Creations — Mitama: CNP</footer>
+<script>
+// 右上の粘土玉でテーマ色を切り替え
+document.querySelectorAll('.pick button').forEach(b => b.addEventListener('click', () => {
+  document.documentElement.style.setProperty('--c', b.dataset.c);
+  document.documentElement.style.setProperty('--bg', b.dataset.b);
+}));
+// Mitama の粘土をつつくと、ぽよんと弾んでしゃべる
+const lines = ['ぽよん！ミタマだよ', 'つつかないで〜', 'もちもち', 'へこんだ…けど戻るよ', 'ねんどはバグらない'];
+let i = 0;
+const blob = document.getElementById('blob');
+blob.addEventListener('click', () => {
+  blob.classList.remove('boing'); void blob.offsetWidth; blob.classList.add('boing');
+  document.getElementById('say').textContent = lines[++i % lines.length];
+});
+document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => document.querySelectorAll('.chip').forEach(x => x.classList.toggle('on', x === c))));
+</script>
+<script>
+// ---- ぷにぷにチャレンジ（ふわふわ浮くスライム） ----
+(() => {
+  const $ = id => document.getElementById(id);
+  const cv = $('puni'), ctx = cv.getContext('2d');
+  const PAL = [[155, 123, 255], [255, 143, 184], [79, 201, 168], [255, 181, 71]];
+  const POP = 5, TIME = 45, KEY = 'synapse-puni-best';
+  let W, H, DPR, BASE, slimes = [], fx = [], held = null, state = 'off', score, combo, comboT, left, refill, last, raf, t = 0, uid = 0, px = -999, py = -999, dragging = false;
+  let best = 0; try { best = +localStorage.getItem(KEY) || 0; } catch { }
+  const size = () => {
+    DPR = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
+    cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    BASE = Math.max(18, Math.min(28, Math.min(W, H) * .036));
+  };
+  const rad = n => BASE * Math.sqrt(n);
+  const css = (c, k = 0) => `rgb(${c.map(v => Math.round(k >= 0 ? v + (255 - v) * k : v * (1 + k))).join(',')})`;
+  const target = () => Math.min(26, 14 + Math.floor(W * H / 110000));
+  // 他のスライムと重ならない場所に、ふわっと出てくる
+  const spawn = () => {
+    for (let k = 0; k < 30; k++) {
+      const x = BASE * 2 + Math.random() * (W - BASE * 4), y = 90 + Math.random() * (H - 90 - BASE * 2);
+      if (slimes.every(b => Math.hypot(b.x - x, b.y - y) > rad(b.n) + BASE * 1.6) && Math.hypot(px - x, py - y) > 80) {
+        const a = Math.random() * Math.PI * 2, v = 22 + Math.random() * 30;
+        slimes.push({ id: uid++, x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, n: 1, c: Math.floor(Math.random() * PAL.length), sq: 0, born: t });
+        return;
+      }
+    }
+  };
+  const text = (x, y, s, c, big) => fx.push({ type: 't', x, y, s, c, big, life: 1 });
+  const sparkle = (x, y, c, n = 8) => { for (let i = 0; i < n; i++) { const a = Math.random() * Math.PI * 2, v = 60 + Math.random() * 120; fx.push({ type: 'p', x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: 3 + Math.random() * 4, c, life: .7 }); } };
+  const pop = b => {
+    combo++; comboT = 2.2;
+    const add = b.n * 20 * combo; score += add; $('pgScore').textContent = score;
+    b.dead = true; if (held === b) held = null;
+    for (let i = 0; i < 26; i++) { const a = Math.random() * Math.PI * 2, v = 140 + Math.random() * 280; fx.push({ type: 'p', x: b.x, y: b.y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: 4 + Math.random() * 7, c: css(PAL[b.c], Math.random() * .4), life: 1 }); }
+    text(b.x, b.y - 10, 'ポン！ +' + add, css(PAL[b.c], -.4), true);
+    if (combo > 1) text(b.x, b.y + 22, combo + ' COMBO', '#3a2f5c');
+  };
+  // a が b を吸収して合体
+  const merge = (a, b) => {
+    const n = a.n + b.n;
+    if (a !== held) { a.x = (a.x * a.n + b.x * b.n) / n; a.y = (a.y * a.n + b.y * b.n) / n; a.vx = (a.vx + b.vx) / 2; a.vy = (a.vy + b.vy) / 2; }
+    a.n = n; a.sq = .38; b.dead = true;
+    sparkle(a.x, a.y, css(PAL[a.c], .3));
+    if (a.n >= POP) pop(a); else if (a !== held) text(a.x, a.y - rad(a.n) - 6, 'がったい！', css(PAL[a.c], -.4));
+  };
+  // 跳ね返り（つかんでいるスライムは動かない壁のように扱う）
+  const bounce = (a, b, d, nx, ny) => {
+    const ra = rad(a.n), rb = rad(b.n), o = ra + rb - d;
+    if (a === held || b === held) {
+      const m = a === held ? b : a, sgn = a === held ? 1 : -1;
+      m.x += nx * o * sgn; m.y += ny * o * sgn;
+      const vn = m.vx * nx * sgn + m.vy * ny * sgn;
+      if (vn < 0) { m.vx -= 2 * vn * nx * sgn; m.vy -= 2 * vn * ny * sgn; }
+      m.vx += nx * sgn * 60; m.vy += ny * sgn * 60; m.sq = .2;
+      return;
+    }
+    const wa = rb * rb / (ra * ra + rb * rb);
+    a.x -= nx * o * wa; a.y -= ny * o * wa; b.x += nx * o * (1 - wa); b.y += ny * o * (1 - wa);
+    const rv = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
+    if (rv < 0) { a.vx += rv * nx; a.vy += rv * ny; b.vx -= rv * nx; b.vy -= rv * ny; a.sq = Math.max(a.sq, .16); b.sq = Math.max(b.sq, .16); }
+  };
+  const step = dt => {
+    t += dt; left -= dt; refill -= dt; comboT -= dt;
+    if (comboT <= 0) combo = 0;
+    if (refill <= 0 && slimes.length < target()) { spawn(); refill = .6; }
+    for (const b of slimes) {
+      const r = rad(b.n);
+      if (b === held) {
+        const nx = b.x + (px - b.x) * Math.min(1, dt * 16), ny = b.y + (py - b.y) * Math.min(1, dt * 16);
+        b.vx = (nx - b.x) / Math.max(dt, .001); b.vy = (ny - b.y) / Math.max(dt, .001); b.x = nx; b.y = ny;
+      } else {
+        // ふわふわ：少しずつ向きが変わりながら漂う（速すぎ・遅すぎは調整）
+        b.vx += (Math.random() - .5) * 40 * dt; b.vy += (Math.random() - .5) * 40 * dt + Math.sin(t * 1.4 + b.id) * 6 * dt;
+        const sp = Math.hypot(b.vx, b.vy), lo = 16, hi = 75;
+        if (sp > hi) { b.vx *= hi / sp; b.vy *= hi / sp; } else if (sp < lo && sp > 0) { b.vx *= lo / sp; b.vy *= lo / sp; }
+        b.x += b.vx * dt; b.y += b.vy * dt;
+      }
+      if (b.x < r) { b.x = r; b.vx = Math.abs(b.vx); } if (b.x > W - r) { b.x = W - r; b.vx = -Math.abs(b.vx); }
+      if (b.y < r + 70) { b.y = r + 70; b.vy = Math.abs(b.vy); } if (b.y > H - r) { b.y = H - r; b.vy = -Math.abs(b.vy); }
+      b.sq *= Math.exp(-dt * 7);
+    }
+    for (let i = 0; i < slimes.length; i++) for (let j = i + 1; j < slimes.length; j++) {
+      const a = slimes[i], b = slimes[j];
+      if (a.dead || b.dead) continue;
+      const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || .01;
+      if (d >= rad(a.n) + rad(b.n)) continue;
+      const nx = dx / d, ny = dy / d;
+      if (a.c === b.c) {
+        if (a === held) { merge(a, b); continue; }
+        if (b === held) { merge(b, a); continue; }
+        if (a.n === 1 && b.n === 1) { merge(a, b); continue; } // ふわふわ同士は 1＋1＝2 まで
+      }
+      bounce(a, b, d, nx, ny);
+    }
+    slimes = slimes.filter(b => !b.dead);
+    for (const p of fx) { p.life -= dt * (p.type === 't' ? .8 : 1.6); if (p.type === 'p') { p.vx *= .96; p.vy *= .96; p.x += p.vx * dt; p.y += p.vy * dt; } else p.y -= 36 * dt; }
+    fx = fx.filter(p => p.life > 0);
+    $('pgTime').textContent = Math.max(0, Math.ceil(left));
+    if (left <= 0) end(true);
+  };
+  const draw1 = b => {
+    const r = rad(b.n), grow = Math.min(1, (t - b.born) / .5), wob = Math.sin(t * 3 + b.id) * .035, sq = b.sq, isHeld = b === held, col = PAL[b.c];
+    ctx.save(); ctx.globalAlpha = grow; ctx.translate(b.x, b.y); ctx.scale((1 + sq + wob) * (.6 + .4 * grow), (1 - sq - wob) * (.6 + .4 * grow));
+    if (isHeld) { ctx.shadowColor = css(col, -.2); ctx.shadowBlur = 24; }
+    const g = ctx.createRadialGradient(-r * .35, -r * .45, r * .1, 0, 0, r * 1.05);
+    g.addColorStop(0, css(col, .6)); g.addColorStop(.55, css(col)); g.addColorStop(1, css(col, -.3));
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
+    ctx.lineWidth = isHeld ? 4 : 2; ctx.strokeStyle = isHeld ? '#3a2f5c' : css(col, -.35); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,.75)'; ctx.beginPath(); ctx.ellipse(-r * .38, -r * .5, r * .22, r * .12, -.5, 0, Math.PI * 2); ctx.fill();
+    const ex = r * .32, ey = -r * .05, er = Math.max(2.5, r * (isHeld ? .2 : .16));
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-ex, ey, er, 0, Math.PI * 2); ctx.arc(ex, ey, er, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#2b2440'; ctx.beginPath(); ctx.arc(-ex + er * .2, ey + er * .15, er * .55, 0, Math.PI * 2); ctx.arc(ex + er * .2, ey + er * .15, er * .55, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,120,160,.45)'; ctx.beginPath(); ctx.ellipse(-ex * 1.45, ey + er * 1.4, er * .7, er * .4, 0, 0, Math.PI * 2); ctx.ellipse(ex * 1.45, ey + er * 1.4, er * .7, er * .4, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#2b2440'; ctx.fillStyle = '#2b2440'; ctx.lineWidth = Math.max(1.5, r * .06); ctx.beginPath();
+    if (isHeld) { ctx.ellipse(0, ey + er * 1.3, er * .45, er * .55, 0, 0, Math.PI * 2); ctx.fill(); }
+    else { ctx.arc(0, ey + er * 1.1, er * .55, .15 * Math.PI, .85 * Math.PI); ctx.stroke(); }
+    // 何個分か：下に小さな粒で表示
+    for (let i = 0; i < b.n; i++) { ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.beginPath(); ctx.arc((i - (b.n - 1) / 2) * r * .26, r * .66, Math.max(2, r * .07), 0, Math.PI * 2); ctx.fill(); }
+    ctx.restore();
+    if (isHeld) { ctx.strokeStyle = css(col, -.3); ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.beginPath(); ctx.arc(b.x, b.y, r + 10, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * b.n / POP); ctx.stroke(); }
+  };
+  const draw = () => {
+    ctx.clearRect(0, 0, W, H);
+    for (const b of slimes) if (b !== held) draw1(b);
+    if (held) draw1(held);
+    for (const p of fx) {
+      ctx.globalAlpha = Math.max(0, p.life); ctx.fillStyle = p.c;
+      if (p.type === 'p') { ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill(); }
+      else { ctx.font = `700 ${p.big ? 24 : 16}px Fredoka, "M PLUS Rounded 1c", sans-serif`; ctx.textAlign = 'center'; ctx.fillText(p.s, p.x, p.y); }
+      ctx.globalAlpha = 1;
+    }
+  };
+  const loop = now => {
+    if (state !== 'play') return;
+    const dt = Math.max(0, Math.min(.033, (now - last) / 1000)); last = Math.max(last, now);
+    step(dt); if (state === 'play') { draw(); raf = requestAnimationFrame(loop); }
+  };
+  const start = () => {
+    size(); slimes = []; fx = []; held = null; score = 0; combo = 0; comboT = 0; left = TIME; refill = 0; t = 0;
+    for (let i = 0; i < target(); i++) spawn();
+    draw(); // 最初のフレームから見えるように
+    $('pgScore').textContent = 0; $('pgResult').classList.remove('on');
+    cv.classList.add('on'); $('pgHud').classList.add('on'); $('pgHint').classList.add('on');
+    setTimeout(() => $('pgHint').classList.remove('on'), 5000);
+    document.documentElement.style.overflow = 'hidden';
+    state = 'play'; last = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);
+  };
+  const end = showResult => {
+    state = 'off'; cancelAnimationFrame(raf); held = null;
+    cv.classList.remove('on', 'grab'); $('pgHud').classList.remove('on'); $('pgHint').classList.remove('on');
+    document.documentElement.style.overflow = '';
+    if (!showResult) return;
+    const prev = best; if (score > best) { best = score; try { localStorage.setItem(KEY, best); } catch { } }
+    $('pgFinal').textContent = score;
+    $('pgBest').textContent = (score > prev && score > 0 ? '🎉 NEW BEST! ' : 'BEST ') + best;
+    $('pgSay').textContent = score >= 2000 ? 'ぷにぷにマスター！ねんど職人だね👑' : score >= 800 ? 'コンボが上手！' : score >= 200 ? 'いい感じ！同じ色を続けて集めると COMBO だよ' : 'タップでつかんで、同じ色にぶつけよう！';
+    $('pgResult').classList.add('on');
+  };
+  // タップ：スライムの上ならつかむ（別のスライムをタップすると持ちかえ）。つかんだまま動かすと付いてくる
+  const at = e => { px = e.clientX; py = e.clientY; };
+  cv.addEventListener('pointerdown', e => {
+    if (state !== 'play') return; at(e); dragging = true;
+    let pick = null, bd = Infinity;
+    for (const b of slimes) { const d = Math.hypot(b.x - px, b.y - py) - rad(b.n); if (d < bd) { bd = d; pick = b; } }
+    if (pick && bd < 14 && pick !== held) { held = pick; held.sq = .3; }
+    if (held) { cv.classList.add('grab'); try { cv.setPointerCapture(e.pointerId); } catch { } }
+  });
+  cv.addEventListener('pointermove', e => { if (dragging || e.pointerType === 'mouse') at(e); });
+  const up = () => { dragging = false; cv.classList.remove('grab'); };
+  cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+  addEventListener('resize', () => { if (state === 'play') size(); });
+  $('pgGo').addEventListener('click', e => { e.stopPropagation(); start(); });
+  $('pgAgain').addEventListener('click', start);
+  $('pgClose').addEventListener('click', () => $('pgResult').classList.remove('on'));
+  $('pgQuit').addEventListener('click', () => end(true));
+})();
+</script>
+<script src="music.js" data-tracks=".chip"></script>
+<script src="nav.js"></script>
+</body>
+</html>

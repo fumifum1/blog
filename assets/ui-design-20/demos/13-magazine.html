@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13 Editorial Mag | Synapse Creations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Noto+Serif+JP:wght@400;700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f4efe6;--ink:#141210;--red:#d6282b;--mute:#7a7268;--gold:#ffd84d}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:hidden}
+body{background:radial-gradient(ellipse at 50% 30%,#3a332e,#1c1916 70%);color:var(--ink);font-family:'Noto Serif JP',serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 12px 86px}
+a{color:inherit;text-decoration:none}
+
+/* 本体：横長の画面では見開き（2ページ）、縦長の画面では1ページずつ */
+.book{position:relative;perspective:3200px;transition:transform .8s cubic-bezier(.6,.05,.3,1)}
+.book.spread{width:min(1320px,calc(100vw - 24px),calc((100vh - 120px) * 1.414));aspect-ratio:420/297}
+.book.single{width:min(640px,calc(100vw - 24px),calc((100vh - 120px) * .707));aspect-ratio:210/297}
+.book.spread.front{transform:translateX(-25%)}
+.book.spread.end{transform:translateX(25%)}
+.book.spread::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:4%;translate:-50% 0;z-index:200;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(0,0,0,.18) 45%,rgba(0,0,0,.25) 50%,rgba(0,0,0,.18) 55%,transparent);opacity:0;transition:opacity .4s}
+.book.spread.open::before{opacity:1}
+.sheet{position:absolute;top:0;height:100%;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.6,.05,.3,1)}
+.spread .sheet{left:50%;width:50%;transform-origin:left center}
+.spread .sheet.flipped{transform:rotateY(-180deg)}
+.single .sheet{left:0;width:100%;transform-origin:left center}
+.single .sheet.flipped{transform:rotateY(-172deg);pointer-events:none}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;background:var(--paper);container-type:inline-size;cursor:pointer;box-shadow:0 30px 70px -20px rgba(0,0,0,.7)}
+.face.back{transform:rotateY(180deg)}
+.spread .face.front::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.14),transparent 7%)}
+.spread .face.back::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(270deg,rgba(0,0,0,.14),transparent 7%)}
+
+/* ページ内の文字はページ幅に合わせて伸縮（cqw = ページ幅の1%） */
+.folio{position:absolute;bottom:2.6cqw;left:6cqw;right:6cqw;display:flex;justify-content:space-between;font-family:'Inter';font-size:1.8cqw;letter-spacing:.14em;color:var(--mute)}
+.inner{position:absolute;inset:7cqw 6.5cqw 7cqw}
+.kick{display:inline-block;background:var(--red);color:#fff;font-family:'Inter';font-weight:600;font-size:2cqw;letter-spacing:.16em;padding:.5cqw 1.6cqw}
+.h{font-family:'Playfair Display';font-weight:900;font-size:9.4cqw;line-height:.95;letter-spacing:-.02em;margin:2cqw 0 1.6cqw}
+.h em{color:var(--red);font-style:italic}
+.dek{font-size:2.7cqw;line-height:1.75;color:#3a342e}
+.rule{border-top:.5cqw solid var(--ink);margin:2.4cqw 0}
+
+.cover .photo{position:absolute;inset:0}
+.cover .photo img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.cover .photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 40%,rgba(0,0,0,.6))}
+.mast{position:absolute;left:0;right:0;top:3%;text-align:center;font-family:'Playfair Display';font-weight:900;font-size:21cqw;letter-spacing:-.02em;color:var(--paper);line-height:.9;text-shadow:0 4px 30px rgba(0,0,0,.3)}
+.issue{position:absolute;left:5%;right:5%;top:22%;display:flex;justify-content:space-between;font-family:'Inter';font-size:2cqw;font-weight:600;letter-spacing:.18em;color:var(--paper)}
+.lines{position:absolute;left:6%;bottom:8%;right:34%;color:#fff}
+.lines h2{font-weight:900;font-size:5.6cqw;line-height:1.25;margin-top:1.4cqw}
+.lines p{font-size:2.4cqw;margin-top:1.6cqw;opacity:.9}
+.side{position:absolute;right:9%;top:34%;width:28%;color:#fff;text-align:right;font-size:2.3cqw;line-height:1.6}
+.side b{display:block;font-family:'Playfair Display';font-style:italic;font-size:4.2cqw;color:var(--gold)}
+.side div{margin-bottom:2.8cqw}
+.barcode{position:absolute;right:5%;bottom:5%;background:#fff;padding:1cqw 1.4cqw .6cqw;text-align:center;font-family:'Inter';font-size:1.6cqw;color:var(--ink)}
+.barcode i{display:block;width:15cqw;height:6cqw;background:repeating-linear-gradient(90deg,#000 0 2px,transparent 2px 3px,#000 3px 4px,transparent 4px 7px)}
+.open-tab{position:absolute;right:0;top:50%;translate:0 -50%;writing-mode:vertical-rl;background:var(--red);color:#fff;font-family:'Inter';font-weight:600;font-size:2cqw;letter-spacing:.2em;padding:2cqw 1cqw;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{50%{translate:-1cqw -50%}}
+
+.toc{margin-top:2cqw}
+.toc button{all:unset;cursor:pointer;display:grid;grid-template-columns:9cqw 1fr auto;gap:2cqw;align-items:baseline;width:100%;padding:2.2cqw 0;border-bottom:1px solid rgba(20,18,16,.18);transition:padding .3s,color .3s}
+.toc button:hover{padding-left:1.6cqw;color:var(--red)}
+.toc .pg{font-family:'Playfair Display';font-weight:700;font-size:4.6cqw;color:var(--red)}
+.toc b{font-weight:700;font-size:3cqw}
+.toc small{display:block;font-size:2.2cqw;color:var(--mute);font-weight:400}
+.toc em{font-family:'Inter';font-style:normal;font-size:1.9cqw;color:var(--mute)}
+.drop::first-letter{font-family:'Playfair Display';font-weight:900;font-size:3.2em;float:left;line-height:.8;margin:.6cqw 1.4cqw 0 0;color:var(--red)}
+
+.big{position:relative;display:block;margin-top:2.4cqw;height:36cqw;overflow:hidden}
+.big img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.big:hover img{transform:scale(1.04)}
+.big .cap{position:absolute;left:0;bottom:0;background:var(--paper);padding:1.8cqw 2.6cqw 0 0;max-width:64%}
+.big .cap b{font-family:'Playfair Display';font-weight:900;font-size:6.4cqw;line-height:1;color:var(--ink)}
+.big .cap span{display:block;font-size:2.3cqw;color:#3a342e;margin-top:.6cqw}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:2.2cqw;margin-top:3cqw}
+.trio a img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;filter:grayscale(.3);transition:filter .3s}
+.trio a:hover img{filter:none}
+.trio b{display:block;font-size:2.6cqw;margin-top:1cqw}
+.trio small{font-size:2cqw;color:var(--mute)}
+.pull{margin-top:3.4cqw;font-family:'Playfair Display';font-style:italic;font-size:4.8cqw;line-height:1.2;color:var(--red);border-left:.8cqw solid var(--red);padding-left:2.4cqw}
+.pull small{display:block;font-family:'Noto Serif JP';font-style:normal;font-size:2.1cqw;color:var(--mute);margin-top:.8cqw}
+
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:3cqw 3cqw;margin-top:2.6cqw}
+.tool{display:grid;grid-template-columns:16cqw 1fr;gap:2cqw;align-items:start}
+.tool img{width:16cqw;height:16cqw;object-fit:cover;display:block;border:1px solid rgba(0,0,0,.15)}
+.tool b{display:block;font-size:2.8cqw;line-height:1.3}
+.tool small{display:block;font-size:2.1cqw;color:#3a342e;line-height:1.6;margin-top:.6cqw}
+.tool em{font-family:'Inter';font-style:normal;font-size:1.8cqw;color:var(--red);letter-spacing:.1em}
+.tool:hover b{color:var(--red)}
+
+.mhero{position:relative;height:31cqw;margin:2cqw 0 0;overflow:hidden}
+.mhero img{width:100%;height:100%;object-fit:cover;object-position:center 35%;filter:grayscale(1) contrast(1.1)}
+.mhero b{position:absolute;right:2cqw;bottom:1.4cqw;color:#fff;font-family:'Playfair Display';font-style:italic;font-size:4.2cqw}
+.qa{columns:2;column-gap:3.4cqw;margin-top:2.6cqw;font-size:2.25cqw;line-height:1.8;color:#2c2622}
+.qa p{break-inside:avoid;margin-bottom:1.6cqw}
+.qa .q{font-weight:900;color:var(--red)}
+.tracks{margin-top:1.6cqw;display:flex;gap:1.6cqw}
+.tracks a{flex:1;display:block}
+.tracks img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.tracks a::after{content:"▶ 再生";display:block;font-family:'Inter';font-size:1.7cqw;color:var(--red);margin-top:.4cqw}
+.tracks small{display:block;font-size:1.9cqw;margin-top:.6cqw;line-height:1.4}
+
+.mascot{display:grid;grid-template-columns:1fr 1fr;gap:3cqw;align-items:center;margin-top:3cqw}
+.mascot .ph{aspect-ratio:1;border-radius:50%;overflow:hidden;border:.6cqw solid var(--ink);background:#e9e9e9}
+.mascot .ph img{width:100%;height:100%;object-fit:cover}
+.prof{font-size:2.5cqw;line-height:1.9}
+.prof dt{font-family:'Inter';font-size:1.8cqw;letter-spacing:.14em;color:var(--red);margin-top:1.4cqw}
+.say{margin-top:3.4cqw;padding:2.4cqw 3cqw;border:.4cqw solid var(--ink);border-radius:4cqw;font-size:3cqw;font-weight:700;position:relative;background:#fff}
+.say::before{content:'';position:absolute;left:12cqw;top:-2.6cqw;width:4cqw;height:4cqw;background:#fff;border-left:.4cqw solid var(--ink);border-top:.4cqw solid var(--ink);transform:rotate(45deg)}
+.ad{margin-top:3.4cqw;border:.3cqw dashed var(--mute);padding:3.4cqw;text-align:center;font-family:'Inter';color:var(--mute);font-size:2cqw;letter-spacing:.14em}
+.ad b{display:block;font-family:'Noto Serif JP';font-size:3.2cqw;color:var(--ink);letter-spacing:0;margin-top:.8cqw}
+
+.note p{font-size:2.6cqw;line-height:2;color:#2c2622}
+.note p+p{margin-top:2cqw}
+.sign{display:flex;align-items:center;gap:2.4cqw;margin-top:3.4cqw;font-size:2.3cqw;color:var(--mute)}
+.sign img{width:11cqw;height:11cqw;border-radius:50%;object-fit:cover;border:.3cqw solid var(--ink)}
+.next{margin-top:4cqw;padding:3cqw;background:var(--ink);color:var(--paper)}
+.next small{font-family:'Inter';font-size:1.9cqw;letter-spacing:.16em;color:var(--gold)}
+.next b{display:block;font-family:'Playfair Display';font-size:5cqw;line-height:1.1;margin-top:1cqw}
+.next a{display:inline-block;margin-top:2cqw;font-family:'Inter';font-weight:600;font-size:2.3cqw;letter-spacing:.1em;border-bottom:.3cqw solid var(--gold)}
+
+.backc{background:var(--ink);color:var(--paper)}
+.backc .logo{position:absolute;left:0;right:0;top:36%;text-align:center;font-family:'Playfair Display';font-weight:900;font-size:13cqw;letter-spacing:-.02em}
+.backc .tag{position:absolute;left:0;right:0;top:54%;text-align:center;font-family:'Inter';font-size:2.2cqw;letter-spacing:.3em;color:#bdb3a5}
+.backc .mitama{position:absolute;left:8%;bottom:8%;width:20cqw;height:20cqw;border-radius:50%;overflow:hidden;border:.5cqw solid var(--gold);transform:rotate(-8deg)}
+.backc .mitama img{width:100%;height:100%;object-fit:cover}
+
+.ctrl{position:fixed;left:50%;bottom:66px;translate:-50% 0;display:flex;align-items:center;gap:14px;color:#cfc6b8;font-family:'Inter';font-size:13px;z-index:300}
+.ctrl button{all:unset;cursor:pointer;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:1px solid #6b6259;color:#f4efe6;font-size:18px;background:rgba(28,25,22,.7);transition:background .2s}
+.ctrl button:hover{background:#f4efe6;color:#2b2724}
+.ctrl button:disabled{opacity:.3;cursor:default;background:rgba(28,25,22,.7);color:#f4efe6}
+.dots{display:flex;gap:6px}
+.dots i{width:8px;height:8px;border-radius:50%;background:#6b6259;cursor:pointer;transition:background .2s,transform .2s}
+.dots i.on{background:var(--gold);transform:scale(1.3)}
+</style>
+</head>
+<body>
+<div class="book" id="book"></div>
+<div class="ctrl"><button id="prev" aria-label="前へ">‹</button><div class="dots" id="dots"></div><span id="pno"></span><button id="next" aria-label="次へ">›</button></div>
+
+<template id="pages">
+  <article class="cover">
+    <div class="photo"><img src="https://fumifum1.github.io/main/jpg/artist1.jpg" alt=""></div>
+    <div class="mast">SYNAPSE</div>
+    <div class="issue"><span>NO.10 — OCT 2026</span><span>AI-POWERED ARTISTRY</span></div>
+    <div class="side"><div><b>07</b>広告なしの<br>ゲーム特集</div><div><b>Free</b>道具はぜんぶ<br>無料</div><div><b>Mitama</b>CNP から<br>マスコット参上</div></div>
+    <div class="lines"><span class="kick">COVER STORY</span><h2>人間の感性 × AIの偶発性。<br>誰も聴いたことのない音。</h2><p>BEAR BEER BEAT が語る、ハイブリッドな曲づくり。</p></div>
+    <div class="barcode"><i></i>¥0 (広告なし)</div>
+    <span class="open-tab">OPEN ▸</span>
+  </article>
+
+  <article>
+    <div class="inner">
+      <span class="kick">CONTENTS</span>
+      <h2 class="h">Contents <em>No.10</em></h2>
+      <div class="toc">
+        <button data-go="2"><span class="pg">03</span><span><b>GAME SPECIAL</b><small>広告なしで、暇つぶし。7本のブラウザゲーム。</small></span><em>GAMES</em></button>
+        <button data-go="3"><span class="pg">04</span><span><b>TOOLS & APPS</b><small>暮らしと制作を助ける、6つの道具。</small></span><em>TOOLS</em></button>
+        <button data-go="4"><span class="pg">05</span><span><b>INTERVIEW — BEAR BEER BEAT</b><small>人間1人とAI 2人は、どう曲をつくるのか。</small></span><em>MUSIC</em></button>
+        <button data-go="5"><span class="pg">06</span><span><b>MASCOT — Mitama</b><small>今号の看板キャラ、ミタマのプロフィール。</small></span><em>CNP</em></button>
+        <button data-go="6"><span class="pg">07</span><span><b>EDITOR'S NOTE</b><small>編集後記と、次号予告。</small></span><em>NOTE</em></button>
+      </div>
+      <p class="drop dek" style="margin-top:3cqw">シナプスのように、いろいろなものを取り入れ、つなげ、つくる。今号は、AIと共に生まれたゲームと道具と音楽を特集します。広告はありません。バグはご愛敬です。</p>
+    </div>
+    <div class="folio"><span>SYNAPSE No.10</span><span>02</span></div>
+  </article>
+
+  <article>
+    <div class="inner">
+      <span class="kick">GAME SPECIAL</span>
+      <h2 class="h">Play <em>for free.</em></h2>
+      <p class="dek">広告なしで、暇つぶし。AIと一緒につくった7本のブラウザゲームから、編集部おすすめをピックアップ。</p>
+      <a class="big" href="https://fumifum1.github.io/game/bingo.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/bingo.jpg" alt=""><span class="cap"><b>BINGO</b><span>カード台紙と抽選が同時に。ちょっとしたイベントの主役に。→ PLAY</span></span></a>
+      <div class="trio">
+        <a href="https://fumifum1.github.io/game/rv.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/rv.jpg" alt=""><b>Reversi</b><small>AIとの静かな対局</small></a>
+        <a href="https://fumifum1.github.io/game/mines.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/mines.jpg" alt=""><b>Minesweeper</b><small>推理して💣を解除</small></a>
+        <a href="https://fumifum1.github.io/game/derby_h6.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/derby.jpg" alt=""><b>Derby Race</b><small>みんなで競馬レース</small></a>
+      </div>
+      <p class="pull">“Bugs are part of the charm.”<small>— 編集部より：バグはご愛敬。</small></p>
+    </div>
+    <div class="folio"><span>GAME SPECIAL</span><span>03</span></div>
+  </article>
+
+  <article>
+    <div class="inner">
+      <span class="kick">TOOLS & APPS</span>
+      <h2 class="h">Useful <em>things.</em></h2>
+      <p class="dek">暮らしと制作を、ちょっとだけ楽にする道具たち。ぜんぶ無料で、ブラウザだけで動きます。</p>
+      <div class="rule"></div>
+      <div class="cols">
+        <a class="tool" href="https://fumifum1.github.io/works/kippoui-navi/" target="_blank"><img src="https://fumifum1.github.io/main/jpg/k_n.png" alt=""><span><em>NEW</em><b>Celestial Compass</b><small>生年月日と旅立つ日から、吉方位をわかりやすく。</small></span></a>
+        <a class="tool" href="https://fumifum1.github.io/works/tarot_g.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/c_t.png" alt=""><span><em>NEW</em><b>Celestial Tarot</b><small>今日の日付から導く、1日1枚のタロット。</small></span></a>
+        <a class="tool" href="https://fumifum1.github.io/works/GraffitiStudio.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/v_p.jpg" alt=""><span><em>NEW</em><b>GraffitiStudio</b><small>画像生成AI用のプロンプトを組み立てる。</small></span></a>
+        <a class="tool" href="https://fumifum1.github.io/works/qr.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/q_c.png" alt=""><span><em>TOOL</em><b>QR.create</b><small>ロゴや配色を自由にしたQRコードを作成。</small></span></a>
+        <a class="tool" href="https://fumifum1.github.io/pdf_tool/menu.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/p_t.jpg" alt=""><span><em>UPDATE</em><b>PDF Tool</b><small>結合・分割・並べ替え・JPG変換。</small></span></a>
+        <a class="tool" href="https://fumifum1.github.io/GeoScope/QuickShot.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/q_s.jpg" alt=""><span><em>TOOL</em><b>QuickShot</b><small>記録写真に名前・場所・座標を書き込む。</small></span></a>
+      </div>
+    </div>
+    <div class="folio"><span>TOOLS & APPS</span><span>04</span></div>
+  </article>
+
+  <article>
+    <div class="inner">
+      <span class="kick">INTERVIEW</span>
+      <h2 class="h">BEAR BEER <em>BEAT</em></h2>
+      <div class="mhero"><img src="https://fumifum1.github.io/main/jpg/artist1.jpg" alt=""><b>fumifumi × KUMA × NAMA</b></div>
+      <div class="qa">
+        <p><span class="q">Q. どんなユニット？</span><br>プロデューサーの fumifumi、AIリリシストの KUMA、AIビートメイカーの NAMA から成る、人間1人とAI 2人のハイブリッド音楽ユニット。</p>
+        <p><span class="q">Q. 曲づくりの流れは？</span><br>fumifumi がコンセプトを設計し、KUMA が感情豊かなリリックを、NAMA が予測不能なビートとメロディをつくる。最後に fumifumi が一つの曲に再構築する。</p>
+        <p><span class="q">Q. 真骨頂は？</span><br>人間の感性とAIの偶発性が交差して生まれる、誰も聴いたことのないサウンド。</p>
+        <p style="font-size:1.9cqw;color:var(--mute)">※ 公式プロフィールより構成</p>
+      </div>
+      <div class="tracks">
+        <a href="https://fumifum1.github.io/main/music.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/y_b.jpg" alt=""><small>そのまま進め、ゆっくり歩いていこう</small></a>
+        <a href="https://fumifum1.github.io/main/music.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/song8.jpg" alt=""><small>Hamburg steak recipe</small></a>
+        <a href="https://fumifum1.github.io/main/music.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/song1-2.jpg" alt=""><small>ありのままで2</small></a>
+        <a href="https://fumifum1.github.io/main/music.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/song2.jpg" alt=""><small>over</small></a>
+      </div>
+    </div>
+    <div class="folio"><span>MUSIC INTERVIEW</span><span>05</span></div>
+  </article>
+
+  <article>
+    <div class="inner">
+      <span class="kick">MASCOT</span>
+      <h2 class="h">Meet <em>Mitama.</em></h2>
+      <div class="mascot">
+        <div class="ph"><img src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt="Mitama"></div>
+        <dl class="prof"><dt>NAME</dt><dd>Mitama（ミタマ）</dd><dt>FROM</dt><dd>CNP（CryptoNinja Partners）</dd><dt>JOB</dt><dd>Synapse Creations の看板キャラ</dd><dt>SKILL</dt><dd>1日1回の運勢占い</dd></dl>
+      </div>
+      <p class="say">「バグじゃないよ、仕様だよ。」</p>
+      <div class="ad">ADVERTISEMENT<b>広告欄……はありません。</b></div>
+    </div>
+    <div class="folio"><span>MASCOT</span><span>06</span></div>
+  </article>
+
+  <article class="note">
+    <div class="inner">
+      <span class="kick">EDITOR'S NOTE</span>
+      <h2 class="h">After <em>words.</em></h2>
+      <p>最後まで読んでくださって、ありがとうございます。この号に載っているものは、ぜんぶ AI と一緒に、少しずつ作ってきたものです。</p>
+      <p>うまくいかない日も、思いがけないものが生まれる日もあります。それも含めて、つくることを楽しんでいます。</p>
+      <div class="sign"><img src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt=""><span>編集：fumifumi<br>マスコット：Mitama</span></div>
+      <div class="next"><small>NEXT ISSUE</small><b>次号は、まだ誰も作っていないものを。</b><a href="https://fumifum1.github.io/main/" target="_blank">VISIT SYNAPSE →</a></div>
+    </div>
+    <div class="folio"><span>EDITOR'S NOTE</span><span>07</span></div>
+  </article>
+
+  <article class="backc">
+    <div class="logo">SYNAPSE</div>
+    <div class="tag">AI-POWERED ARTISTRY · NO ADS</div>
+    <div class="mitama"><img src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt=""></div>
+    <div class="barcode"><i></i>¥0 (広告なし)</div>
+  </article>
+</template>
+
+<script>
+const book = document.getElementById('book'), dots = document.getElementById('dots');
+const PAGES = [...document.getElementById('pages').content.children];
+let mode = '', sheets = [], view = 0, views = 0;
+const face = (tpl, side) => { const f = document.createElement('div'); f.className = 'face ' + side + ' ' + tpl.className; f.innerHTML = tpl.innerHTML; return f; };
+
+// 画面の形に合わせて、見開き（2ページ）か1ページずつかを組み立てる
+const build = () => {
+  const m = innerWidth >= 860 && innerWidth / innerHeight > 1.1 ? 'spread' : 'single';
+  if (m === mode) return;
+  const keepPage = mode === 'spread' ? Math.max(0, view * 2 - 1) : view;
+  mode = m; book.innerHTML = ''; book.className = 'book ' + m;
+  if (m === 'spread') {
+    sheets = [];
+    for (let i = 0; i < PAGES.length; i += 2) {
+      const s = document.createElement('div'); s.className = 'sheet';
+      s.append(face(PAGES[i], 'front'), face(PAGES[i + 1], 'back'));
+      book.appendChild(s); sheets.push(s);
+    }
+    views = sheets.length + 1;
+  } else {
+    sheets = PAGES.map(p => { const s = document.createElement('div'); s.className = 'sheet'; s.append(face(p, 'front')); book.appendChild(s); return s; });
+    views = sheets.length;
+  }
+  dots.innerHTML = Array.from({ length: views }, (_, i) => `<i data-v="${i}"></i>`).join('');
+  book.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); flipTo(viewOf(+b.dataset.go)); }));
+  book.querySelectorAll('.face').forEach(f => f.addEventListener('click', e => {
+    if (e.target.closest('a,button')) return;
+    const r = f.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
+    if (mode === 'spread') show(f.classList.contains('back') ? view - 1 : view + 1);
+    else show(x < .35 ? view - 1 : view + 1);
+  }));
+  view = -1; show(viewOf(keepPage), true);
+};
+const viewOf = p => mode === 'spread' ? Math.floor((p + 1) / 2) : p;
+const show = (v, instant) => {
+  v = Math.max(0, Math.min(views - 1, v));
+  if (v === view) return;
+  view = v;
+  sheets.forEach((s, i) => {
+    const flipped = i < v;
+    if (instant) s.style.transition = 'none';
+    // めくっている最中の1枚を一番手前に、終わったら重なり順を戻す
+    if (flipped !== s.classList.contains('flipped')) { s.style.zIndex = 100; setTimeout(() => s.style.zIndex = flipped ? i + 1 : sheets.length - i, 1000); }
+    else s.style.zIndex = flipped ? i + 1 : sheets.length - i;
+    s.classList.toggle('flipped', flipped);
+    if (instant) { void s.offsetWidth; s.style.transition = ''; }
+  });
+  if (mode === 'spread') { book.classList.toggle('front', v === 0); book.classList.toggle('end', v === views - 1); book.classList.toggle('open', v > 0 && v < views - 1); }
+  dots.querySelectorAll('i').forEach((d, i) => d.classList.toggle('on', i === v));
+  document.getElementById('pno').textContent = mode === 'spread'
+    ? (v === 0 ? '表紙' : v === views - 1 ? '裏表紙' : `${v * 2}–${v * 2 + 1} / 8`)
+    : `${v + 1} / ${views}`;
+  document.getElementById('prev').disabled = v === 0;
+  document.getElementById('next').disabled = v === views - 1;
+};
+// 離れたページへは1枚ずつ少し時間差でめくる
+const flipTo = v => { const step = v > view ? 1 : -1; const tick = () => { if (view === v) return; show(view + step); setTimeout(tick, 170); }; tick(); };
+document.getElementById('prev').addEventListener('click', () => show(view - 1));
+document.getElementById('next').addEventListener('click', () => show(view + 1));
+dots.addEventListener('click', e => { const d = e.target.closest('i'); if (d) flipTo(+d.dataset.v); });
+addEventListener('keydown', e => { if (e.key === 'ArrowRight') show(view + 1); if (e.key === 'ArrowLeft') show(view - 1); });
+let sx = null;
+book.addEventListener('touchstart', e => sx = e.touches[0].clientX, { passive: true });
+book.addEventListener('touchend', e => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; sx = null; if (Math.abs(dx) > 50) show(view + (dx < 0 ? 1 : -1)); });
+addEventListener('resize', build);
+build();
+</script>
+<script src="music.js" data-tracks=".tracks a"></script>
+<script src="nav.js"></script>
+</body>
+</html>

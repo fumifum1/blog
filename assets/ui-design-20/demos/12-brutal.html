@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12 Neo Brutal | Synapse Creations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@500;700&family=Noto+Sans+JP:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fffdf2;--ink:#000;--y:#ffe500;--p:#ff6b9a;--b:#4d7cff;--g:#3ddc84}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk','Noto Sans JP',sans-serif;font-weight:500;background-image:linear-gradient(var(--ink) 1px,transparent 1px),linear-gradient(90deg,var(--ink) 1px,transparent 1px);background-size:48px 48px;background-color:var(--bg);background-blend-mode:normal}
+body::before{content:'';position:fixed;inset:0;background:rgba(255,253,242,.93);z-index:-1}
+a{color:inherit;text-decoration:none}
+.box{border:3px solid var(--ink);box-shadow:8px 8px 0 var(--ink);background:#fff}
+.btn{display:inline-block;padding:12px 22px;border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);font-family:'Archivo Black';font-size:15px;background:var(--y);cursor:pointer;transition:transform .08s,box-shadow .08s}
+.btn:hover{background:var(--p)}
+.btn:active{transform:translate(5px,5px);box-shadow:0 0 0 var(--ink)}
+nav{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:3px solid var(--ink);background:var(--y);position:sticky;top:0;z-index:10}
+nav b{font-family:'Archivo Black';font-size:20px}
+nav div{display:flex;gap:10px}
+nav div a{padding:6px 12px;border:3px solid var(--ink);background:#fff;font-weight:700}
+nav div a:hover{background:var(--b);color:#fff}
+.hero{position:relative;padding:70px 24px 60px;max-width:1150px;margin:0 auto}
+.hero h1{font-family:'Archivo Black';font-size:clamp(58px,13vw,170px);line-height:.86;letter-spacing:-.04em;text-transform:uppercase}
+.hero h1 span{background:var(--p);padding:0 .08em;border:3px solid var(--ink);display:inline-block;transform:rotate(-2deg)}
+.hero h1 em{font-style:normal;-webkit-text-stroke:3px var(--ink);color:var(--bg)}
+.hero p{font-family:'Noto Sans JP';font-weight:900;font-size:clamp(18px,2.4vw,26px);margin:30px 0;max-width:640px;background:#fff;border:3px solid var(--ink);padding:14px 18px;box-shadow:6px 6px 0 var(--ink)}
+.sticker{position:absolute;right:6%;top:70px;width:150px;height:150px;border-radius:50%;background:var(--g);border:3px solid var(--ink);display:grid;place-items:center;text-align:center;font-family:'Archivo Black';font-size:20px;line-height:1.05;transform:rotate(14deg);box-shadow:6px 6px 0 var(--ink);animation:spin 16s linear infinite}
+@keyframes spin{to{transform:rotate(374deg)}}
+.marq{border-block:3px solid var(--ink);background:var(--ink);color:var(--y);overflow:hidden;white-space:nowrap;padding:12px 0;font-family:'Archivo Black';font-size:24px}
+.marq div{display:inline-block;animation:mq 16s linear infinite}
+@keyframes mq{to{transform:translateX(-50%)}}
+.wrap{max-width:1150px;margin:0 auto;padding:0 24px 120px}
+h2{font-family:'Archivo Black';font-size:clamp(36px,6vw,72px);text-transform:uppercase;margin:70px 0 26px;display:inline-block;background:var(--b);color:#fff;padding:4px 16px;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.card{display:block;padding:12px;transition:transform .15s}
+.card:nth-child(1){background:var(--y)}.card:nth-child(2){background:#fff}.card:nth-child(3){background:var(--p)}
+.card img{width:100%;aspect-ratio:4/3;object-fit:cover;border:3px solid var(--ink);display:block}
+.card h3{font-family:'Archivo Black';font-size:22px;margin-top:12px;text-transform:uppercase}
+.card p{font-family:'Noto Sans JP';font-weight:700;font-size:14px}
+.card .n{float:right;font-family:'Archivo Black';font-size:14px;border:3px solid var(--ink);padding:0 6px;background:#fff}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.me{display:flex;gap:20px;align-items:center;padding:20px;background:var(--g)}
+.me img{width:120px;height:120px;border:3px solid var(--ink);object-fit:cover}
+.me h3{font-family:'Archivo Black';font-size:26px}
+.me p{font-family:'Noto Sans JP';font-weight:700}
+.danger{padding:24px;background:#fff;display:flex;flex-direction:column;gap:14px;justify-content:center;align-items:flex-start}
+.danger .btn{background:#ff4d4d;color:#fff}
+.danger small{font-family:'Noto Sans JP';font-weight:700}
+body.shake{animation:shake .5s}
+@keyframes shake{20%{transform:translate(-8px,4px) rotate(-1deg)}40%{transform:translate(8px,-4px) rotate(1deg)}60%{transform:translate(-6px,2px)}80%{transform:translate(6px,-2px)}}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) rotate(-3deg);background:var(--y);border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);padding:14px 20px;font-family:'Noto Sans JP';font-weight:900;display:none;z-index:20}
+.mess{position:fixed;inset:0;z-index:2147481000;display:none;place-items:center;text-align:center;pointer-events:none}
+.mess.on{display:grid}
+.mess div{pointer-events:auto;background:#fff;border:3px solid var(--ink);box-shadow:8px 8px 0 var(--ink);padding:22px 28px;transform:rotate(-3deg);animation:drop .5s cubic-bezier(.3,1.6,.5,1)}
+.mess b{display:block;font-family:'Archivo Black','Noto Sans JP';font-size:clamp(28px,5vw,54px);line-height:1.1}
+.mess p{font-family:'Noto Sans JP';font-weight:700;margin:10px 0 16px}
+@keyframes drop{from{transform:translateY(-80px) rotate(-12deg);opacity:0}}
+.back-in{animation:backin .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes backin{from{transform:scale(.6) rotate(-6deg);opacity:0}}
+footer{border-top:3px solid var(--ink);background:var(--ink);color:#fff;text-align:center;padding:26px 0 90px;font-family:'Archivo Black'}
+@media (max-width:820px){.grid,.row{grid-template-columns:1fr}.sticker{width:100px;height:100px;font-size:14px;top:20px}nav div{display:none}}
+</style>
+</head>
+<body>
+<nav><b>SYNAPSE ✱</b><div><a href="#works">WORKS</a><a href="#music">MUSIC</a><a href="https://fumifum1.github.io/main/blog.html" target="_blank" rel="noopener">BLOG</a></div></nav>
+<header class="hero">
+  <div class="sticker">NO<br>ADS!</div>
+  <h1><span>Synapse</span><br><em>Creations</em></h1>
+  <p>音と映像、そしてAIが織りなす無限の可能性。ゴツくて正直なWebの遊び場。</p>
+  <a class="btn" href="#works">作品を見る →</a>
+</header>
+<div class="marq"><div>GAMES ✱ TOOLS ✱ MUSIC ✱ BLOG ✱ 広告なし ✱ バグはご愛敬 ✱ GAMES ✱ TOOLS ✱ MUSIC ✱ BLOG ✱ 広告なし ✱ バグはご愛敬 ✱&nbsp;</div></div>
+<main class="wrap">
+  <h2 id="works">Works</h2>
+  <div class="grid">
+    <a class="card box" href="https://fumifum1.github.io/game/bingo.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/bingo.jpg" alt=""><h3>Bingo <span class="n">01</span></h3><p>台紙と抽選がいっしょに。</p></a>
+    <a class="card box" href="https://fumifum1.github.io/game/rv.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/rv.jpg" alt=""><h3>Reversi <span class="n">02</span></h3><p>AIと対戦。けっこう強い。</p></a>
+    <a class="card box" href="https://fumifum1.github.io/works/GraffitiStudio.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/v_p.jpg" alt=""><h3>Graffiti <span class="n">03</span></h3><p>画像生成AIのプロンプト工房。</p></a>
+  </div>
+  <h2 id="music">Music</h2>
+  <div class="row">
+    <div class="me box"><img src="https://fumifum1.github.io/main/jpg/y_b.jpg" alt=""><div><h3>BEAR BEER BEAT</h3><p>そのまま進め、ゆっくり歩いていこう</p><p style="margin-top:6px;font-size:13px">▶ クリックで再生</p></div></div>
+    <div class="danger box"><small>※ 押さないでください</small><button class="btn" id="dont">DON'T CLICK</button></div>
+  </div>
+</main>
+<footer>© 2025 SYNAPSE CREATIONS — MITAMA: CNP</footer>
+<div class="toast" id="toast"></div>
+<div class="mess" id="mess"><div><b>ぜんぶ落ちた。</b><p>だから押すなって言ったのに…バグはご愛敬。</p><button class="btn" id="undo">↺ もとにもどす</button></div></div>
+<script>
+// 押すなボタン：押すと画面がゆれたあと、ページのパーツが全部バラバラと落ちて床に積み重なる
+const PARTS = 'nav, .sticker, .hero h1 span, .hero h1 em, .hero p, .hero .btn, .marq, main h2, .card, .me, .danger, footer';
+let bodies = [], fallen = false, raf;
+const collapse = () => {
+  if (fallen) return; fallen = true;
+  document.body.classList.remove('shake'); // ゆれ（transform）が残っていると固定位置がずれるので先に止める
+  const els = [...document.querySelectorAll(PARTS)];
+  const rects = els.map(el => el.getBoundingClientRect()); // 先に全部の位置を測ってから固定する
+  bodies = els.map((el, i) => {
+    const r = rects[i], saved = el.getAttribute('style') || '';
+    // 画面の外にあるパーツは、上から降ってくる
+    const y = (r.bottom < 0 || r.top > innerHeight) ? -r.height - Math.random() * innerHeight * .8 : r.top;
+    el.style.cssText = saved + `;position:fixed;left:${r.left}px;top:0;width:${r.width}px;height:${r.height}px;margin:0;z-index:${60 + i};transition:none;animation:none;box-sizing:border-box;transform:translate(0px,${y}px)`;
+    return { el, saved, left: r.left, w: r.width, h: r.height, x: 0, y, vx: (Math.random() - .5) * 5, vy: -Math.random() * 5, rot: 0, vr: (Math.random() - .5) * 7,
+      delay: 120 + i * 45 + Math.random() * 160, floor: innerHeight - r.height * (.3 + Math.random() * .55) - Math.random() * 40, rest: false };
+  });
+  document.body.classList.add('fallen');
+  const t0 = performance.now(); let last = t0;
+  const step = now => {
+    const dt = Math.min(32, now - last) / 16.67; last = now; let moving = false;
+    for (const b of bodies) {
+      if (b.rest) continue; moving = true;
+      if (now - t0 < b.delay) continue;
+      b.vy += .9 * dt; b.x += b.vx * dt; b.y += b.vy * dt; b.rot += b.vr * dt;
+      const minX = -b.left, maxX = innerWidth - b.left - Math.min(b.w, innerWidth);
+      if (b.x < minX) { b.x = minX; b.vx *= -.5; } if (b.x > maxX) { b.x = maxX; b.vx *= -.5; }
+      if (b.y > b.floor) { b.y = b.floor; b.vy *= -.35; b.vx *= .7; b.vr *= .55; if (Math.abs(b.vy) < 1.2) { b.vy = 0; b.rest = true; } }
+      b.el.style.transform = `translate(${b.x}px,${b.y}px) rotate(${b.rot}deg)`;
+    }
+    if (moving) raf = requestAnimationFrame(step);
+  };
+  raf = requestAnimationFrame(step);
+  setTimeout(() => document.getElementById('mess').classList.add('on'), 1600);
+};
+document.getElementById('dont').addEventListener('click', () => {
+  document.body.classList.remove('shake'); void document.body.offsetWidth; document.body.classList.add('shake');
+  const t = document.getElementById('toast'); t.textContent = '押したね？'; t.style.display = 'block';
+  clearTimeout(t.h); t.h = setTimeout(() => t.style.display = 'none', 900);
+  setTimeout(collapse, 450);
+});
+document.getElementById('undo').addEventListener('click', () => {
+  cancelAnimationFrame(raf);
+  bodies.forEach(b => { b.el.setAttribute('style', b.saved); b.el.classList.remove('back-in'); void b.el.offsetWidth; b.el.classList.add('back-in'); });
+  bodies = []; fallen = false; document.body.classList.remove('fallen');
+  document.getElementById('mess').classList.remove('on'); scrollTo(0, 0);
+});
+// カードはホバーでランダムに傾く
+document.querySelectorAll('.card').forEach(c => {
+  c.addEventListener('mouseenter', () => !fallen && (c.style.transform = `rotate(${(Math.random() * 6 - 3).toFixed(1)}deg) translate(-3px,-3px)`));
+  c.addEventListener('mouseleave', () => { if (!fallen) c.style.transform = ''; });
+});
+</script>
+<script src="music.js" data-tracks=".me"></script>
+<script src="nav.js"></script>
+</body>
+</html>

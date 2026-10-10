@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>08 Terminal | Synapse Creations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=M+PLUS+1+Code:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--page:#0b0d11;--bg:#12151b;--fg:#d6dae2;--dim:#6b7280;--g:#7ee787;--b:#79c0ff;--a:#ffb86b;--p:#ff7ab2;--line:#232833}
+body.amber{--g:#ffcc66;--b:#ffb86b;--p:#ff9966;--fg:#f3dfc1}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--page)}
+body{background:radial-gradient(1200px 600px at 50% -10%,#1a2230,var(--page)) fixed;color:var(--fg);font-family:'JetBrains Mono','M PLUS 1 Code',monospace;font-size:14.5px;line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;padding:clamp(16px,4vw,48px) clamp(12px,4vw,48px) 100px}
+a{color:var(--b);text-decoration:none;border-bottom:1px dashed currentColor}
+a:hover{color:var(--g)}
+.brand{max-width:1000px;margin:0 auto 22px;display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
+.brand h1{font-size:clamp(28px,5vw,54px);font-weight:800;letter-spacing:-.04em;line-height:1}
+.brand h1 span{color:var(--g)}
+.brand h1 .cur{display:inline-block;width:.5em;height:.9em;background:var(--g);vertical-align:-.08em;margin-left:4px;animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.brand p{color:var(--dim);font-size:13px}
+.term{max-width:1000px;margin:0 auto;background:var(--bg);border:1px solid var(--line);border-radius:14px;box-shadow:0 40px 80px -30px rgba(0,0,0,.7);overflow:hidden}
+.tbar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);font-size:12px;color:var(--dim)}
+.tbar i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.tbar i:nth-child(1){background:#ff5f57}.tbar i:nth-child(2){background:#febc2e}.tbar i:nth-child(3){background:#28c840}
+.tbar span{margin:0 auto}
+.screen{padding:22px clamp(14px,3vw,28px) 28px;min-height:70vh;cursor:text}
+.ln{white-space:pre-wrap;word-break:break-word}
+.ps{color:var(--g)}.ps b{color:var(--b);font-weight:400}
+.dim{color:var(--dim)}.g{color:var(--g)}.b{color:var(--b)}.a{color:var(--a)}.p{color:var(--p)}
+.out{margin:4px 0 16px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:10px 0 16px}
+.card{display:block;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#0f1217;transition:border-color .2s,transform .2s;border-bottom:1px solid var(--line);color:var(--fg)}
+.card:hover{border-color:var(--g);transform:translateY(-3px);color:var(--fg)}
+.card img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;filter:saturate(.9)}
+.card div{padding:8px 12px;font-size:13px}
+.card div b{color:var(--g);font-weight:600}
+.card div small{display:block;color:var(--dim);font-size:11.5px}
+.row{display:flex;gap:16px;align-items:center;margin:6px 0}
+.row img{width:46px;height:46px;border-radius:6px;object-fit:cover}
+.input{display:flex;gap:10px;align-items:center}
+.input input{flex:1;background:none;border:0;outline:0;color:var(--fg);font:inherit;caret-color:var(--g)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)}
+.chips button{all:unset;cursor:pointer;font-size:12px;padding:5px 10px;border:1px solid var(--line);border-radius:6px;color:var(--dim);transition:.2s}
+.chips button:hover{color:var(--g);border-color:var(--g)}
+.me{display:flex;gap:18px;align-items:center;margin:8px 0 14px}
+.me img{width:84px;height:84px;border-radius:12px;object-fit:cover;border:1px solid var(--line)}
+pre.asc{color:var(--p);line-height:1.2;margin:6px 0 14px}
+@media (max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}body{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="brand">
+  <h1><span>~/</span>synapse_creations<span class="cur"></span></h1>
+  <p>AI-Powered Artistry — by fumifumi</p>
+</div>
+<div class="term">
+  <div class="tbar"><i></i><i></i><i></i><span>fumifumi@synapse: ~ — zsh</span></div>
+  <div class="screen" id="screen">
+    <div id="log"></div>
+    <div class="input" id="inrow" style="display:none"><span class="ps">fumifumi@synapse <b>~</b> $</span><input id="in" autocomplete="off" spellcheck="false" aria-label="command"></div>
+    <div class="chips" id="chips" style="display:none">
+      <span class="dim" style="font-size:12px">try →</span>
+      <button>help</button><button>games</button><button>tools</button><button>music</button><button>blog</button><button>ghost</button><button>theme</button><button>sudo make coffee</button><button>clear</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const log = document.getElementById('log'), inp = document.getElementById('in');
+const P = c => `<span class="ps">fumifumi@synapse <b>~</b> $</span> ${c}`;
+const add = (html, cls = 'ln') => { const d = document.createElement('div'); d.className = cls; d.innerHTML = html; log.appendChild(d); scrollTo(0, document.body.scrollHeight); return d; };
+const card = (img, name, desc, url) => `<a class="card" href="${url}" target="_blank"><img src="https://fumifum1.github.io/main/jpg/${img}" alt=""><div><b>${name}</b><small>${desc}</small></div></a>`;
+const games = `<div class="grid">${card('bingo.jpg', 'bingo.app', 'カード台紙と抽選が同時に', 'https://fumifum1.github.io/game/bingo.html')}${card('rv.jpg', 'reversi.app', 'AI対戦のリバーシ', 'https://fumifum1.github.io/game/rv.html')}${card('game-thumbnail2.jpg', 'invade.app', 'レトロゲームの定番', 'https://fumifum1.github.io/game/')}</div>`;
+const tools = `<div class="grid">${card('k_n.png', 'compass.app', '吉方位をわかりやすく', 'https://fumifum1.github.io/works/kippoui-navi/')}${card('v_p.jpg', 'graffiti.app', '画像生成AIプロンプト', 'https://fumifum1.github.io/works/GraffitiStudio.html')}${card('c_t.png', 'tarot.app', 'タロット占い', 'https://fumifum1.github.io/works/tarot_g.html')}${card('q_s.jpg', 'quickshot.app', '記録写真に情報を書き込む', 'https://fumifum1.github.io/GeoScope/QuickShot.html')}${card('q_c.png', 'qr.app', 'オリジナルQRコード', 'https://fumifum1.github.io/works/qr.html')}${card('p_t.jpg', 'pdf.app', '簡易PDF編集', 'https://fumifum1.github.io/pdf_tool/menu.html')}</div>`;
+const bar = p => '█'.repeat(Math.round(p * 16)) + '<span class="dim">' + '░'.repeat(16 - Math.round(p * 16)) + '</span>';
+const music = [['y_b.jpg', 'そのまま進め、ゆっくり歩いていこう', .62], ['song8.jpg', 'Hamburg steak recipe', .2], ['song1-2.jpg', 'ありのままで2', .9], ['song2.jpg', 'over', .4]]
+  .map(([i, t, p], k) => `<div class="row"><img src="https://fumifum1.github.io/main/jpg/${i}" alt=""><div><span class="${k ? 'dim' : 'g'}">${k ? '  ' : '▶ '}</span>${t}<br><span class="a">[${bar(p)}]</span> <span class="dim">BEAR BEER BEAT</span></div></div>`).join('');
+const C = {
+  help: () => `<span class="a">使えるコマンド</span>
+  <span class="g">about</span>     わたしについて
+  <span class="g">games</span>     ゲーム一覧        <span class="g">tools</span>   便利ツール
+  <span class="g">music</span>     BEAR BEER BEAT     <span class="g">blog</span>    ブログ
+  <span class="g">social</span>    つながる          <span class="g">theme</span>   配色を切り替え
+  <span class="g">ghost</span>     ？？？            <span class="g">clear</span>   画面をきれいに`,
+  about: () => `<div class="me"><img src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt=""><div><span class="g">fumifumi</span>（フミフミ）\nシナプスのように取り入れ、つなげ、創作する。\nAIと共に、ゲーム・音楽・Web制作を通して創造する喜びを追求中。\n<span class="dim">stack: ChatGPT · Claude · Claude Desktop · Suno AI · CNP</span></div></div>`,
+  whoami: () => C.about(),
+  games: () => `<span class="dim">広告なしで暇つぶし。バグはご愛敬。</span>${games}`,
+  tools: () => tools, ls: () => `<span class="b">games/</span>  <span class="b">tools/</span>  <span class="b">music/</span>  <span class="b">blog/</span>  readme.md  <span class="dim">.bugs (hidden)</span>`,
+  music: () => music,
+  blog: () => `<a href="https://fumifum1.github.io/blog/tsugihagi_ghost.html" target="_blank">tsugihagi_ghost.md</a>   やさしい幽霊のLINEスタンプ\n<a href="https://fumifum1.github.io/blog/gothic-fantasy-boy.html" target="_blank">gothic_fantasy_boy.md</a> 黒猫耳の魔法使い ノクト\n<a href="https://fumifum1.github.io/blog/s_log.html" target="_blank">spray_art.md</a>          すべて“イイね”のグラフィティ\n<a href="https://note.com/fumifum1" target="_blank">note.com/fumifum1</a>     日常をDIYする人`,
+  social: () => `<a href="https://x.com/_fum1_" target="_blank">x.com/_fum1_</a>  <a href="https://suno.com/@fum1" target="_blank">suno.com/@fum1</a>  <a href="https://www.instagram.com/sachi.cobito/" target="_blank">instagram</a>`,
+  ghost: () => `<pre class="asc">     .-"""-.
+    /  _ _  \\     boo!
+   |  (o)(o) |    バグはご愛敬だよ。
+   |    \\/   |
+    \\  '--' /
+     '-.__.-'\\~~</pre>`,
+  theme: () => { document.body.classList.toggle('amber'); return `theme → <span class="g">${document.body.classList.contains('amber') ? 'amber' : 'matrix'}</span>`; },
+  'sudo make coffee': () => `<span class="dim">[sudo] password for fumifumi: ********</span>\n☕ AIが淹れました。<span class="dim">少し苦いのはご愛敬。</span>`,
+  'rm -rf /': () => `<span class="p">nice try.</span> 🙅 ここにあるのは作品だけです。`,
+  'cat .bugs': () => `🐛 🐛 🐛  <span class="dim">…まだいます。</span>`,
+};
+const run = raw => {
+  const cmd = raw.trim(); add(P(cmd));
+  if (!cmd) return;
+  if (cmd === 'clear') { log.innerHTML = ''; return; }
+  const f = C[cmd] || (cmd.startsWith('sudo') ? () => `fumifumi is not in the sudoers file. <span class="p">This incident will be reported to the ghost. 👻</span>` : null);
+  add(f ? f() : `zsh: command not found: <span class="p">${cmd.replace(/</g, '&lt;')}</span> — <span class="g">help</span> を試してみて`, 'ln out');
+};
+// 起動時に自動タイプ
+const type = async (cmd) => {
+  const d = add(P('')); for (const ch of cmd) { d.innerHTML = P(d.dataset.t = (d.dataset.t || '') + ch); await new Promise(r => setTimeout(r, 45)); }
+  await new Promise(r => setTimeout(r, 200));
+};
+(async () => {
+  add('<span class="dim">Last login: ' + new Date().toLocaleString('ja-JP') + ' on ttys001</span>');
+  await type('whoami'); add(C.about(), 'ln out');
+  await type('ls ~/works/games'); add(games, 'ln out');
+  await type('echo $MOTTO'); add('<span class="a">音と映像、そしてAIが織りなす無限の可能性。</span>', 'ln out');
+  document.getElementById('inrow').style.display = 'flex'; document.getElementById('chips').style.display = 'flex'; if (window.self === window.top) inp.focus();
+})();
+const hist = []; let hi = 0;
+inp.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { hist.push(inp.value); hi = hist.length; run(inp.value); inp.value = ''; }
+  if (e.key === 'ArrowUp' && hi > 0) { inp.value = hist[--hi]; e.preventDefault(); }
+  if (e.key === 'ArrowDown') { inp.value = hist[++hi] || ''; hi = Math.min(hi, hist.length); }
+  if (e.key === 'Tab') { e.preventDefault(); const m = Object.keys(C).concat('clear').find(k => k.startsWith(inp.value)); if (m) inp.value = m; }
+});
+document.querySelectorAll('.chips button').forEach(b => b.addEventListener('click', () => { run(b.textContent); inp.focus(); }));
+document.getElementById('screen').addEventListener('click', e => { if (!e.target.closest('a,button') && !getSelection().toString()) inp.focus(); });
+</script>
+<script src="music.js" data-tracks=".row"></script>
+<script src="nav.js"></script>
+</body>
+</html>

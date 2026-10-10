@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>11 Aurora Glass | Synapse Creations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070b1a;--glass:rgba(255,255,255,.07);--edge:rgba(255,255,255,.18);--text:#eef2ff;--mute:#a3abc9;--a1:#35f2c2;--a2:#7b6bff;--a3:#ff6ad5}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Outfit','Noto Sans JP',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:inherit;text-decoration:none}
+.aurora{position:fixed;inset:-20%;z-index:-1;filter:blur(70px) saturate(1.3);opacity:.75}
+.aurora i{position:absolute;border-radius:50%;mix-blend-mode:screen;transition:background 1.6s}
+.aurora i:nth-child(1){width:60vw;height:40vw;left:5%;top:5%;background:var(--a1);animation:fl1 26s ease-in-out infinite alternate}
+.aurora i:nth-child(2){width:50vw;height:50vw;right:0;top:15%;background:var(--a2);animation:fl2 32s ease-in-out infinite alternate}
+.aurora i:nth-child(3){width:45vw;height:35vw;left:25%;bottom:0;background:var(--a3);animation:fl3 28s ease-in-out infinite alternate}
+@keyframes fl1{to{transform:translate(18vw,12vh) rotate(25deg) scale(1.2)}}
+@keyframes fl2{to{transform:translate(-20vw,18vh) rotate(-30deg)}}
+@keyframes fl3{to{transform:translate(10vw,-22vh) scale(1.3)}}
+.glass{background:var(--glass);border:1px solid var(--edge);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);border-radius:26px;box-shadow:0 20px 60px -20px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.18)}
+nav{position:sticky;top:16px;z-index:10;margin:16px auto 0;width:min(1100px,calc(100% - 32px));display:flex;justify-content:space-between;align-items:center;padding:12px 14px 12px 22px;border-radius:999px}
+nav b{font-weight:700;letter-spacing:.02em;display:flex;gap:10px;align-items:center}
+nav b i{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a3));box-shadow:0 0 14px var(--a1)}
+nav div{display:flex;gap:4px}
+nav div a{padding:8px 14px;border-radius:999px;font-size:14px;color:var(--mute);transition:.25s}
+nav div a:hover{color:var(--text);background:rgba(255,255,255,.1)}
+.hero{min-height:82vh;display:grid;place-items:center;padding:60px 16px}
+.panel{width:min(760px,100%);padding:48px clamp(22px,5vw,56px);text-align:center;cursor:pointer;position:relative;overflow:hidden}
+.panel .me{width:96px;height:96px;margin:0 auto 22px;border-radius:50%;padding:4px;background:linear-gradient(135deg,var(--a1),var(--a2),var(--a3))}
+.panel .me img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;border:3px solid #0b1020}
+.panel small{font-size:12px;letter-spacing:.3em;color:var(--mute)}
+.panel h1{font-size:clamp(44px,8vw,96px);font-weight:700;letter-spacing:-.04em;line-height:1;margin:12px 0 16px;background:linear-gradient(120deg,#fff 20%,var(--a1),var(--a3) 90%);-webkit-background-clip:text;background-clip:text;color:transparent;transition:.6s}
+.panel p{color:var(--mute)}
+.panel .hint{margin-top:22px;display:inline-block;font-size:12px;padding:6px 14px;border-radius:999px;border:1px solid var(--edge)}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px 120px}
+h2{font-size:clamp(30px,4vw,46px);font-weight:600;letter-spacing:-.03em;margin:30px 0 22px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{position:relative;padding:12px 12px 18px;overflow:hidden;transform-style:preserve-3d;transition:transform .2s ease-out}
+.card::after{content:'';position:absolute;inset:0;border-radius:inherit;background:radial-gradient(260px circle at var(--x,50%) var(--y,0%),rgba(255,255,255,.28),transparent 45%);opacity:0;transition:opacity .3s;pointer-events:none}
+.card:hover::after{opacity:1}
+.card img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:16px;display:block}
+.card h3{font-size:18px;font-weight:600;margin:14px 6px 4px}
+.card p{font-size:13px;color:var(--mute);margin:0 6px}
+.card .tag{position:absolute;left:22px;top:22px;font-size:11px;padding:4px 10px;border-radius:999px;background:rgba(7,11,26,.55);backdrop-filter:blur(8px);border:1px solid var(--edge)}
+.music{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;padding:22px;margin-top:18px}
+.music img{width:140px;height:140px;border-radius:20px;object-fit:cover}
+.tr{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;cursor:pointer;transition:.2s}
+.tr:hover,.tr.on{background:rgba(255,255,255,.1)}
+.tr b{flex:1;font-weight:500}
+.eq{display:flex;gap:3px;align-items:end;height:16px}
+.eq i{width:3px;height:4px;background:var(--a1);border-radius:2px}
+.tr.on .eq i{animation:eq .9s infinite ease-in-out}.eq i:nth-child(2){animation-delay:-.3s!important}.eq i:nth-child(3){animation-delay:-.6s!important}
+@keyframes eq{50%{height:16px}}
+footer{text-align:center;color:var(--mute);font-size:13px;padding:40px 0 90px}
+@media (max-width:820px){.grid{grid-template-columns:1fr}.music{grid-template-columns:1fr}nav div{display:none}}
+</style>
+</head>
+<body>
+<div class="aurora"><i></i><i></i><i></i></div>
+<nav class="glass"><b><i></i>Synapse Creations</b><div><a href="#works">Works</a><a href="#music">Music</a><a href="https://fumifum1.github.io/main/blog.html" target="_blank" rel="noopener">Blog</a></div></nav>
+<header class="hero">
+  <div class="panel glass" id="panel">
+    <div class="me"><img src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt="Mitama"></div>
+    <small>AI-POWERED ARTISTRY</small>
+    <h1>Synapse<br>Creations</h1>
+    <p>音と映像、そしてAIが織りなす無限の可能性。</p>
+    <span class="hint">✦ パネルをタップしてオーロラの色を変える</span>
+  </div>
+</header>
+<main class="wrap">
+  <h2 id="works">Works</h2>
+  <div class="grid">
+    <a class="card glass" href="https://fumifum1.github.io/game/bingo.html" target="_blank"><span class="tag">GAME</span><img src="https://fumifum1.github.io/main/jpg/bingo.jpg" alt=""><h3>BINGO</h3><p>台紙と抽選がいっしょに</p></a>
+    <a class="card glass" href="https://fumifum1.github.io/works/kippoui-navi/" target="_blank"><span class="tag">TOOL</span><img src="https://fumifum1.github.io/main/jpg/k_n.png" alt=""><h3>Celestial Compass</h3><p>吉方位をわかりやすく</p></a>
+    <a class="card glass" href="https://fumifum1.github.io/works/tarot_g.html" target="_blank"><span class="tag">TOOL</span><img src="https://fumifum1.github.io/main/jpg/c_t.png" alt=""><h3>Tarot</h3><p>1日1枚のタロット</p></a>
+  </div>
+  <h2 id="music">Music</h2>
+  <div class="music glass">
+    <img id="cv" src="https://fumifum1.github.io/main/jpg/y_b.jpg" alt="">
+    <div>
+      <div class="tr on" data-i="y_b.jpg"><b>そのまま進め、ゆっくり歩いていこう</b><span class="eq"><i></i><i></i><i></i></span></div>
+      <div class="tr" data-i="song8.jpg"><b>Hamburg steak recipe</b><span class="eq"><i></i><i></i><i></i></span></div>
+      <div class="tr" data-i="song1-2.jpg"><b>ありのままで2</b><span class="eq"><i></i><i></i><i></i></span></div>
+    </div>
+  </div>
+</main>
+<footer>© 2025 Synapse Creations — Mitama: CNP</footer>
+<script>
+// パネルをタップするとオーロラのパレットが切り替わる
+const P = [['#35f2c2', '#7b6bff', '#ff6ad5'], ['#ffb547', '#ff5f7e', '#8a5cff'], ['#4fd1ff', '#2b6bff', '#9cff8a'], ['#ff9ad5', '#ffe36e', '#6ef2ff']];
+let pi = 0;
+document.getElementById('panel').addEventListener('click', () => {
+  pi = (pi + 1) % P.length;
+  ['--a1', '--a2', '--a3'].forEach((k, i) => document.documentElement.style.setProperty(k, P[pi][i]));
+});
+// カードの傾きと光の反射がカーソルを追う
+document.querySelectorAll('.card').forEach(c => {
+  c.addEventListener('pointermove', e => {
+    const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+    c.style.setProperty('--x', x * 100 + '%'); c.style.setProperty('--y', y * 100 + '%');
+    c.style.transform = `perspective(800px) rotateX(${(.5 - y) * 10}deg) rotateY(${(x - .5) * 12}deg)`;
+  });
+  c.addEventListener('pointerleave', () => c.style.transform = '');
+});
+document.querySelectorAll('.tr').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.tr').forEach(x => x.classList.toggle('on', x === t));
+  document.getElementById('cv').src = 'https://fumifum1.github.io/main/jpg/' + t.dataset.i;
+}));
+</script>
+<script src="music.js" data-tracks=".tr"></script>
+<script src="nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10 Pop Bubble | Synapse Creations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--bg:#fdf6ff;--ink:#1b1530;--mute:#6f6787;--pink:#ff7ac6;--lilac:#a98bff;--mint:#6ee7c8;--lemon:#ffe066;--sky:#7cc8ff}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:'Zen Maru Gothic',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.u{font-family:'Unbounded',sans-serif}
+.blobs{position:fixed;inset:0;z-index:-1;filter:blur(70px);opacity:.7;pointer-events:none}
+.blobs i{position:absolute;border-radius:50%;animation:float 18s ease-in-out infinite alternate}
+.blobs i:nth-child(1){width:46vw;height:46vw;background:var(--pink);left:-10vw;top:-10vw}
+.blobs i:nth-child(2){width:40vw;height:40vw;background:var(--lilac);right:-12vw;top:10vh;animation-delay:-5s}
+.blobs i:nth-child(3){width:36vw;height:36vw;background:var(--mint);left:20vw;bottom:-14vw;animation-delay:-9s}
+.blobs i:nth-child(4){width:24vw;height:24vw;background:var(--lemon);right:14vw;bottom:6vh;animation-delay:-3s}
+@keyframes float{to{transform:translate(8vw,6vh) scale(1.15)}}
+
+nav{position:sticky;top:16px;z-index:20;margin:16px auto 0;width:min(1100px,calc(100% - 32px));display:flex;justify-content:space-between;align-items:center;padding:10px 10px 10px 22px;background:rgba(255,255,255,.7);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:999px;box-shadow:0 10px 30px -14px rgba(80,40,120,.35)}
+nav b{font-family:'Unbounded';font-weight:800;font-size:15px}
+nav b span{color:var(--pink)}
+nav ul{display:flex;gap:6px;list-style:none}
+nav ul a{display:block;padding:9px 16px;border-radius:999px;font-weight:700;font-size:14px;transition:.25s}
+nav ul a:hover{background:var(--lemon);transform:rotate(-3deg)}
+nav .hi{padding:10px 18px;border-radius:999px;background:var(--ink);color:#fff;font-weight:700;font-size:14px}
+
+.hero{text-align:center;padding:110px 16px 70px;position:relative}
+.tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.tags a{padding:8px 16px;border-radius:999px;font-weight:700;font-size:14px;border:2px solid var(--ink);background:#fff;box-shadow:3px 3px 0 var(--ink)}
+.tags a:nth-child(1){background:var(--pink);rotate:-4deg}.tags a:nth-child(2){background:var(--mint);rotate:3deg}.tags a:nth-child(3){background:var(--lemon);rotate:-2deg}.tags a:nth-child(4){background:var(--sky);rotate:4deg}
+.hero h1{font-family:'Unbounded';font-weight:800;font-size:clamp(48px,10vw,150px);line-height:.92;letter-spacing:-.04em;margin:34px 0 26px}
+.hero h1 .ch{display:inline-block;transition:transform .5s cubic-bezier(.3,2,.5,1),color .3s}
+.hero h1 .ch:hover{transform:translateY(-.18em) scale(1.15) rotate(-6deg);color:var(--pink)}
+.hero h1 .ch:nth-child(3n):hover{color:var(--lilac)}.hero h1 .ch:nth-child(3n+1):hover{color:#18b991}
+.spark{position:absolute;font-size:34px;animation:tw 2.4s ease-in-out infinite}
+@keyframes tw{50%{transform:scale(.6) rotate(45deg);opacity:.5}}
+.hero p{font-size:18px;color:var(--mute);font-weight:700}
+.hint{margin-top:16px;font-size:13px;color:var(--mute)}
+
+.buddy{position:fixed;left:0;top:0;width:74px;height:74px;border-radius:50%;overflow:hidden;border:4px solid #fff;box-shadow:0 12px 24px -8px rgba(80,40,120,.45);pointer-events:none;z-index:30;background:#eee}
+.buddy img{width:100%;height:100%;object-fit:cover}
+
+.marq{background:var(--ink);color:#fff;transform:rotate(-2deg);margin:30px -20px 0;padding:18px 0;overflow:hidden;white-space:nowrap;font-family:'Unbounded';font-weight:800;font-size:clamp(20px,2.6vw,30px)}
+.marq div{display:inline-block;animation:mq 22s linear infinite}
+.marq span{color:var(--lemon)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+section{padding:110px 0 0}
+.sh{display:flex;justify-content:space-between;align-items:end;margin-bottom:30px;gap:16px;flex-wrap:wrap}
+.sh h2{font-family:'Unbounded';font-weight:800;font-size:clamp(34px,5vw,60px);letter-spacing:-.04em;line-height:1}
+.sh p{color:var(--mute);font-weight:700}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.cd{position:relative;padding:14px 14px 20px;border-radius:32px;background:#fff;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--ink);transition:box-shadow .2s,transform .2s}
+.cd:nth-child(4n+1){background:#ffe3f3}.cd:nth-child(4n+2){background:#e4fbf4}.cd:nth-child(4n+3){background:#fff6cf}.cd:nth-child(4n+4){background:#e9e2ff}
+.cd:hover{animation:jelly .6s}
+.cd:active{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--ink)}
+@keyframes jelly{30%{transform:scale(1.06,.94)}50%{transform:scale(.96,1.04)}70%{transform:scale(1.02,.98)}100%{transform:scale(1)}}
+.cd img{width:100%;aspect-ratio:16/11;object-fit:cover;border-radius:22px;border:2px solid var(--ink);display:block}
+.cd h3{font-family:'Unbounded';font-weight:600;font-size:19px;margin:16px 6px 4px;letter-spacing:-.02em}
+.cd p{font-size:14px;color:var(--mute);margin:0 6px;font-weight:500}
+.cd .go{position:absolute;right:20px;bottom:18px;width:42px;height:42px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;transition:transform .4s cubic-bezier(.3,2,.5,1)}
+.cd:hover .go{transform:rotate(-45deg) scale(1.1)}
+.cd .pill{position:absolute;left:26px;top:26px;padding:4px 12px;border-radius:999px;background:#fff;border:2px solid var(--ink);font-family:'Unbounded';font-size:11px;font-weight:600}
+
+.player{display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:center;padding:30px;border-radius:40px;background:linear-gradient(135deg,var(--lilac),var(--pink));color:#fff;border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink)}
+.covers{position:relative;width:230px;height:230px}
+.covers img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:28px;border:3px solid #fff;transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
+.covers img:nth-child(1){transform:rotate(-10deg) translateX(-14px)}
+.covers img:nth-child(2){transform:rotate(6deg) translateX(10px)}
+.covers img:nth-child(3){transform:rotate(0)}
+.player:hover .covers img:nth-child(1){transform:rotate(-20deg) translateX(-50px)}
+.player:hover .covers img:nth-child(2){transform:rotate(14deg) translateX(46px)}
+.player h3{font-family:'Unbounded';font-weight:800;font-size:clamp(24px,3vw,36px);letter-spacing:-.03em}
+.player p{opacity:.9;margin-top:8px;font-weight:700}
+.list{margin-top:18px;display:flex;flex-direction:column;gap:8px}
+.list div{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:18px;background:rgba(255,255,255,.18);font-weight:700;cursor:pointer;transition:.25s}
+.list div:hover,.list div.on{background:#fff;color:var(--ink)}
+.list i{width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:11px;font-style:normal}
+
+.me{display:grid;grid-template-columns:240px 1fr;gap:40px;align-items:center;padding:34px;border-radius:40px;background:#fff;border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink)}
+.me img{width:240px;height:240px;border-radius:50%;object-fit:cover;border:2px solid var(--ink);animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px) rotate(3deg)}}
+.me h3{font-family:'Unbounded';font-weight:800;font-size:30px}
+.me p{color:var(--mute);line-height:1.9;margin-top:10px;font-weight:500}
+
+footer{text-align:center;padding:140px 16px 100px}
+footer h2{font-family:'Unbounded';font-weight:800;font-size:clamp(34px,6vw,76px);letter-spacing:-.04em;line-height:1}
+.soc{display:flex;gap:12px;justify-content:center;margin-top:30px}
+.soc a{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:22px;background:#fff;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);transition:.2s}
+.soc a:hover{background:var(--lemon);transform:translateY(-4px) rotate(-8deg)}
+
+.bub{position:fixed;border-radius:50%;pointer-events:none;z-index:40;border:2px solid var(--ink);animation:up 1.4s cubic-bezier(.2,.8,.2,1) both}
+@keyframes up{0%{transform:translate(-50%,-50%) scale(0)}20%{transform:translate(-50%,-50%) scale(1)}90%{opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% - 160px)) scale(1.2);opacity:0}}
+
+@media (max-width:860px){.cards{grid-template-columns:1fr}.player,.me{grid-template-columns:1fr;justify-items:center;text-align:center}nav ul{display:none}.buddy{display:none}}
+</style>
+</head>
+<body>
+<div class="blobs"><i></i><i></i><i></i><i></i></div>
+<div class="buddy" id="buddy"><img src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt=""></div>
+
+<nav><b>Synapse<span>✦</span></b><ul><li><a href="#works">Works</a></li><li><a href="#music">Music</a></li><li><a href="#me">Profile</a></li></ul><a class="hi" href="#hi">Say hi 👋</a></nav>
+
+<header class="hero">
+  <span class="spark" style="left:12%;top:120px">✦</span><span class="spark" style="right:14%;top:200px;animation-delay:-1s;color:var(--pink)">✦</span><span class="spark" style="left:22%;bottom:60px;animation-delay:-1.6s;color:var(--lilac)">✷</span>
+  <div class="tags"><a href="https://fumifum1.github.io/main/game.html" target="_blank" rel="noopener">#Games</a><a href="https://fumifum1.github.io/main/music.html" target="_blank" rel="noopener">#Music</a><a href="https://fumifum1.github.io/main/other.html" target="_blank" rel="noopener">#Tools</a><a href="https://fumifum1.github.io/main/blog.html" target="_blank" rel="noopener">#Blog</a></div>
+  <h1 data-split>Synapse<br>Creations</h1>
+  <p>音と映像、そしてAIが織りなす無限の可能性。</p>
+  <div class="hint">どこでもクリックすると、しゃぼん玉がでるよ。おばけもついてくる。</div>
+</header>
+
+<div class="marq"><div>GAMES <span>✦</span> MUSIC <span>✦</span> TOOLS <span>✦</span> BLOG <span>✦</span> 広告なし <span>✦</span> バグはご愛敬 <span>✦</span> GAMES <span>✦</span> MUSIC <span>✦</span> TOOLS <span>✦</span> BLOG <span>✦</span> 広告なし <span>✦</span> バグはご愛敬 <span>✦</span>&nbsp;</div></div>
+
+<main class="wrap">
+  <section id="works">
+    <div class="sh"><h2>Play &amp; Make</h2><p>ぷにっと押してみてね。</p></div>
+    <div class="cards">
+      <a class="cd" href="https://fumifum1.github.io/game/bingo.html" target="_blank"><span class="pill">GAME</span><img src="https://fumifum1.github.io/main/jpg/bingo.jpg" alt=""><h3>BINGO</h3><p>台紙と抽選がいっしょに</p><span class="go">→</span></a>
+      <a class="cd" href="https://fumifum1.github.io/game/rv.html" target="_blank"><span class="pill">GAME</span><img src="https://fumifum1.github.io/main/jpg/rv.jpg" alt=""><h3>Reversi</h3><p>AI対戦のリバーシ</p><span class="go">→</span></a>
+      <a class="cd" href="https://fumifum1.github.io/game/" target="_blank"><span class="pill">GAME</span><img src="https://fumifum1.github.io/main/jpg/game-thumbnail2.jpg" alt=""><h3>Arcade Invade</h3><p>なつかしの定番</p><span class="go">→</span></a>
+      <a class="cd" href="https://fumifum1.github.io/works/kippoui-navi/" target="_blank"><span class="pill">NEW</span><img src="https://fumifum1.github.io/main/jpg/k_n.png" alt=""><h3>Celestial Compass</h3><p>吉方位をチェック</p><span class="go">→</span></a>
+      <a class="cd" href="https://fumifum1.github.io/works/GraffitiStudio.html" target="_blank"><span class="pill">NEW</span><img src="https://fumifum1.github.io/main/jpg/v_p.jpg" alt=""><h3>GraffitiStudio</h3><p>AIプロンプト工房</p><span class="go">→</span></a>
+      <a class="cd" href="https://fumifum1.github.io/works/tarot_g.html" target="_blank"><span class="pill">TOOL</span><img src="https://fumifum1.github.io/main/jpg/c_t.png" alt=""><h3>Tarot</h3><p>タロットでうらなう</p><span class="go">→</span></a>
+    </div>
+  </section>
+
+  <section id="music">
+    <div class="player">
+      <div class="covers"><img src="https://fumifum1.github.io/main/jpg/song2.jpg" alt=""><img src="https://fumifum1.github.io/main/jpg/song8.jpg" alt=""><img id="cv" src="https://fumifum1.github.io/main/jpg/y_b.jpg" alt=""></div>
+      <div>
+        <h3>BEAR BEER BEAT</h3>
+        <p>fumifumi × KUMA × NAMA のハイブリッド音楽ユニット</p>
+        <div class="list">
+          <div class="on" data-img="https://fumifum1.github.io/main/jpg/y_b.jpg"><i>▶</i>そのまま進め、ゆっくり歩いていこう</div>
+          <div data-img="https://fumifum1.github.io/main/jpg/song8.jpg"><i>▶</i>Hamburg steak recipe</div>
+          <div data-img="https://fumifum1.github.io/main/jpg/song1-2.jpg"><i>▶</i>ありのままで2</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="me">
+    <div class="me">
+      <img src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt="fumifumi">
+      <div>
+        <h3>Hi, I'm fumifumi!</h3>
+        <p>シナプスのように色々なものを取り入れ、つなげ、創作する。AIと一緒に、ゲームや音楽、ウェブ制作を通して、つくる楽しさを追いかけています。</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="hi">
+  <h2>Let's make<br>something fun!</h2>
+  <div class="soc"><a href="https://x.com/_fum1_" target="_blank"><i class="fa-brands fa-x-twitter"></i></a><a href="https://suno.com/@fum1" target="_blank"><i class="fa-solid fa-music"></i></a><a href="https://www.instagram.com/sachi.cobito/" target="_blank"><i class="fa-brands fa-instagram"></i></a><a href="https://note.com/fumifum1" target="_blank"><i class="fa-solid fa-pen-nib"></i></a></div>
+  <p style="margin-top:30px;color:var(--mute);font-size:12px">© 2025 Synapse Creations</p>
+</footer>
+
+<script>
+document.querySelectorAll('[data-split]').forEach(el => {
+  el.innerHTML = el.innerHTML.split('<br>').map(w => [...w].map(c => `<span class="ch">${c}</span>`).join('')).join('<br>');
+});
+// おばけバディがゆっくり付いてくる
+const bd = document.getElementById('buddy'); let tx = innerWidth * .8, ty = 200, bx = tx, by = ty;
+addEventListener('pointermove', e => { tx = e.clientX + 30; ty = e.clientY + 30; });
+(function loop() {
+  const vx = (tx - bx) * .06, vy = (ty - by) * .06; bx += vx; by += vy;
+  bd.style.transform = `translate(${bx - 37}px,${by - 37}px) rotate(${vx * 1.5}deg) scale(${1 + Math.min(Math.abs(vx) + Math.abs(vy), 20) / 100})`;
+  requestAnimationFrame(loop);
+})();
+// クリックでしゃぼん玉
+const cols = ['#ff7ac6', '#a98bff', '#6ee7c8', '#ffe066', '#7cc8ff'];
+addEventListener('click', e => {
+  if (e.target.closest('a,.list div')) return;
+  for (let i = 0; i < 6; i++) {
+    const b = document.createElement('span'), s = 14 + Math.random() * 36;
+    b.className = 'bub';
+    Object.assign(b.style, { left: e.clientX + 'px', top: e.clientY + 'px', width: s + 'px', height: s + 'px', background: cols[i % cols.length], animationDelay: i * 50 + 'ms' });
+    b.style.setProperty('--dx', (Math.random() * 160 - 80) + 'px');
+    document.body.appendChild(b); setTimeout(() => b.remove(), 1600);
+  }
+});
+document.querySelectorAll('.list div').forEach(d => d.addEventListener('click', () => {
+  document.querySelectorAll('.list div').forEach(x => x.classList.toggle('on', x === d)); document.getElementById('cv').src = d.dataset.img;
+}));
+</script>
+<script src="music.js" data-tracks=".list div"></script>
+<script src="nav.js"></script>
+</body>
+</html>

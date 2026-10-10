@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>19 RPG Quest | Synapse Creations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0f3a;--w:#fff;--y:#ffe14d;--mute:#9aa0e0}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:hidden}
+body{background:var(--bg);color:var(--w);font-family:'DotGothic16',monospace;font-size:18px;min-height:100vh;padding:20px 16px 110px;background-image:radial-gradient(rgba(255,255,255,.6) 1px,transparent 1.5px);background-size:120px 90px}
+a{color:inherit;text-decoration:none}
+.game{max-width:940px;margin:0 auto;display:grid;grid-template-columns:1fr 290px;gap:14px}
+.win{background:#000;border:4px double var(--w);border-radius:10px;padding:14px 18px;box-shadow:0 0 0 3px #000}
+.title{grid-column:1/3;display:flex;justify-content:space-between;align-items:center;padding:12px 18px}
+.title h1{font-size:clamp(22px,4vw,34px);letter-spacing:.12em;color:var(--y);text-shadow:3px 3px 0 #a33}
+.title p{color:var(--mute);font-size:14px}
+
+/* ゲーム画面：コマンドに合わせて場面（scene）が切り替わる */
+.field{position:relative;height:360px;border-radius:10px;border:4px double var(--w);overflow:hidden;background:#000}
+.scene{position:absolute;inset:0;display:none;animation:warp .45s steps(5)}
+.scene.on{display:block}
+@keyframes warp{0%{clip-path:inset(0 50% 0 50%);filter:brightness(3)}100%{clip-path:inset(0 0 0 0);filter:none}}
+.sname{position:absolute;top:10px;left:12px;z-index:3;font-size:14px;background:rgba(0,0,0,.6);padding:2px 10px;border:2px solid var(--w);border-radius:4px}
+.back{all:unset;cursor:pointer;position:absolute;top:10px;right:12px;z-index:3;font-size:14px;background:rgba(0,0,0,.6);padding:2px 10px;border:2px solid var(--w);border-radius:4px}
+.back:hover{background:var(--y);color:#000}
+
+/* たたかう：右から迫るバグを、タップの魔法とスワイプの斬撃で倒すミニゲーム */
+.s-battle{background:linear-gradient(#1d2a7a 0 58%,#2d5a2d 58%);touch-action:none;cursor:crosshair;user-select:none;-webkit-user-select:none}
+.s-battle::after{content:'';position:absolute;left:0;right:0;top:58%;height:4px;background:#1d3a1d}
+.mount{position:absolute;bottom:42%;width:0;height:0;border-left:70px solid transparent;border-right:70px solid transparent;border-bottom:60px solid #24307f;transform-origin:bottom}
+.ally{position:absolute;left:18px;top:calc(50% - 43px);z-index:2;width:86px;height:86px;border-radius:50%;border:4px solid var(--w);object-fit:cover;animation:hover 1.2s steps(2) infinite;pointer-events:none}
+.ally.cast{animation:cast .2s steps(2)}
+.ally.hurt{animation:blink .12s steps(1) 6}
+@keyframes blink{50%{opacity:.2}}
+.s-battle{cursor:none}
+.s-battle .start{cursor:default}
+@keyframes hover{50%{transform:translateY(-8px)}}
+@keyframes cast{50%{transform:scale(1.18) rotate(-12deg);filter:brightness(1.8)}}
+.bug{position:absolute;z-index:2;line-height:0;translate:-50% -50%;pointer-events:none;filter:drop-shadow(0 0 4px var(--glow))}
+.bug svg{display:block;shape-rendering:crispEdges}
+.bug.boss{filter:drop-shadow(0 0 10px #f0f)}
+/* 2コマのパラパラ（足や目が動く） */
+.bug .fa{animation:fa .5s steps(1) infinite}
+.bug .fb{animation:fb .5s steps(1) infinite}
+@keyframes fa{50%{opacity:0}}
+@keyframes fb{0%{opacity:0}50%{opacity:1}}
+.bug .hp{position:absolute;left:50%;top:-12px;translate:-50% 0;font-size:12px;color:#ff6b9a;white-space:nowrap}
+.fb{position:absolute;z-index:3;width:18px;height:18px;margin:-9px;border-radius:50%;background:radial-gradient(#fff,#ffe14d 40%,#ff6a00 70%);box-shadow:0 0 14px #ff9a00;pointer-events:none}
+.boom{position:absolute;z-index:3;translate:-50% -50%;font-size:20px;color:var(--y);text-shadow:2px 2px 0 #a33;white-space:nowrap;pointer-events:none;animation:boom .6s steps(5) forwards}
+@keyframes boom{0%{transform:scale(.4)}40%{transform:scale(1.3)}100%{transform:translateY(-26px);opacity:0}}
+/* コマンド入力バトル */
+.s-battle{cursor:pointer}
+.s-battle .ally{left:6%;top:calc(58% - 56px);width:104px;height:104px}
+.foe{position:absolute;right:9%;top:58%;translate:0 -78%;z-index:2;text-align:center}
+.foe .spr{filter:drop-shadow(0 0 8px var(--glow))}
+.foe svg{display:block;margin:0 auto}
+.foe-name{font-size:14px;margin-bottom:8px;white-space:nowrap}
+.foe-name i{display:block;width:130px;height:9px;margin:4px auto 0;border:2px solid #fff;background:#300}
+.foe-name s{display:block;height:100%;background:#ff5a5a;transition:width .3s steps(4)}
+.foe.hit .spr{animation:fhit .35s steps(4)}
+@keyframes fhit{25%{transform:translateX(12px);filter:brightness(3)}50%{transform:translateX(-8px)}75%{transform:translateX(5px);filter:brightness(2)}}
+.foe.atk .spr{animation:fatk .45s steps(4)}
+@keyframes fatk{45%{transform:translateX(-70px) scale(1.12)}}
+.foe.die .spr{animation:fdie .6s steps(6) forwards}
+@keyframes fdie{to{opacity:0;transform:scale(.2) rotate(40deg)}}
+.foe.in .spr{animation:fin .5s steps(5)}
+@keyframes fin{from{opacity:0;transform:translateX(60px)}}
+.seq{position:absolute;left:50%;top:13%;translate:-50% 0;z-index:3;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:94%}
+.seq span{width:40px;height:40px;display:grid;place-items:center;border:3px solid #fff;border-radius:6px;background:#000;font-size:22px;opacity:.5;transition:transform .1s}
+.seq span.cur{opacity:1;transform:scale(1.25);border-color:var(--y);color:var(--y)}
+.seq span.ok{background:#1f8a43;opacity:.95}
+.seq span.ng{background:#8a1f1f;opacity:.95}
+.seq span.late{background:#3a3a3a;opacity:.6;text-decoration:line-through}
+.tbar{position:absolute;left:50%;top:calc(13% + 60px);translate:-50% 0;width:220px;height:9px;border:2px solid #fff;z-index:3;background:#000}
+.tbar i{display:block;height:100%;width:100%;background:var(--y)}
+.tbar i.low{background:#ff5a5a}
+.pad span{position:absolute;z-index:1;font-size:22px;color:rgba(255,255,255,.2);pointer-events:none;transition:color .1s,transform .1s}
+.pad .pu{left:50%;top:6px;translate:-50% 0}.pad .pd{left:50%;bottom:42px;translate:-50% 0}.pad .pl{left:8px;top:46%}.pad .pr{right:8px;top:46%}
+.pad span.on{color:var(--y);transform:scale(1.5)}
+.fx{position:absolute;z-index:4;pointer-events:none}
+.fx.bolt{width:12px;margin-left:-6px;top:0;height:0;background:linear-gradient(#fff,#ffe14d);box-shadow:0 0 14px #ffe14d,0 0 30px #fff;animation:bolt .25s steps(3) forwards}
+@keyframes bolt{to{height:var(--h)}}
+.fx.spike{font-size:30px;color:var(--y);letter-spacing:-4px;translate:-50% 0;transform-origin:bottom;animation:spike .4s steps(4) forwards;text-shadow:0 0 8px #ff9a00}
+@keyframes spike{0%{transform:scaleY(0)}50%{transform:scaleY(1.4)}100%{transform:scaleY(1);opacity:0}}
+.fx.slash{height:6px;width:0;background:#fff;box-shadow:0 0 12px #7ff;border-radius:6px;transform:rotate(-28deg);transform-origin:left center;animation:slash .25s steps(4) forwards}
+@keyframes slash{60%{width:170px;opacity:1}100%{width:170px;opacity:0}}
+.fx.fire{width:22px;height:22px;margin:-11px;border-radius:50%;background:radial-gradient(#fff,#ffe14d 40%,#ff6a00 70%);box-shadow:0 0 16px #ff9a00}
+.ally.hurt{animation:blink .12s steps(1) 6}
+.hud2{position:absolute;left:0;right:0;bottom:8px;z-index:3;display:flex;justify-content:center;gap:14px;font-size:15px;pointer-events:none}
+.hud2 span{background:rgba(0,0,0,.6);padding:2px 10px;border:2px solid var(--w);border-radius:4px}
+.hearts{color:#ff6b9a}
+.start{position:absolute;inset:0;z-index:5;display:grid;place-items:center;text-align:center;background:rgba(0,0,0,.6);cursor:default}
+.start.hide{display:none}
+.start b{display:block;font-size:26px;color:var(--y);text-shadow:3px 3px 0 #a33;margin-bottom:10px}
+.start p{font-size:15px;line-height:1.9}
+.start button{all:unset;cursor:pointer;margin-top:14px;padding:6px 22px;border:4px double var(--w);border-radius:6px;background:#000}
+.start button:hover{background:var(--y);color:#000}
+.s-battle.shake{animation:shake .3s steps(4)}
+@keyframes shake{25%{transform:translate(-6px,3px)}50%{transform:translate(6px,-3px)}75%{transform:translate(-4px,0)}}
+
+/* あそぶ：ゲームの扉がならぶダンジョン */
+.s-games{background:repeating-linear-gradient(0deg,#2a2440 0 38px,#1f1a31 38px 40px),#2a2440;background-size:80px 40px}
+.s-games::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 78px,#1f1a31 78px 80px);opacity:.8}
+.doors{position:absolute;left:0;right:0;bottom:24px;display:flex;justify-content:center;gap:22px;z-index:1}
+.door{width:150px;text-align:center;font-size:15px}
+.door .arch{position:relative;height:190px;border:4px solid var(--w);border-bottom:none;border-radius:75px 75px 0 0;overflow:hidden;background:#000;transition:transform .2s steps(3)}
+.door .arch img{width:100%;height:100%;object-fit:cover;image-rendering:pixelated;opacity:.85;transition:opacity .2s}
+.door:hover .arch{transform:translateY(-8px)}
+.door:hover .arch img{opacity:1}
+.door .torch{position:absolute;top:10px;width:10px;height:16px;background:#ffb02e;border-radius:50% 50% 30% 30%;box-shadow:0 0 14px #ffb02e;animation:fire .3s steps(2) infinite}
+@keyframes fire{50%{transform:scaleY(.8);opacity:.8}}
+.door b{display:block;margin-top:8px;color:var(--y)}
+
+/* どうぐ：道具袋（インベントリ） */
+.s-tools{background:#3b2a1a;background-image:repeating-linear-gradient(45deg,rgba(0,0,0,.15) 0 6px,transparent 6px 12px)}
+.bag{position:absolute;inset:50px 20px 20px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:14px}
+.slot{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:3px solid #c9a46b;border-radius:8px;background:rgba(0,0,0,.45);font-size:14px;text-align:center;padding:8px;transition:background .1s}
+.slot img{width:64px;height:64px;object-fit:cover;image-rendering:pixelated;border:2px solid var(--w)}
+.slot:hover{background:rgba(255,225,77,.18)}
+.slot:hover::before{content:'▶';position:absolute;left:6px;top:6px;color:var(--y);animation:bl .5s steps(1) infinite}
+.slot small{color:#e6cfa3}
+
+/* うたう：ステージ＋Suno プレイヤー */
+.s-music{background:radial-gradient(ellipse at 50% 0%,rgba(255,225,77,.35),transparent 55%),linear-gradient(#2b0f4a,#120624)}
+.stage{position:absolute;left:0;top:0;bottom:0;width:44%;display:grid;place-items:center}
+.stage::after{content:'';position:absolute;left:10%;right:10%;bottom:30px;height:16px;background:#5a2b2b;border:3px solid var(--w)}
+.singer{width:120px;height:120px;border-radius:50%;border:4px solid var(--w);object-fit:cover;animation:sing .5s steps(2) infinite;z-index:1}
+@keyframes sing{50%{transform:translateY(-6px) rotate(-6deg)}}
+.note{position:absolute;font-size:24px;color:var(--y);animation:note 2.4s steps(8) infinite;opacity:0}
+@keyframes note{0%{opacity:0;transform:translate(0,0)}20%{opacity:1}100%{opacity:0;transform:translate(30px,-110px)}}
+.setlist{position:absolute;right:14px;top:48px;bottom:14px;width:53%;display:flex;flex-direction:column;gap:8px}
+.song{all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:4px 8px;border:2px solid transparent;border-radius:6px;font-size:14px}
+.song img{width:34px;height:34px;object-fit:cover;border:2px solid var(--w)}
+.song.on,.song:hover{border-color:var(--y);color:var(--y)}
+.eq{margin-left:auto;display:flex;gap:2px;align-items:flex-end;height:14px}
+.eq i{width:3px;height:3px;background:currentColor}
+.song.on .eq i{animation:eq .6s steps(3) infinite}.eq i:nth-child(2){animation-delay:-.2s!important}.eq i:nth-child(3){animation-delay:-.4s!important}
+@keyframes eq{50%{height:14px}}
+.player{margin-top:auto;height:150px;border:2px solid var(--w);background:#000}
+.player iframe{width:100%;height:100%;border:0;display:block}
+
+/* はなす：Mitama のアップ */
+.s-talk{background:repeating-linear-gradient(90deg,#173a5e 0 20px,#1a426a 20px 40px)}
+.face{position:absolute;left:50%;top:46%;translate:-50% -50%;width:220px;height:220px;border-radius:50%;border:5px solid var(--w);object-fit:cover;animation:hover 1.4s steps(2) infinite}
+.heart{position:absolute;font-size:26px;color:#ff6b9a;animation:note 2s steps(6) infinite;opacity:0}
+
+.stat{font-size:16px;line-height:1.8}
+.stat h3{color:var(--y);font-weight:400;border-bottom:2px solid var(--w);padding-bottom:4px;margin-bottom:6px}
+.bar{display:block;height:10px;background:#333;border:2px solid var(--w);margin:2px 0 6px}
+.bar i{display:block;height:100%;background:#3fdc6c;transition:width .5s steps(6)}
+.bar.mp i{background:#4da6ff}
+.cmd{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}
+.cmd button{all:unset;cursor:pointer;padding:6px 6px 6px 26px;position:relative;white-space:nowrap}
+.cmd button.sel::before{content:'▶';position:absolute;left:4px;color:var(--y);animation:bl .6s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.msg{grid-column:1/3;min-height:110px;font-size:17px;line-height:1.9;white-space:pre-wrap}
+.msg .next{color:var(--y);animation:bl .6s steps(1) infinite}
+@media (max-width:760px){.game{grid-template-columns:1fr}.title,.msg{grid-column:1}.title{flex-direction:column;gap:4px}.door{width:30%}.door .arch{height:140px}.stage{width:38%}.setlist{width:58%}.bag{gap:8px}.slot{font-size:11px;padding:4px;white-space:nowrap}.slot img{width:40px;height:40px}}
+</style>
+</head>
+<body>
+<div class="game">
+  <div class="win title"><h1>SYNAPSE QUEST</h1><p>― AIとつくる、広告なしの冒険 ―</p></div>
+
+  <div class="field" id="field">
+    <div class="scene s-battle on" data-s="fight" id="arena">
+      <span class="sname">そうげん　バトル</span>
+      <span class="mount" style="left:32%"></span><span class="mount" style="left:62%;transform:scale(1.4)"></span>
+      <img class="ally" id="ally" src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt="Mitama">
+      <div class="foe" id="foe"><div class="foe-name"><b id="foeName">？？？</b><i><s id="foeHp" style="width:100%"></s></i></div><div class="spr" id="foeSpr"></div></div>
+      <div class="seq" id="seq"></div>
+      <div class="tbar" id="tbarWrap" style="display:none"><i id="tbar"></i></div>
+      <div class="pad" aria-hidden="true"><span class="pu" data-d="up">▲</span><span class="pd" data-d="down">▼</span><span class="pl" data-d="left">◀</span><span class="pr" data-d="right">▶</span></div>
+      <div class="hud2"><span class="hearts" id="hearts">♥♥♥♥♥</span><span>てき <b id="wave">1</b>/6</span><span>SCORE <b id="kills">0</b></span></div>
+      <div class="start" id="start"><div><b>バグの むれが あらわれた！</b><p>でてきた ↑↓←→ の とおりに にゅうりょく！<br>PC＝やじるしキー　スマホ＝がめんの 上下左右を タップ<br>まちがえると ♥が へる。おそいと つぎへ すすむ</p><button id="go">▶ たたかう</button></div></div>
+    </div>
+    <div class="scene s-games" data-s="games">
+      <span class="sname">ゲームのダンジョン</span><button class="back" data-go="fight">← もどる</button>
+      <div class="doors">
+        <a class="door" href="https://fumifum1.github.io/game/bingo.html" target="_blank"><div class="arch"><span class="torch" style="left:12px"></span><span class="torch" style="right:12px"></span><img src="https://fumifum1.github.io/main/jpg/bingo.jpg" alt=""></div><b>BINGO</b>ちいさな イベントに</a>
+        <a class="door" href="https://fumifum1.github.io/game/rv.html" target="_blank"><div class="arch"><span class="torch" style="left:12px"></span><span class="torch" style="right:12px"></span><img src="https://fumifum1.github.io/main/jpg/rv.jpg" alt=""></div><b>リバーシ</b>AIと たいせん</a>
+        <a class="door" href="https://fumifum1.github.io/game/" target="_blank"><div class="arch"><span class="torch" style="left:12px"></span><span class="torch" style="right:12px"></span><img src="https://fumifum1.github.io/main/jpg/game-thumbnail2.jpg" alt=""></div><b>インベード</b>レベル10で クリア</a>
+      </div>
+    </div>
+    <div class="scene s-tools" data-s="tools">
+      <span class="sname">どうぐぶくろ</span><button class="back" data-go="fight">← もどる</button>
+      <div class="bag">
+        <a class="slot" href="https://fumifum1.github.io/works/kippoui-navi/" target="_blank" data-d="きっぽうい を しらべる ふしぎな コンパス。"><img src="https://fumifum1.github.io/main/jpg/k_n.png" alt="">コンパス<small>x1</small></a>
+        <a class="slot" href="https://fumifum1.github.io/works/tarot_g.html" target="_blank" data-d="1日1まい ひける うらないの カード。"><img src="https://fumifum1.github.io/main/jpg/c_t.png" alt="">タロット<small>x1</small></a>
+        <a class="slot" href="https://fumifum1.github.io/works/GraffitiStudio.html" target="_blank" data-d="がぞうせいせいAIの じゅもんを つくる ほん。"><img src="https://fumifum1.github.io/main/jpg/v_p.jpg" alt="">じゅもんの書<small>x1</small></a>
+        <a class="slot" href="https://fumifum1.github.io/works/qr.html" target="_blank" data-d="オリジナルの QRコードを つくる スタンプ。"><img src="https://fumifum1.github.io/main/jpg/q_c.png" alt="">QRスタンプ<small>x1</small></a>
+        <a class="slot" href="https://fumifum1.github.io/pdf_tool/menu.html" target="_blank" data-d="PDFを きったり つないだり できる ハサミ。"><img src="https://fumifum1.github.io/main/jpg/p_t.jpg" alt="">PDFハサミ<small>x1</small></a>
+        <a class="slot" href="https://fumifum1.github.io/GeoScope/QuickShot.html" target="_blank" data-d="しゃしんに ばしょと メモを きざむ カメラ。"><img src="https://fumifum1.github.io/main/jpg/q_s.jpg" alt="">きろくカメラ<small>x1</small></a>
+      </div>
+    </div>
+    <div class="scene s-music" data-s="music">
+      <span class="sname">ライブハウス</span><button class="back" data-go="fight">← もどる</button>
+      <div class="stage">
+        <img class="singer" src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt="">
+        <span class="note" style="left:30%;top:40%">♪</span><span class="note" style="left:58%;top:36%;animation-delay:-.8s">♫</span><span class="note" style="left:44%;top:30%;animation-delay:-1.6s">♪</span>
+      </div>
+      <div class="setlist" id="setlist">
+        <button class="song on" data-id="6b4a5f0e-1799-4b9f-b27e-7bbe61fe8bcc" data-t="そのまま進め、ゆっくり歩いていこう"><img src="https://fumifum1.github.io/main/jpg/y_b.jpg" alt="">そのまま進め<span class="eq"><i></i><i></i><i></i></span></button>
+        <button class="song" data-id="af907997-203b-408d-afb5-6bdc6b1d653c" data-t="Hamburg steak recipe"><img src="https://fumifum1.github.io/main/jpg/song8.jpg" alt="">ハンバーグ<span class="eq"><i></i><i></i><i></i></span></button>
+        <button class="song" data-id="81859e00-c3ab-45a0-82a5-447a655e7d84" data-t="ありのままで2"><img src="https://fumifum1.github.io/main/jpg/song1-2.jpg" alt="">ありのままで2<span class="eq"><i></i><i></i><i></i></span></button>
+        <div class="player"><iframe id="suno" title="Suno player" allow="autoplay"></iframe></div>
+      </div>
+    </div>
+    <div class="scene s-talk" data-s="talk">
+      <span class="sname">ミタマの へや</span><button class="back" data-go="fight">← もどる</button>
+      <img class="face" src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt="">
+      <span class="heart" style="left:62%;top:28%">♥</span><span class="heart" style="left:32%;top:34%;animation-delay:-1s">♥</span>
+    </div>
+  </div>
+
+  <div style="display:grid;gap:14px;align-content:start">
+    <div class="win stat"><h3>fumifumi</h3>HP<span class="bar"><i id="hp" style="width:100%"></i></span>MP<span class="bar mp"><i id="mpb" style="width:70%"></i></span>Lv <b id="lvl">25</b>　G <b id="gold">0</b></div>
+    <div class="win cmd" id="cmd">
+      <button class="sel" data-c="games">あそぶ</button><button data-c="tools">どうぐ</button>
+      <button data-c="music">うたう</button><button data-c="talk">はなす</button>
+      <button data-c="run">にげる</button><button data-c="fight">たたかう</button>
+    </div>
+  </div>
+  <div class="win msg" id="msg"></div>
+</div>
+<script>
+const MSG = {
+  games: 'fumifumi は ゲームの ダンジョンに はいった！\nとびらを えらんで あそぼう。', tools: 'fumifumi は どうぐぶくろを ひらいた！\nどうぐに カーソルを あわせると せつめいが でるよ。',
+  music: 'ライブハウスに やってきた！\nきょくを えらぶと Suno の プレイヤーで きけるよ。♪', talk: 'ミタマ「やあ！ ぼく ミタマ。\nバグは ごあいきょう だよ。」',
+  run: 'fumifumi は にげだした！\nしかし まわりこまれてしまった！', fight: 'バグの むれが おそってきた！\nでてきた やじるしの とおりに こうげきだ！',
+};
+const TALK = ['ミタマ「やあ！ ぼく ミタマ。\nバグは ごあいきょう だよ。」', 'ミタマ「この ぼうけん、こうこくは でてこないよ。」', 'ミタマ「どうぐぶくろ、もう のぞいた？」', 'ミタマ「レベルが あがると…いいことが あるかも？」'];
+const msg = document.getElementById('msg');
+let typing, talkN = 0, gold = 0, lv = 25;
+const say = t => {
+  clearInterval(typing); msg.textContent = ''; let i = 0;
+  typing = setInterval(() => { msg.textContent = t.slice(0, ++i); if (i >= t.length) { clearInterval(typing); msg.insertAdjacentHTML('beforeend', ' <span class="next">▼</span>'); } }, 32);
+};
+// 場面（ゲーム画面）を切り替える
+const scene = s => { if (s !== 'fight') stopGame(true); document.querySelectorAll('.scene').forEach(x => x.classList.toggle('on', x.dataset.s === s)); };
+const run = c => {
+  if (c === 'run') { say(MSG.run); return; }
+  scene(c);
+  say(c === 'talk' ? TALK[talkN++ % TALK.length] : MSG[c]);
+  if (c === 'fight') startGame();
+  if (c === 'music') { document.getElementById('mpb').style.width = '100%'; if (!document.getElementById('suno').src) playSong(document.querySelector('.song.on')); }
+  gold += 7; document.getElementById('gold').textContent = gold;
+  if (gold % 28 === 0) { lv++; document.getElementById('lvl').textContent = lv; setTimeout(() => say(`fumifumi の レベルが ${lv} に あがった！`), 2400); }
+};
+const playSong = b => {
+  document.querySelectorAll('.song').forEach(x => x.classList.toggle('on', x === b));
+  document.getElementById('suno').src = 'https://suno.com/embed/' + b.dataset.id + '/';
+};
+document.querySelectorAll('.song').forEach(b => b.addEventListener('click', () => { playSong(b); say(`♪ 「${b.dataset.t}」を うたった！\nこころが すこし かるくなった。`); }));
+document.querySelectorAll('.slot').forEach(s => s.addEventListener('mouseenter', () => say(`${s.textContent.replace('x1', '').trim()}：${s.dataset.d}`)));
+document.querySelectorAll('.back').forEach(b => b.addEventListener('click', () => { scene('fight'); select(5); say('そうげんに もどってきた。\nとおくに バグの けはいが する…'); }));
+const btns = [...document.querySelectorAll('#cmd button')];
+let cur = 0;
+const select = i => { cur = (i + btns.length) % btns.length; btns.forEach((b, k) => b.classList.toggle('sel', k === cur)); };
+btns.forEach((b, i) => { b.addEventListener('mouseenter', () => select(i)); b.addEventListener('click', () => { select(i); run(b.dataset.c); }); });
+addEventListener('keydown', e => {
+  const KEYDIR = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', w: 'up', s: 'down', a: 'left', d: 'right' };
+  if (G && G.alive && KEYDIR[e.key]) { e.preventDefault(); if (!e.repeat) input(KEYDIR[e.key]); return; }
+  const m = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 2, ArrowUp: -2 }[e.key];
+  if (m) { e.preventDefault(); select(cur + m); }
+  if ((e.key === 'Enter' || e.key === ' ') && !e.target.closest('button,a')) { e.preventDefault(); run(btns[cur].dataset.c); }
+});
+// ---- バトル（ミニゲーム） ----
+const $ = id => document.getElementById(id);
+const arena = $('arena'), ally = $('ally'), hpBar = $('hp'), mpBar = $('mpb');
+// 謎のドット生物（オリジナル）：1＝ドット。2コマずつ用意して交互に表示する
+const SPRITES = [
+  { c: '#6bff8f', a: ['..11111..', '.1111111.', '11.111.11', '111111111', '1.11111.1', '1.1...1.1', '...1.1...', '..1...1..'],
+    b: ['..11111..', '.1111111.', '11.111.11', '111111111', '.1111111.', '..1...1..', '.1.1.1.1.', '1.......1'] },
+  { c: '#5ee7ff', a: ['...11...', '..1111..', '.111111.', '11.11.11', '11111111', '..1..1..', '.1.11.1.', '1.1..1.1'],
+    b: ['...11...', '..1111..', '.111111.', '11.11.11', '11111111', '.1.11.1.', '1......1', '.1....1.'] },
+  { c: '#ff7ad9', a: ['..1...1..', '...111...', '.1111111.', '11..1..11', '111111111', '.1.1.1.1.', '1.1.1.1.1'],
+    b: ['1.......1', '.1.111.1.', '.1111111.', '11..1..11', '111111111', '1.1.1.1.1', '.1.1.1.1.'] },
+  { c: '#ffe14d', a: ['.1.....1.', '..11111..', '.1.111.1.', '111111111', '11.1.1.11', '.1111111.', '..1...1..', '.1.....1.'],
+    b: ['1.......1', '..11111..', '.1.111.1.', '111111111', '11.1.1.11', '.1111111.', '.1.....1.', '..1...1..'] },
+];
+const BOSS = { c: '#ff4dff', a: ['....11111....', '..111111111..', '.11111111111.', '111..111..111', '1111111111111', '..111...111..', '.11..111..11.', '11.........11', '1...........1'],
+  b: ['....11111....', '..111111111..', '.11111111111.', '111..111..111', '1111111111111', '...11...11...', '..11.111.11..', '.11.......11.', '..1.......1..'] };
+const pix = (rows, cls) => '<g class="' + cls + '">' + rows.map((r, y) => [...r].map((ch, x) => ch === '1' ? `<rect x="${x}" y="${y}" width="1" height="1"/>` : '').join('')).join('') + '</g>';
+const spriteSVG = (sp, px) => { const w = sp.a[0].length, h = sp.a.length; return `<svg viewBox="0 0 ${w} ${h}" width="${w * px}" height="${h * px}" fill="${sp.c}">${pix(sp.a, 'fa')}${pix(sp.b, 'fb')}</svg>`; };
+let G = null;
+const DIRS = ['up', 'down', 'left', 'right'], ARW = { up: '↑', down: '↓', left: '←', right: '→' };
+// 敵はだんだん強く：入力の数（len）が増え、1つあたりの制限時間（t 秒）が短くなる
+const FOES = [
+  { n: 'グリーンバグ', sp: 0, len: 3, t: 2.0 }, { n: 'シアンバグ', sp: 1, len: 4, t: 1.7 }, { n: 'ピンクバグ', sp: 2, len: 5, t: 1.45 },
+  { n: 'イエローバグ', sp: 3, len: 6, t: 1.25 }, { n: 'グリーンバグ・改', sp: 0, len: 7, t: 1.05 }, { n: 'デカバグ', boss: true, len: 9, t: .9 },
+];
+const HOWTO = 'でてきた ↑↓←→ の とおりに にゅうりょく！<br>PC＝やじるしキー　スマホ＝がめんの 上下左右を タップ<br>まちがえると ♥が へる。おそいと つぎへ すすむ';
+const W = () => arena.clientWidth, H = () => arena.clientHeight;
+const resetOverlay = () => {
+  const st = $('start'); st.classList.remove('hide');
+  st.querySelector('b').textContent = 'バグの むれが あらわれた！';
+  st.querySelector('p').innerHTML = HOWTO; st.querySelector('button').textContent = '▶ たたかう';
+};
+const stopGame = overlay => {
+  if (G) { G.alive = false; cancelAnimationFrame(G.raf); G.timers.forEach(clearTimeout); }
+  G = null; $('seq').innerHTML = ''; $('tbarWrap').style.display = 'none';
+  if (overlay) resetOverlay();
+};
+const later = (fn, ms) => { if (G) G.timers.push(setTimeout(() => { if (G && G.alive) fn(); }, ms)); };
+const pop = (x, y, t) => { const e = document.createElement('span'); e.className = 'boom'; e.textContent = t; e.style.left = x + 'px'; e.style.top = y + 'px'; arena.appendChild(e); setTimeout(() => e.remove(), 620); };
+const hud = () => {
+  const hp = Math.max(0, G.hp);
+  $('hearts').textContent = '♥'.repeat(hp) + '♡'.repeat(5 - hp);
+  $('wave').textContent = Math.min(G.wave + 1, FOES.length); $('kills').textContent = G.score;
+  hpBar.style.width = hp / 5 * 100 + '%';
+};
+const foeCenter = () => { const a = arena.getBoundingClientRect(), r = $('foeSpr').getBoundingClientRect(); return [r.left - a.left + r.width / 2, r.top - a.top + r.height / 2, r]; };
+const allyCenter = () => { const a = arena.getBoundingClientRect(), r = ally.getBoundingClientRect(); return [r.left - a.left + r.width / 2, r.top - a.top + r.height / 2]; };
+const anim = (el, cls) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
+const startGame = () => {
+  stopGame(false);
+  G = { hp: 5, wave: 0, score: 0, alive: true, seq: [], res: [], idx: 0, tLeft: 0, tMax: 1, foeHp: 0, busy: true, timers: [], last: performance.now(), combo: 0 };
+  $('start').classList.add('hide'); hud(); nextFoe();
+  G.raf = requestAnimationFrame(loop);
+};
+const nextFoe = () => {
+  const fo = FOES[G.wave], sp = fo.boss ? BOSS : SPRITES[fo.sp];
+  G.foe = fo; G.foeHp = fo.len;
+  $('foeSpr').innerHTML = spriteSVG(sp, fo.boss ? 10 : 9); $('foeSpr').style.setProperty('--glow', sp.c);
+  $('foeName').textContent = fo.n + (fo.boss ? '（ボス）' : ''); $('foeHp').style.width = '100%';
+  $('foe').className = 'foe'; anim($('foe'), 'in'); hud();
+  say(`${fo.n} が あらわれた！\n${fo.len}かい こうげきを あてよう。`);
+  later(newSeq, 1000);
+};
+// 敵の残りHPの数だけ、ランダムな方向を出題する
+const newSeq = () => {
+  G.seq = Array.from({ length: G.foeHp }, () => DIRS[Math.floor(Math.random() * 4)]);
+  G.res = G.seq.map(() => ''); G.idx = 0; G.tMax = G.foe.t; G.tLeft = G.tMax; G.busy = false;
+  $('tbarWrap').style.display = ''; renderSeq();
+};
+const renderSeq = () => { $('seq').innerHTML = G.seq.map((d, i) => `<span class="${G.res[i] || (i === G.idx ? 'cur' : '')}">${ARW[d]}</span>`).join(''); };
+const flashPad = d => { const p = arena.querySelector(`.pad [data-d="${d}"]`); anim(p, 'on'); setTimeout(() => p.classList.remove('on'), 160); };
+const input = d => {
+  if (!G || !G.alive || G.busy || G.idx >= G.seq.length) return;
+  flashPad(d);
+  if (d === G.seq[G.idx]) {
+    G.res[G.idx] = 'ok'; G.combo++; attack(d); G.foeHp--;
+    G.score += 10 * (G.wave + 1) * (G.combo >= 5 ? 2 : 1);
+    $('foeHp').style.width = G.foeHp / G.foe.len * 100 + '%';
+  } else { G.res[G.idx] = 'ng'; G.combo = 0; hurt('まちがえた！'); }
+  advance();
+};
+const advance = () => {
+  G.idx++; hud();
+  if (!G.alive) return;
+  if (G.foeHp <= 0) { renderSeq(); return defeat(); }
+  if (G.idx >= G.seq.length) {
+    // 出題が終わっても敵が残っていたら、敵の反撃のあと次の出題
+    G.busy = true; renderSeq();
+    later(() => { foeAttack(); later(newSeq, 800); }, 400);
+    return;
+  }
+  G.tLeft = G.tMax; renderSeq();
+};
+// 方向ごとの攻撃演出：↑いかずち / ↓じひびき / ←ほのお / →きりさく
+const attack = d => {
+  anim(ally, 'cast');
+  const [fx, fy, fr] = foeCenter(), [ax, ay] = allyCenter(), a = arena.getBoundingClientRect();
+  const hitFoe = (label) => { anim($('foe'), 'hit'); pop(fx, fy - fr.height / 2 - 6, label); };
+  if (d === 'up') { const e = document.createElement('span'); e.className = 'fx bolt'; e.style.left = fx + 'px'; e.style.setProperty('--h', fy + 'px'); arena.appendChild(e); setTimeout(() => e.remove(), 400); hitFoe('いかずち！'); }
+  if (d === 'down') { const e = document.createElement('span'); e.className = 'fx spike'; e.textContent = '▲▲▲▲'; e.style.left = fx + 'px'; e.style.top = (fr.bottom - a.top - 34) + 'px'; arena.appendChild(e); setTimeout(() => e.remove(), 450); hitFoe('じひびき！'); }
+  if (d === 'right') { const e = document.createElement('span'); e.className = 'fx slash'; e.style.left = (fx - 80) + 'px'; e.style.top = (fy + 30) + 'px'; arena.appendChild(e); setTimeout(() => e.remove(), 320); hitFoe('きりさく！'); }
+  if (d === 'left') {
+    const e = document.createElement('span'); e.className = 'fx fire'; arena.appendChild(e); const t0 = performance.now();
+    const fly = now => { const k = Math.min(1, (now - t0) / 180); e.style.left = ax + (fx - ax) * k + 'px'; e.style.top = ay + (fy - ay) * k - Math.sin(k * Math.PI) * 40 + 'px'; if (k < 1) requestAnimationFrame(fly); else { e.remove(); hitFoe('ほのお！'); } };
+    requestAnimationFrame(fly);
+  }
+  if (G.combo >= 5 && G.combo % 5 === 0) pop(ax + 40, ay - 70, G.combo + ' れんぞく！ かいしんの いちげき！');
+};
+const hurt = msg => {
+  G.hp--; const [ax, ay] = allyCenter();
+  anim(ally, 'hurt'); anim(arena, 'shake'); pop(ax + 30, ay - 66, msg + ' ♥-1'); hud();
+  if (G.hp <= 0) later(() => endGame(false), 500);
+};
+const foeAttack = () => { anim($('foe'), 'atk'); later(() => hurt(G.foe.n + 'の こうげき！'), 220); say(`${G.foe.n} の こうげき！\nつぎこそ ぜんぶ あてよう。`); };
+const defeat = () => {
+  G.busy = true; $('tbarWrap').style.display = 'none';
+  anim($('foe'), 'die'); G.score += 50 * (G.wave + 1);
+  const [fx, fy] = foeCenter(); pop(fx, fy, G.foe.boss ? 'デカバグを たおした！' : 'やっつけた！');
+  say(`${G.foe.n} を やっつけた！`);
+  G.wave++; hud();
+  if (G.wave >= FOES.length) return later(() => endGame(true), 900);
+  later(nextFoe, 1200);
+};
+const loop = now => {
+  if (!G || !G.alive) return;
+  const dt = Math.max(0, Math.min(.05, (now - G.last) / 1000)); G.last = Math.max(G.last, now);
+  if (!G.busy && G.idx < G.seq.length) {
+    G.tLeft -= dt;
+    const k = Math.max(0, G.tLeft / G.tMax); $('tbar').style.width = k * 100 + '%'; $('tbar').classList.toggle('low', k < .35);
+    if (G.tLeft <= 0) { G.res[G.idx] = 'late'; G.combo = 0; const [fx, fy, fr] = foeCenter(); pop(fx, fy - fr.height / 2 - 6, 'おそい！'); advance(); }
+  }
+  G.raf = requestAnimationFrame(loop);
+};
+const endGame = win => {
+  const sc = G.score, beat = G.wave;
+  stopGame(false);
+  const st = $('start'); st.classList.remove('hide');
+  st.querySelector('b').textContent = win ? 'ぜんぶ たおした！' : 'ぜんめつ…';
+  st.querySelector('p').innerHTML = `てきを ${beat}たい たおした！<br>スコア ${sc}`;
+  st.querySelector('button').textContent = '▶ もういちど';
+  gold += sc; $('gold').textContent = gold;
+  if (beat >= 3) { lv++; $('lvl').textContent = lv; }
+  hpBar.style.width = '100%';
+  say(win ? `デカバグを たおした！\nfumifumi の レベルが ${lv} に あがった！` : 'fumifumi たちは ぜんめつした…\nしかし バグは ご愛敬。もういちど ちょうせん！');
+};
+// スマホ：画面の上下左右どこをタップしたかで方向を決める
+arena.addEventListener('pointerdown', e => {
+  if (!G || e.target.closest('.start')) return;
+  e.preventDefault();
+  const r = arena.getBoundingClientRect(), dx = e.clientX - r.left - r.width / 2, dy = e.clientY - r.top - r.height / 2;
+  input(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up'));
+});
+$('go').addEventListener('click', e => { e.stopPropagation(); select(5); say(MSG.fight); startGame(); });
+say('ミタマ が なかまに なった！\n「たたかう」で バグたいじ、ほかの コマンドで がめんが きりかわるよ。');
+</script>
+<script src="nav.js"></script>
+</body>
+</html>

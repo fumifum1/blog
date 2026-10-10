@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>07 Scrapbook | Synapse Creations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Klee+One:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f7f2e8;--ink:#2a2a2a;--mute:#8a8274;--red:#e2483d;--blue:#2f6fd6;--tape:rgba(247,215,116,.78);--tape2:rgba(160,214,224,.75)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:'Zen Kaku Gothic New',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background-image:linear-gradient(rgba(47,111,214,.09) 1px,transparent 1px);background-size:100% 34px}
+body::before{content:'';position:fixed;left:clamp(20px,6vw,90px);top:0;bottom:0;width:1.5px;background:rgba(226,72,61,.35);pointer-events:none}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .45  0 0 0 0 .4  0 0 0 .08 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>")}
+a{color:inherit;text-decoration:none}
+.hand{font-family:'Klee One',cursive}
+.cav{font-family:'Caveat',cursive}
+.wrap{max-width:1120px;margin:0 auto;padding:0 clamp(28px,8vw,110px) 0 clamp(36px,9vw,130px);position:relative}
+
+nav{display:flex;justify-content:space-between;align-items:center;padding:28px 0}
+nav .cav{font-size:26px;font-weight:700}
+nav ul{display:flex;gap:22px;list-style:none;font-family:'Klee One'}
+nav ul a{position:relative}
+nav ul a:hover{color:var(--red)}
+
+.hero{position:relative;padding:60px 0 40px;min-height:640px}
+.hero .cav.s{font-size:30px;color:var(--blue);transform:rotate(-4deg);display:inline-block}
+.hero h1{font-family:'Klee One';font-weight:600;font-size:clamp(48px,8vw,108px);line-height:1.05;letter-spacing:-.02em;position:relative;display:inline-block}
+.uline{position:absolute;left:0;bottom:-14px;width:100%;height:24px;overflow:visible}
+.uline path{fill:none;stroke:var(--red);stroke-width:4;stroke-linecap:round;stroke-dasharray:900;stroke-dashoffset:900;animation:draw 1.4s .4s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.hero p{font-family:'Klee One';font-size:18px;margin-top:36px;line-height:2}
+.sticky{position:absolute;right:2%;top:70px;width:220px;padding:22px 18px;background:#fff59a;font-family:'Klee One';font-size:15px;line-height:1.8;transform:rotate(4deg);box-shadow:0 14px 24px -14px rgba(0,0,0,.35)}
+.sticky::before{content:'';position:absolute;top:-12px;left:50%;width:90px;height:24px;background:var(--tape2);transform:translateX(-50%) rotate(-3deg)}
+.circ{position:relative;display:inline-block}
+.circ svg{position:absolute;left:-12%;top:-30%;width:124%;height:160%;overflow:visible;pointer-events:none}
+.circ svg path{fill:none;stroke:var(--red);stroke-width:2.2;stroke-linecap:round}
+.hint{position:absolute;font-family:'Caveat';font-size:24px;color:var(--blue);display:flex;align-items:center;gap:6px;transform:rotate(-6deg)}
+
+.stk{position:absolute;cursor:grab;touch-action:none;user-select:none;z-index:20;filter:drop-shadow(0 6px 8px rgba(0,0,0,.18));transition:filter .2s,scale .2s}
+.stk img{display:block;width:100%;pointer-events:none;-webkit-user-drag:none}
+.stk.round img{border-radius:50%;border:6px solid #fff}
+.stk.die img{background:#fff;border-radius:18px;padding:6px}
+.stk.drag{cursor:grabbing;scale:1.1;filter:drop-shadow(0 18px 18px rgba(0,0,0,.25))}
+
+section{padding:90px 0 0}
+.sh{display:flex;align-items:baseline;gap:16px;margin-bottom:34px}
+.sh .no{font-family:'Caveat';font-size:44px;color:var(--red);line-height:1}
+.sh h2{font-family:'Klee One';font-weight:600;font-size:clamp(28px,3.4vw,40px)}
+.sh small{font-family:'Caveat';font-size:22px;color:var(--mute)}
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:46px 34px}
+.pol{position:relative;background:#fff;padding:12px 12px 16px;box-shadow:0 12px 24px -14px rgba(0,0,0,.35);transform:rotate(var(--r,0deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1),box-shadow .35s}
+.pol:hover{transform:rotate(0) translateY(-8px) scale(1.03);box-shadow:0 26px 40px -18px rgba(0,0,0,.35);z-index:5}
+.pol::before{content:'';position:absolute;top:-13px;left:50%;width:96px;height:26px;background:var(--tape);transform:translateX(-50%) rotate(var(--t,-4deg));opacity:.95}
+.pol img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#eee}
+.pol h3{font-family:'Klee One';font-weight:600;font-size:19px;margin-top:12px}
+.pol p{font-family:'Klee One';font-size:13px;color:#555;margin-top:2px}
+.pol .go{position:absolute;right:14px;bottom:14px;font-family:'Caveat';font-size:22px;color:var(--blue)}
+.pol .badge{position:absolute;top:18px;right:18px;background:var(--red);color:#fff;font-family:'Caveat';font-size:20px;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;transform:rotate(12deg)}
+
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.idx{display:grid;grid-template-columns:96px 1fr;gap:16px;align-items:center;background:#fff;padding:14px;border-top:3px solid var(--red);background-image:linear-gradient(rgba(47,111,214,.12) 1px,transparent 1px);background-size:100% 26px;background-position:0 12px;box-shadow:0 10px 18px -12px rgba(0,0,0,.3);transform:rotate(var(--r,0deg));transition:transform .3s}
+.idx:hover{transform:rotate(0) scale(1.02)}
+.idx img{width:96px;height:96px;object-fit:cover}
+.idx h3{font-family:'Klee One';font-weight:600;font-size:18px}
+.idx p{font-family:'Klee One';font-size:13px;color:#555;line-height:26px}
+
+.me{display:grid;grid-template-columns:260px 1fr;gap:40px;align-items:center}
+.me .pol{--r:-3deg}
+.me p{font-family:'Klee One';font-size:17px;line-height:2.1}
+.me mark{background:linear-gradient(transparent 55%,rgba(255,232,100,.85) 55%)}
+
+footer{padding:120px 0 100px;text-align:center}
+footer .cav{font-size:clamp(48px,8vw,96px);color:var(--red);transform:rotate(-3deg);display:inline-block}
+footer p{font-family:'Klee One';margin-top:10px}
+footer p a{margin:0 10px;border-bottom:2px dashed var(--blue)}
+
+@media (max-width:860px){.board{grid-template-columns:repeat(2,1fr);gap:30px 20px}.cards,.me{grid-template-columns:1fr}.sticky{position:relative;right:auto;top:auto;margin-top:30px}.stk{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav><span class="cav">fumifumi's notebook</span><ul><li><a href="#play">あそぶ</a></li><li><a href="#listen">きく</a></li><li><a href="#tools">つかう</a></li><li><a href="#me">わたし</a></li></ul></nav>
+
+  <header class="hero" id="hero">
+    <span class="cav s">welcome to</span><br>
+    <h1>Synapse<br>Creations<svg class="uline" viewBox="0 0 600 24" preserveAspectRatio="none"><path d="M4 14 C120 4, 260 22, 380 10 S560 6, 596 16"/></svg></h1>
+    <p>音と映像、そしてAIが織りなす無限の可能性。<br>思いついたものを、ぺたぺた貼っていくノートです。</p>
+    <div class="sticky">広告なしで暇つぶし。<br><span class="circ">バグはご愛敬<svg viewBox="0 0 100 40" preserveAspectRatio="none"><path d="M8 22 C4 6, 92 2, 96 18 C99 34, 12 40, 6 20 C5 14, 20 6, 40 6"/></svg></span> ♡</div>
+    <div class="hint" style="left:56%;top:560px">↑ ステッカーは動かせます<svg width="40" height="20"><path d="M2 10 Q20 0 38 12" stroke="#2f6fd6" stroke-width="2" fill="none"/></svg></div>
+
+    <div class="stk round" style="width:130px;left:60%;top:250px;rotate:-8deg"><img src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt=""></div>
+    <div class="stk die" style="width:120px;left:78%;top:300px;rotate:10deg"><img src="https://fumifum1.github.io/blog/assets/tsugihagi-ghost/main.png" alt=""></div>
+    <div class="stk die" style="width:110px;left:66%;top:420px;rotate:-6deg"><img src="https://fumifum1.github.io/blog/assets/gothic-fantasy-boy/main.png" alt=""></div>
+    <div class="stk die" style="width:100px;left:84%;top:450px;rotate:6deg"><img src="https://stickershop.line-scdn.net/stickershop/v1/sticker/847836810/iPhone/sticker@2x.png" alt=""></div>
+  </header>
+
+  <section id="play">
+    <div class="sh"><span class="no">01.</span><h2>あそべるもの</h2><small>— games</small></div>
+    <div class="board">
+      <a class="pol" style="--r:-2.5deg" href="https://fumifum1.github.io/game/bingo.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/bingo.jpg" alt=""><h3>BINGO</h3><p>台紙と抽選がいっしょに。</p><span class="go">play →</span></a>
+      <a class="pol" style="--r:1.8deg;--t:3deg" href="https://fumifum1.github.io/game/rv.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/rv.jpg" alt=""><h3>Reversi</h3><p>AIと対戦！けっこう強い。</p><span class="go">play →</span></a>
+      <a class="pol" style="--r:-1deg;--t:-6deg" href="https://fumifum1.github.io/game/" target="_blank"><img src="https://fumifum1.github.io/main/jpg/game-thumbnail2.jpg" alt=""><h3>Arcade Invade</h3><p>なつかしの定番。</p><span class="go">play →</span></a>
+    </div>
+  </section>
+
+  <section id="listen">
+    <div class="sh"><span class="no">02.</span><h2>きいてほしいもの</h2><small>— BEAR BEER BEAT</small></div>
+    <div class="board">
+      <div class="pol" style="--r:2deg"><span class="badge">new!</span><img src="https://fumifum1.github.io/main/jpg/y_b.jpg" alt=""><h3>そのまま進め、ゆっくり歩いていこう</h3><p>焦らなくていい、自分らしく。</p><span class="go">♪</span></div>
+      <div class="pol" style="--r:-2deg;--t:5deg"><img src="https://fumifum1.github.io/main/jpg/song8.jpg" alt=""><h3>Hamburg steak recipe</h3><p>レシピをラップにのせて。</p><span class="go">♪</span></div>
+      <div class="pol" style="--r:1deg;--t:-2deg"><img src="https://fumifum1.github.io/main/jpg/song1-2.jpg" alt=""><h3>ありのままで2</h3><p>Ver.3と聴きくらべてね。</p><span class="go">♪</span></div>
+    </div>
+  </section>
+
+  <section id="tools">
+    <div class="sh"><span class="no">03.</span><h2>べんりなもの</h2><small>— tools</small></div>
+    <div class="cards">
+      <a class="idx" style="--r:-.8deg" href="https://fumifum1.github.io/works/kippoui-navi/" target="_blank"><img src="https://fumifum1.github.io/main/jpg/k_n.png" alt=""><div><h3>Celestial Compass</h3><p>生年月日と旅立つ日から吉方位をチェック。</p></div></a>
+      <a class="idx" style="--r:.6deg" href="https://fumifum1.github.io/works/GraffitiStudio.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/v_p.jpg" alt=""><div><h3>GraffitiStudio</h3><p>画像生成AI用のプロンプトを組み立てる。</p></div></a>
+      <a class="idx" style="--r:.9deg" href="https://fumifum1.github.io/works/tarot_g.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/c_t.png" alt=""><div><h3>Tarot</h3><p>タロット占いをのんびり楽しむ。</p></div></a>
+      <a class="idx" style="--r:-.5deg" href="https://fumifum1.github.io/GeoScope/QuickShot.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/q_s.jpg" alt=""><div><h3>QuickShot</h3><p>記録写真にメモや座標を書き込む。</p></div></a>
+    </div>
+  </section>
+
+  <section id="me">
+    <div class="sh"><span class="no">04.</span><h2>わたしのこと</h2><small>— profile</small></div>
+    <div class="me">
+      <div class="pol"><img src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt=""><h3>fumifumi</h3><p>フミフミ</p></div>
+      <p><mark>シナプスのように</mark>、いろいろなものを取り入れ、つなげ、つくる。<br>AIと一緒に、ゲームや音楽、ウェブ制作を通して、創造することの喜びを追いかけています。<br><span class="cav" style="font-size:24px;color:var(--blue)">tools: ChatGPT / Claude / Suno AI / CNP</span></p>
+    </div>
+  </section>
+
+  <footer>
+    <span class="cav">see you!</span>
+    <p><a href="https://x.com/_fum1_" target="_blank">X</a><a href="https://suno.com/@fum1" target="_blank">Suno</a><a href="https://www.instagram.com/sachi.cobito/" target="_blank">Instagram</a><a href="https://note.com/fumifum1" target="_blank">note</a></p>
+    <p style="color:var(--mute);font-size:12px;margin-top:24px">© 2025 Synapse Creations</p>
+  </footer>
+</div>
+
+<script>
+// ステッカーをドラッグで貼り替え
+let zz = 30;
+document.querySelectorAll('.stk').forEach(s => {
+  s.addEventListener('pointerdown', e => {
+    s.setPointerCapture(e.pointerId); s.classList.add('drag'); s.style.zIndex = ++zz;
+    const sx = e.clientX - s.offsetLeft, sy = e.clientY - s.offsetTop;
+    const mv = ev => { s.style.left = ev.clientX - sx + 'px'; s.style.top = ev.clientY - sy + 'px'; };
+    s.addEventListener('pointermove', mv);
+    s.addEventListener('pointerup', () => {
+      s.removeEventListener('pointermove', mv); s.classList.remove('drag');
+      s.style.rotate = (Math.random() * 20 - 10).toFixed(1) + 'deg'; // 貼るたびに少し傾く
+    }, { once: true });
+  });
+});
+</script>
+<script src="music.js" data-tracks="#listen .pol"></script>
+<script src="nav.js"></script>
+</body>
+</html>

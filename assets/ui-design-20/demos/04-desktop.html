@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>04 Desktop OS | Synapse Creations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--desk:#e7e2d4;--ink:#1d1d1b;--win:#fffdf7;--c:#00b4c4;--y:#ffd75e;--mute:#7d786c}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--desk);color:var(--ink);font-family:'IBM Plex Mono','IBM Plex Sans JP',monospace;font-size:13px;-webkit-font-smoothing:antialiased;overflow:hidden;height:100vh}
+a{color:inherit;text-decoration:none}
+.menubar{height:32px;display:flex;align-items:center;gap:22px;padding:0 16px;background:var(--win);border-bottom:1.5px solid var(--ink);position:relative;z-index:9999}
+.menubar b{display:flex;align-items:center;gap:8px;font-weight:600}
+.menubar b i{width:14px;height:14px;border-radius:50%;background:var(--c);border:1.5px solid var(--ink)}
+.menubar span{cursor:default}
+.menubar span:hover{text-decoration:underline}
+.menubar .r{margin-left:auto;display:flex;gap:18px;font-variant-numeric:tabular-nums}
+.desk{position:relative;height:calc(100vh - 32px);background-image:radial-gradient(rgba(29,29,27,.18) 1px,transparent 1.2px);background-size:18px 18px}
+.wall{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.wall h1{font-family:'IBM Plex Sans JP';font-weight:700;font-size:clamp(60px,10vw,160px);letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.5px rgba(29,29,27,.13);text-align:center;line-height:.9}
+
+.win{position:absolute;background:var(--win);border:1.5px solid var(--ink);border-radius:10px;box-shadow:5px 5px 0 var(--ink);overflow:hidden;animation:open .35s cubic-bezier(.3,1.5,.5,1)}
+.win.closed{display:none}
+@keyframes open{from{transform:scale(.85);opacity:0}}
+.bar{height:30px;display:flex;align-items:center;gap:8px;padding:0 10px;border-bottom:1.5px solid var(--ink);cursor:grab;user-select:none;background:repeating-linear-gradient(180deg,transparent 0 4px,rgba(29,29,27,.16) 4px 5px) 0 7px/100% 16px no-repeat}
+.bar:active{cursor:grabbing}
+.bar .x{width:14px;height:14px;border:1.5px solid var(--ink);border-radius:50%;background:var(--win);cursor:pointer;flex:none}
+.bar .x:hover{background:#ff6b5b}
+.bar .tt{margin:0 auto;background:var(--win);padding:0 10px;font-weight:600}
+.win.front .bar{background-color:transparent}
+.win:not(.front) .bar{background:var(--win)}
+.body{padding:16px}
+
+.readme h2{font-family:'IBM Plex Sans JP';font-size:26px;letter-spacing:-.03em;line-height:1.1}
+.readme h2 em{font-style:normal;background:var(--y);padding:0 4px}
+.readme p{font-family:'IBM Plex Sans JP';line-height:1.85;margin-top:10px;color:#3a3933}
+.readme code{color:var(--mute)}
+.files{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.file{text-align:center;cursor:pointer;padding:6px;border-radius:8px}
+.file img{width:100%;aspect-ratio:4/3;object-fit:cover;border:1.5px solid var(--ink);border-radius:6px;display:block}
+.file span{display:inline-block;margin-top:6px;padding:1px 6px;border-radius:4px}
+.file:hover span,.file.sel span{background:var(--ink);color:var(--win)}
+.status{border-top:1.5px solid var(--ink);padding:6px 12px;display:flex;justify-content:space-between;color:var(--mute);font-size:11px}
+
+.player{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:center}
+.player img{width:96px;height:96px;object-fit:cover;border:1.5px solid var(--ink);border-radius:6px}
+.player h3{font-family:'IBM Plex Sans JP';font-size:14px;line-height:1.4}
+.player small{color:var(--mute)}
+.pbtns{display:flex;gap:6px;margin-top:10px}
+.pbtns button{all:unset;cursor:pointer;border:1.5px solid var(--ink);border-radius:6px;padding:3px 10px;background:var(--win);box-shadow:2px 2px 0 var(--ink)}
+.pbtns button:active{transform:translate(2px,2px);box-shadow:none}
+.prog{height:10px;border:1.5px solid var(--ink);border-radius:5px;margin-top:12px;overflow:hidden;grid-column:1/-1}
+.prog i{display:block;height:100%;width:0;background:repeating-linear-gradient(45deg,var(--c) 0 6px,#4fd8e4 6px 12px)}
+.on .prog i{animation:p 20s linear infinite}
+@keyframes p{to{width:100%}}
+
+.ghostwin img{width:100%;display:block}
+.dialog .body{display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:start}
+.dialog .ic{font-size:36px;line-height:1}
+.dialog p{font-family:'IBM Plex Sans JP';line-height:1.7}
+.dialog .act{grid-column:1/-1;display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
+
+.icons{position:absolute;right:20px;top:20px;display:flex;flex-direction:column;gap:18px;z-index:5}
+.icon{width:84px;text-align:center;cursor:pointer;user-select:none}
+.icon svg{width:46px;height:46px;display:block;margin:0 auto 4px;transition:transform .2s}
+.icon:hover svg{transform:translateY(-3px) rotate(-4deg)}
+.icon span{padding:1px 5px;border-radius:4px;background:var(--desk)}
+.icon.sel span{background:var(--ink);color:var(--win)}
+
+.pet{position:absolute;bottom:14px;left:0;width:46px;height:46px;border-radius:50%;overflow:hidden;border:1.5px solid var(--ink);background:#e9e9e9;cursor:pointer;z-index:6;animation:walk 26s linear infinite}
+.pet img{width:100%;height:100%;object-fit:cover}
+@keyframes walk{0%{left:-60px;transform:scaleX(1)}49%{left:calc(100% - 40px);transform:scaleX(1)}50%{left:calc(100% - 40px);transform:scaleX(-1)}99%{left:-60px;transform:scaleX(-1)}100%{transform:scaleX(1)}}
+.boo{position:absolute;bottom:68px;padding:4px 10px;background:var(--win);border:1.5px solid var(--ink);border-radius:10px;font-weight:600;opacity:0;transition:opacity .2s;z-index:7;pointer-events:none}
+
+@media (max-width:860px){
+  body{overflow:auto;height:auto}
+  .desk{height:auto;padding:16px 16px 90px;display:flex;flex-direction:column;gap:18px}
+  .win{position:relative!important;left:auto!important;top:auto!important;width:auto!important}
+  .icons{position:static;flex-direction:row;flex-wrap:wrap;justify-content:center}
+  .wall,.pet,.menubar span:not(b){display:none}
+}
+</style>
+</head>
+<body>
+<div class="menubar">
+  <a href="https://fumifum1.github.io/main/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><b><i></i>Synapse</b></a><span>ファイル</span><span>編集</span><span>表示</span><span>スペシャル</span>
+  <div class="r"><span id="bat">♪ BEAR BEER BEAT</span><span id="clock">--:--</span></div>
+</div>
+<div class="desk" id="desk">
+  <div class="wall"><h1>Synapse<br>Creations</h1></div>
+
+  <div class="icons">
+    <div class="icon" data-open="w-games"><svg viewBox="0 0 48 48"><path d="M4 14h15l4 4h21v22H4z" fill="#ffd75e" stroke="#1d1d1b" stroke-width="2"/></svg><span>Games</span></div>
+    <div class="icon" data-open="w-music"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="19" fill="#1d1d1b"/><circle cx="24" cy="24" r="7" fill="#00b4c4" stroke="#fffdf7" stroke-width="2"/></svg><span>Music</span></div>
+    <div class="icon" data-open="w-tools"><svg viewBox="0 0 48 48"><path d="M4 14h15l4 4h21v22H4z" fill="#9fe6ec" stroke="#1d1d1b" stroke-width="2"/></svg><span>Tools</span></div>
+    <div class="icon" data-open="w-readme"><svg viewBox="0 0 48 48"><path d="M10 4h20l8 8v32H10z" fill="#fffdf7" stroke="#1d1d1b" stroke-width="2"/><path d="M15 20h18M15 26h18M15 32h12" stroke="#1d1d1b" stroke-width="2"/></svg><span>README</span></div>
+    <div class="icon" data-open="w-trash"><svg viewBox="0 0 48 48"><path d="M10 12h28l-3 32H13z" fill="#fffdf7" stroke="#1d1d1b" stroke-width="2"/><path d="M7 12h34M19 6h10v6" stroke="#1d1d1b" stroke-width="2" fill="none"/><path d="M20 20v18M28 20v18" stroke="#1d1d1b" stroke-width="2"/></svg><span>ゴミ箱</span></div>
+  </div>
+
+  <div class="win readme" id="w-readme" style="left:4%;top:6%;width:400px">
+    <div class="bar"><span class="x"></span><span class="tt">README.md</span></div>
+    <div class="body">
+      <code># about</code>
+      <h2>こんにちは、<em>fumifumi</em> です。</h2>
+      <p>AIと一緒に、ゲーム・音楽・Webツールをつくっています。シナプスのように取り入れ、つなげ、創作する —— それが <b>Synapse Creations</b>。</p>
+      <p><code>// 広告なしで暇つぶし。バグはご愛敬。</code></p>
+    </div>
+  </div>
+
+  <div class="win" id="w-games" style="left:33%;top:10%;width:460px">
+    <div class="bar"><span class="x"></span><span class="tt">Games</span></div>
+    <div class="body files">
+      <a class="file" href="https://fumifum1.github.io/game/bingo.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/bingo.jpg" alt=""><span>bingo.app</span></a>
+      <a class="file" href="https://fumifum1.github.io/game/rv.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/rv.jpg" alt=""><span>reversi.app</span></a>
+      <a class="file" href="https://fumifum1.github.io/game/" target="_blank"><img src="https://fumifum1.github.io/main/jpg/game-thumbnail2.jpg" alt=""><span>invade.app</span></a>
+    </div>
+    <div class="status"><span>3 項目</span><span>空き容量：たっぷり</span></div>
+  </div>
+
+  <div class="win" id="w-music" style="left:9%;top:52%;width:360px">
+    <div class="bar"><span class="x"></span><span class="tt">Now Playing</span></div>
+    <div class="body player" id="player">
+      <img src="https://fumifum1.github.io/main/jpg/y_b.jpg" alt="" id="pcv">
+      <div><h3 id="ptitle">そのまま進め、ゆっくり歩いていこう</h3><small>BEAR BEER BEAT</small>
+        <div class="pbtns"><button id="pp">▶ 再生</button><button id="pn">⏭</button></div></div>
+      <div class="prog"><i></i></div>
+    </div>
+  </div>
+
+  <div class="win ghostwin" id="w-ghost" style="left:66%;top:44%;width:210px">
+    <div class="bar"><span class="x"></span><span class="tt">ghost.png</span></div>
+    <img src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt="">
+  </div>
+
+  <div class="win closed" id="w-tools" style="left:40%;top:30%;width:520px">
+    <div class="bar"><span class="x"></span><span class="tt">Tools</span></div>
+    <div class="body files">
+      <a class="file" href="https://fumifum1.github.io/works/kippoui-navi/" target="_blank"><img src="https://fumifum1.github.io/main/jpg/k_n.png" alt=""><span>compass.app</span></a>
+      <a class="file" href="https://fumifum1.github.io/works/GraffitiStudio.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/v_p.jpg" alt=""><span>graffiti.app</span></a>
+      <a class="file" href="https://fumifum1.github.io/works/tarot_g.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/c_t.png" alt=""><span>tarot.app</span></a>
+      <a class="file" href="https://fumifum1.github.io/GeoScope/QuickShot.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/q_s.jpg" alt=""><span>quickshot.app</span></a>
+      <a class="file" href="https://fumifum1.github.io/works/qr.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/q_c.png" alt=""><span>qr.app</span></a>
+      <a class="file" href="https://fumifum1.github.io/pdf_tool/menu.html" target="_blank"><img src="https://fumifum1.github.io/main/jpg/p_t.jpg" alt=""><span>pdf.app</span></a>
+    </div>
+    <div class="status"><span>6 項目</span><span>ぜんぶ無料</span></div>
+  </div>
+
+  <div class="win dialog closed" id="w-trash" style="left:38%;top:36%;width:360px">
+    <div class="bar"><span class="x"></span><span class="tt">ゴミ箱</span></div>
+    <div class="body">
+      <div class="ic">🐛</div>
+      <p id="tmsg">ゴミ箱に <b>バグ</b> が3匹います。<br>完全に削除しますか？</p>
+      <div class="act"><div class="pbtns"><button data-close>キャンセル</button><button id="empty">空にする</button></div></div>
+    </div>
+  </div>
+
+  <div class="pet" id="pet"><img src="https://fumifum1.github.io/main/jpg/artist-image.jpg" alt=""></div>
+  <div class="boo" id="boo">Boo!</div>
+</div>
+
+<script>
+// 時計
+const tick = () => { const d = new Date(); document.getElementById('clock').textContent = d.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' }); };
+tick(); setInterval(tick, 10000);
+// ウィンドウ：ドラッグ・前面化・閉じる
+let z = 10;
+const front = w => { document.querySelectorAll('.win').forEach(x => x.classList.remove('front')); w.classList.add('front'); w.style.zIndex = ++z; };
+document.querySelectorAll('.win').forEach(w => {
+  w.addEventListener('pointerdown', () => front(w));
+  const bar = w.querySelector('.bar');
+  bar.addEventListener('pointerdown', e => {
+    if (e.target.classList.contains('x') || innerWidth < 860) return;
+    const sx = e.clientX - w.offsetLeft, sy = e.clientY - w.offsetTop;
+    bar.setPointerCapture(e.pointerId);
+    const mv = ev => { w.style.left = ev.clientX - sx + 'px'; w.style.top = Math.max(0, ev.clientY - sy) + 'px'; };
+    bar.addEventListener('pointermove', mv);
+    bar.addEventListener('pointerup', () => bar.removeEventListener('pointermove', mv), { once: true });
+  });
+  w.querySelectorAll('.x,[data-close]').forEach(x => x.addEventListener('click', () => w.classList.add('closed')));
+});
+front(document.getElementById('w-games'));
+// デスクトップアイコン：ダブルクリック（タッチはシングル）で開く
+document.querySelectorAll('.icon').forEach(ic => {
+  const open = () => { const w = document.getElementById(ic.dataset.open); w.classList.remove('closed'); w.style.animation = 'none'; void w.offsetWidth; w.style.animation = ''; front(w); };
+  ic.addEventListener('click', e => { document.querySelectorAll('.icon').forEach(x => x.classList.toggle('sel', x === ic)); if (e.pointerType === 'touch') open(); });
+  ic.addEventListener('dblclick', open);
+});
+// ゴミ箱を空に…できない
+document.getElementById('empty').addEventListener('click', () => {
+  document.getElementById('tmsg').innerHTML = '…バグが逃げ出しました🐛💨<br>引き続きご愛敬でお願いします。';
+});
+// プレイヤー
+const songs = [['https://fumifum1.github.io/main/jpg/y_b.jpg', 'そのまま進め、ゆっくり歩いていこう'], ['https://fumifum1.github.io/main/jpg/song8.jpg', 'Hamburg steak recipe'], ['https://fumifum1.github.io/main/jpg/song1-2.jpg', 'ありのままで2'], ['https://fumifum1.github.io/main/jpg/song2.jpg', 'over']];
+let si = 0; const pl = document.getElementById('player'), pp = document.getElementById('pp');
+pp.addEventListener('click', () => { pl.classList.toggle('on'); const on = pl.classList.contains('on'); pp.textContent = on ? '❚❚ 停止' : '▶ 再生'; on ? SynapseMusic.play(si) : SynapseMusic.stop(); });
+document.getElementById('pn').addEventListener('click', () => { si = (si + 1) % songs.length; document.getElementById('pcv').src = songs[si][0]; document.getElementById('ptitle').textContent = songs[si][1]; if (pl.classList.contains('on')) SynapseMusic.play(si); });
+// デスクトップペット
+const pet = document.getElementById('pet'), boo = document.getElementById('boo');
+pet.addEventListener('click', () => {
+  boo.style.left = pet.offsetLeft - 6 + 'px'; boo.style.opacity = 1;
+  pet.style.animationPlayState = 'paused'; setTimeout(() => { boo.style.opacity = 0; pet.style.animationPlayState = ''; }, 1200);
+});
+</script>
+<script src="music.js" data-tracks=""></script>
+<script src="nav.js"></script>
+</body>
+</html>

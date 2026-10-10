@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/fumifum1/main/main/jpg/ico.ico">
+<title>AIと作ったトップページのUIデザイン20案 | fumi Exhibition</title>
+<meta name="description" content="Synapse Creations のトップページをリニューアルするために、AIと一緒に試した20通りのUIデザイン。すべて実際に触れるプレビュー付き。">
+<meta property="og:title" content="AIと作ったトップページのUIデザイン20案">
+<meta property="og:description" content="美術館風からRPG風まで。同じ中身を20通りのデザインで作ってみた記録。すべて触れるプレビュー付き。">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://raw.githubusercontent.com/fumifum1/blog/main/assets/ui-design-20/cover.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f2ef;--ink:#16161a;--mute:#7c7a75;--line:#dedcd6;--card:#fff;--c:#00b4c4;--pink:#ff7ac6}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:'Inter','Noto Sans JP',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.8}
+a{color:inherit;text-decoration:none}
+.top{max-width:1320px;margin:0 auto;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.top b{font-weight:700;display:flex;align-items:center;gap:8px}
+.top b img{width:24px;height:24px;border-radius:50%}
+.top nav{display:flex;gap:18px;color:var(--mute)}
+.top nav a:hover{color:var(--ink)}
+header.hero{max-width:1320px;margin:0 auto;padding:50px 24px 10px}
+.kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+h1{font-size:clamp(32px,5vw,64px);letter-spacing:-.04em;line-height:1.08;margin:12px 0 18px;font-weight:800}
+h1 i{font-style:normal;color:var(--c)}
+.meta{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--mute)}
+.meta span{padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:#fff}
+.lead{max-width:1320px;margin:0 auto;padding:34px 24px 0;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:40px}
+.lead p{font-size:16px;color:#3b3a37}
+.lead p+p{margin-top:14px}
+.howto{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px 24px;font-size:14px;align-self:start}
+.howto h3{font-size:14px;margin-bottom:8px}
+.howto ol{padding-left:1.2em;color:#3b3a37}
+.howto kbd{font-family:inherit;font-size:12px;border:1px solid var(--line);border-radius:6px;padding:1px 6px;background:var(--bg)}
+.toc{max-width:1320px;margin:28px auto 0;padding:0 24px;display:flex;gap:10px;flex-wrap:wrap}
+.toc a{padding:8px 16px;border-radius:999px;background:var(--ink);color:#fff;font-size:13px;font-weight:600;transition:background .2s}
+.toc a:hover{background:var(--c)}
+.toc a.alt{background:#fff;color:var(--ink);border:1px solid var(--line)}
+section{max-width:1320px;margin:0 auto;padding:70px 24px 0}
+.sh{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:22px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.sh h2{font-size:clamp(24px,3vw,36px);letter-spacing:-.03em;font-weight:800}
+.sh h2 small{font-size:14px;color:var(--mute);font-weight:500;margin-left:10px;letter-spacing:0}
+.sh p{color:var(--mute);font-size:14px;max-width:560px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
+.card{background:var(--card);border-radius:22px;overflow:hidden;border:1px solid var(--line);transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;display:flex;flex-direction:column;scroll-margin-top:20px}
+.card:hover{transform:translateY(-4px);box-shadow:0 30px 60px -30px rgba(0,0,0,.3)}
+.frame{position:relative;display:block;aspect-ratio:16/10;overflow:hidden;background:#ddd;border-bottom:1px solid var(--line)}
+.frame iframe{position:absolute;left:0;top:0;width:1440px;height:900px;border:0;transform-origin:0 0;pointer-events:none}
+.frame .open{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-weight:600;font-size:14px;opacity:0;transition:.3s;background:rgba(10,10,12,0)}
+.frame .open span{padding:12px 20px;border-radius:999px;background:rgba(10,10,12,.82);backdrop-filter:blur(8px)}
+.card:hover .open{opacity:1;background:rgba(10,10,12,.12)}
+.info{padding:22px 24px 24px;display:grid;grid-template-columns:auto 1fr;gap:4px 18px}
+.no{font-size:40px;font-weight:800;letter-spacing:-.05em;line-height:1;color:#cfcdc7;grid-row:span 2}
+.info h3{font-size:21px;letter-spacing:-.02em;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;line-height:1.3}
+.info h3 small{font-size:13px;color:var(--mute);font-weight:500}
+.info .tag{font-size:14px;color:#3b3a37;line-height:1.75}
+.det{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;padding-top:16px;border-top:1px dashed var(--line);font-size:12.5px;line-height:1.7}
+.det dt{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+.sw{display:flex;gap:4px;margin-top:6px}
+.sw i{width:22px;height:22px;border-radius:6px;border:1px solid rgba(0,0,0,.08)}
+.play{grid-column:1/-1;margin-top:12px;padding:12px 14px;border-radius:12px;background:#f6f5f1;font-size:13px;line-height:1.75}
+.play b{color:var(--c)}
+.fit{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.fit span{font-size:11px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--mute)}
+.full{grid-column:1/-1;justify-self:start;margin-top:14px;font-size:13px;font-weight:600;border-bottom:2px solid var(--c)}
+.chosen{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:34px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:28px;padding:24px}
+.chosen .frame{border-radius:18px;border:1px solid var(--line)}
+.chosen h3{font-size:24px;letter-spacing:-.03em;line-height:1.3}
+.chosen p{color:#3b3a37;font-size:15px;margin-top:10px}
+.chosen ul{margin:14px 0 0 1.1em;font-size:14px;color:#3b3a37}
+.chosen li+li{margin-top:4px}
+.btn{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:12px 20px;border-radius:999px;background:var(--ink);color:#fff;font-weight:600;font-size:14px;transition:background .2s}
+.btn:hover{background:var(--pink);color:var(--ink)}
+.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.note{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px}
+.note b{display:block;font-size:15px;margin-bottom:6px}
+.note p{font-size:14px;color:#3b3a37}
+footer{max-width:1320px;margin:90px auto 0;padding:30px 24px 60px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--mute)}
+footer div{display:flex;gap:16px;flex-wrap:wrap}
+footer a:hover{color:var(--ink)}
+@media (max-width:900px){.grid,.lead,.chosen,.notes{grid-template-columns:1fr}.top nav{display:none}}
+</style>
+</head>
+<body>
+<div class="top">
+  <a href="https://fumifum1.github.io/main/index.html"><b><img src="https://raw.githubusercontent.com/fumifum1/main/main/jpg/ico.ico" alt="">Synapse Creations</b></a>
+  <nav><a href="https://fumifum1.github.io/main/game.html">Games</a><a href="https://fumifum1.github.io/main/music.html">Music</a><a href="https://fumifum1.github.io/main/other.html">Others</a><a href="https://fumifum1.github.io/main/blog.html">Blog</a></nav>
+</div>
+
+<header class="hero">
+  <div class="kicker">Blog — Making of Synapse Creations</div>
+  <h1>AIと作った<br>トップページのUIデザイン<i>20</i>案</h1>
+  <div class="meta"><span>2026.10.10</span><span>#UIデザイン</span><span>#AIと制作</span><span>#Webサイトづくり</span></div>
+</header>
+
+<div class="lead">
+  <div>
+    <p>サイトのトップページをリニューアルするとき、いきなり1つに決めるのではなく、AI（Claude）と相談しながら「方向性」を20通り作ってみました。中身はぜんぶ同じです。ゲーム、Webツール、BEAR BEER BEAT の曲、そしてマスコットの Mitama（CNP）。それを、美術館風、ゲーム機風、マンガ風……と、まったく違う見た目で組み立てています。</p>
+    <p>どの案にも、ちょっとした「遊び心」を1つ以上入れるのがルールです。シンプルで洗練された見た目と、触って楽しい仕掛け。その両立を、いろいろな角度から試した記録です。</p>
+  </div>
+  <div class="howto">
+    <h3>この記事の見かた</h3>
+    <ol>
+      <li>各カードの画面は、実際に動いている<b>本物のプレビュー</b>です。</li>
+      <li>カードを押すとフル画面で開き、仕掛けを触れます。</li>
+      <li>曲のところを押すと、右下に <b>Suno のプレイヤー</b>が開いて、その場で実際に聴けます。メニューのリンクも、本物のページにつながっています。</li>
+      <li>フル画面では下のバーの <kbd>‹</kbd> <kbd>›</kbd> で次の案へ、<kbd>Esc</kbd> でこの記事に戻ります。</li>
+    </ol>
+  </div>
+</div>
+
+<nav class="toc"><a href="#set1">第1弾　01〜10</a><a href="#set2">第2弾　11〜20</a><a class="alt" href="#chosen">結局どれにした？</a><a class="alt" href="#notes">作ってみて感じたこと</a></nav>
+
+<section id="set1">
+  <div class="sh"><h2>第1弾<small>10の方向性</small></h2><p>まずは「白くて静か」から「にぎやかでかわいい」まで、振り幅を大きく取って10案。ここから最終デザインが生まれました。</p></div>
+  <div class="grid" data-set="0"></div>
+</section>
+
+<section id="set2">
+  <div class="sh"><h2>第2弾<small>さらに10のスタイル</small></h2><p>第1弾で出てこなかったジャンルを中心に、Webデザインでよく知られるスタイルを10案追加しました。</p></div>
+  <div class="grid" data-set="1"></div>
+</section>
+
+<section id="chosen">
+  <div class="sh"><h2>結局どれにした？</h2></div>
+  <div class="chosen">
+    <a class="frame" href="https://fumifum1.github.io/main/" target="_blank" rel="noopener"><iframe src="https://fumifum1.github.io/main/" loading="lazy" tabindex="-1" title="いまのトップページ" scrolling="no"></iframe><span class="open"><span>いまのトップページを開く →</span></span></a>
+    <div>
+      <h3>10番「Pop Bubble」をベースに、<br>Mitama 推しの「Pop Bubble Plus」へ</h3>
+      <p>パステルのモヤと、ぷにっとしたカードの「Pop Bubble」を選び、そこから何度も手直しして、いまのトップページになりました。追加したのは、たとえばこんなところです。</p>
+      <ul>
+        <li>Mitama がしゃべる吹き出しと、1日1回の「今日の運勢」</li>
+        <li>「Creations」の i の点を Mitama の顔に</li>
+        <li>曲を選ぶと Suno のプレイヤーで聴ける Music 欄</li>
+        <li>20秒の「しゃぼん玉チャレンジ」と、オープニング演出</li>
+        <li>スマホでも押した感触が伝わる「ぷにっと」アニメーション</li>
+      </ul>
+      <a class="btn" href="https://fumifum1.github.io/main/" target="_blank" rel="noopener">いまのトップページを見る →</a>
+    </div>
+  </div>
+</section>
+
+<section id="notes">
+  <div class="sh"><h2>作ってみて感じたこと</h2></div>
+  <div class="notes">
+    <div class="note"><b>① 同じ中身でも、印象は別物</b><p>載せている作品も文章もほぼ同じなのに、配色と文字とレイアウトだけで「信頼感」「にぎやかさ」「なつかしさ」がまるで変わります。比べて並べると、それがよく分かります。</p></div>
+    <div class="note"><b>② 遊び心は「1つだけ」がちょうどいい</b><p>しゃべるキャラ、隠しコマンド、らくがき……。仕掛けを盛りすぎると主役の作品が見えなくなるので、各案とも中心になる遊びを1つに絞っています。</p></div>
+    <div class="note"><b>③ 迷ったら、全部作ってみる</b><p>言葉で「ポップな感じ」と相談するより、実際に触れるものを並べたほうが、ずっと早く決まりました。AIと作ると、この「全部作ってみる」が気軽にできます。</p></div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Synapse Creations ／ Mitama: CNP (CryptoNinja Partners)</span>
+  <div><a href="https://fumifum1.github.io/main/blog.html">Blog 一覧</a><a href="tsugihagi_ghost.html">Tsugihagi Ghost</a><a href="gothic-fantasy-boy.html">Gothic Fantasy Boy</a><a href="s_log.html">Spray Art</a><a href="https://fumifum1.github.io/main/index.html">トップへ</a></div>
+</footer>
+
+<script>
+const D = 'assets/ui-design-20/demos/';
+const SETS = [[
+  { f: '01-atelier.html', n: 'Atelier White', j: '美術館のような余白', tag: '白い紙に黒のセリフ体。作品を「展示」するように一覧で見せる、いちばん上品でミニマルな案。', pal: ['#f5f4f0', '#141414', '#8b8880', '#00b4c4'], font: 'Instrument Serif / Inter', play: '作品名にホバーすると<b>サムネイルがカーソルを追いかけ</b>、速さに合わせて傾く。曲のジャケットは<b>ホバーでレコードに変身</b>して回る。画面の端から <b>Mitama が顔を出す</b>。', fit: ['ポートフォリオ感', '情報量◎', '軽量'] },
+  { f: '02-night.html', n: 'Synapse Night', j: '旧デザインの正統進化', tag: 'それまでのダーク×シアンを、ガラスのようなカードと控えめな光で大人っぽく再構成。「シナプス」という名前そのものを背景で見せる。', pal: ['#06070b', '#e9edf3', '#5ef2ff', '#a58bff'], font: 'Space Grotesk / Zen Kaku Gothic', play: '背景は<b>シナプスの網</b>。クリックした点から<b>信号が伝わって光り</b>、発火した回数を数える。カードは<b>マウスの位置で縁がスポットライト</b>のように光る。', fit: ['移行しやすい', '世界観を維持', 'テック感'] },
+  { f: '03-bento.html', n: 'Bento Box', j: '一画面で全部わかる', tag: 'Apple風のベントーグリッド。プロフィール、再生中の曲、ゲーム、ツール、ブログを1画面のタイルに並べる。', pal: ['#edebe6', '#ffffff', '#17171a', '#00bcd0', '#ff7a59'], font: 'Inter / Zen Maru Gothic', play: 'タイルが<b>3Dに傾く</b>。キャラをクリックすると<b>セリフが変わる</b>。「今日のラッキー方位」は<b>コンパスが回って占う</b>。「バグはご愛敬」タイルの<b>🐞は捕まえようとすると逃げる</b>。', fit: ['スマホ向き', '回遊性', 'モダン'] },
+  { f: '04-desktop.html', n: 'Desktop OS', j: 'サイトがパソコンになる', tag: 'クラシックなMac風のデスクトップ。作品は「アプリ」、ゲームはフォルダ、プロフィールは README.md。', pal: ['#e7e2d4', '#fffdf7', '#1d1d1b', '#ffd75e', '#00b4c4'], font: 'IBM Plex Mono / Plex Sans JP', play: 'ウィンドウは<b>ドラッグで動かせる</b>。アイコンを<b>ダブルクリックで開く</b>。ゴミ箱を空にしようとすると<b>バグが逃げる</b>。<b>デスクトップペット</b>が画面の下を歩き回る。', fit: ['記憶に残る', '個性◎', 'ゲーム好き向け'] },
+  { f: '05-vinyl.html', n: 'Record Shop', j: '音楽が主役', tag: '温かみのある黒×クリーム×オレンジ。BEAR BEER BEAT を中心にしたレコードショップ風。', pal: ['#14110f', '#efe7d8', '#ff5a2a', '#8e8579'], font: 'Bricolage Grotesque / Zen Kaku Gothic', play: 'ターンテーブルの<b>レコードをドラッグでスクラッチ</b>。33⅓/45回転の切り替え、トーンアームも動く。作品一覧は「Crate Digging」で、ホバーすると<b>ジャケットからレコードが飛び出す</b>。', fit: ['音楽推し', '温かみ', 'ブランド感'] },
+  { f: '06-arcade.html', n: 'Arcade', j: 'INSERT COIN', tag: 'レトロなアーケードゲームのステージセレクト。ネオンを残しつつ、ドット文字と走査線で「遊び場」を演出。', pal: ['#08071a', '#ffd400', '#ff3d7f', '#2de2e6'], font: 'Press Start 2P / DotGothic16', play: '<b>矢印キーでステージを選び</b>、Enterで起動。CREDITを押すと<b>コインの音</b>、SOUND TESTで<b>8bitのジングル</b>。<b>コナミコマンド</b>で「GHOST MODE」が解放される。', fit: ['ゲーム推し', 'ネタ性◎', '没入感'] },
+  { f: '07-scrapbook.html', n: 'Scrapbook', j: '手づくりのノート', tag: '方眼ノートにポラロイド写真とマスキングテープ。LINEスタンプの作品とも相性のいい、やさしい手書き風。', pal: ['#f7f2e8', '#2a2a2a', '#e2483d', '#2f6fd6', '#fff59a'], font: 'Klee One / Caveat', play: 'Mitama やLINEスタンプの<b>ステッカーをドラッグで貼り替え</b>られる（貼るたびに少し傾く）。ポラロイドは<b>ホバーでまっすぐ持ち上がる</b>。赤ペンの丸や下線が手描きで走る。', fit: ['親しみ', 'スタンプと相性◎', 'ブログ向き'] },
+  { f: '08-terminal.html', n: 'Terminal', j: 'コマンドで巡る', tag: 'ターミナル画面そのものがサイト。開くと whoami → ls が自動でタイプされ、作品がカードで並ぶ。', pal: ['#0b0d11', '#12151b', '#d6dae2', '#7ee787', '#79c0ff'], font: 'JetBrains Mono / M PLUS 1 Code', play: '<b>実際にコマンドを入力できる</b>（help / games / music / ghost …）。<b>sudo make coffee</b> でAIがコーヒーを淹れ、<b>theme</b> で配色が変わり、<b>rm -rf /</b> は叱られる。', fit: ['開発者っぽさ', '隠し要素◎', 'AI制作感'] },
+  { f: '09-wa.html', n: '和 Ma', j: '余白と朱', tag: '和紙の質感に墨と朱色。縦書きのコピー「つなぐ、つくる。」と円相。吉方位やタロットなど、占い系の作品と相性がいい。', pal: ['#f3eee4', '#1d1b19', '#c8381f', '#8d857a'], font: 'Shippori Mincho B1 / Zen Kaku Gothic', play: '作品にホバーすると<b>朱色の判子がポンと押される</b>。<b>おみくじの箱を振る</b>と、運勢・吉方位・縁のある作品・ひとことが出る（ひとことは曲名にちなんだもの）。', fit: ['上品', '独自性◎', '占い作品と相性'] },
+  { f: '10-pop.html', n: 'Pop Bubble', j: 'にぎやかで、かわいい', tag: 'パステルのグラデーションと太い輪郭線。キャラクターのかわいさを前に出した明るい案。<b>→ 最終的にこの案を採用</b>。', pal: ['#fdf6ff', '#1b1530', '#ff7ac6', '#a98bff', '#6ee7c8', '#ffe066'], font: 'Unbounded / Zen Maru Gothic', play: '<b>Mitama がカーソルについてくる</b>（速さで傾いて伸びる）。<b>どこでもクリックでしゃぼん玉</b>。カードは<b>ぷにっとゼリーのように揺れ</b>、タイトルの文字は<b>ホバーで跳ねる</b>。', fit: ['キャラ推し', '明るい', '採用！'] },
+], [
+  { f: '11-aurora.html', n: 'Aurora Glass', j: 'すりガラスとオーロラ', tag: '夜空に揺れるオーロラの上に、すりガラスのパネルを重ねる「グラスモーフィズム」。透明感と奥行きで見せる案。', pal: ['#070b1a', '#eef2ff', '#35f2c2', '#7b6bff', '#ff6ad5'], font: 'Outfit / Noto Sans JP', play: '真ん中のパネルを押すと<b>オーロラの色が切り替わる</b>（4パターン）。カードは<b>カーソルに合わせて傾き、光の反射が動く</b>。', fit: ['透明感', '夜の雰囲気', '写真が映える'] },
+  { f: '12-brutal.html', n: 'Neo Brutal', j: 'ゴツくて正直', tag: '太い黒線、ずらした影、原色。あえて「整えすぎない」ネオブルータリズム。勢いと手作り感が伝わる。', pal: ['#fffdf2', '#000000', '#ffe500', '#ff6b9a', '#4d7cff'], font: 'Archivo Black / Space Grotesk', play: 'ボタンは<b>押すと影の分だけ沈む</b>。「<b>DON\'T CLICK</b>」を押すと、<b>ページのパーツが全部バラバラと落ちて床に積み重なる</b>。「もとにもどす」で元通り。カードは<b>ホバーでランダムに傾く</b>。', fit: ['インパクト', '個性◎', 'SNS映え'] },
+  { f: '13-magazine.html', n: 'Editorial Mag', j: '雑誌の表紙', tag: 'サイトを1冊の雑誌に見立てたエディトリアルデザイン。横長の画面では<b>見開き2ページ</b>で大きく表示。表紙・目次・ゲーム特集・ツール特集・音楽インタビュー・マスコット・編集後記・裏表紙の全8ページ。', pal: ['#f4efe6', '#141210', '#d6282b', '#ffd84d'], font: 'Playfair Display / Noto Serif JP', play: '右ページを押すと<b>紙が3Dでめくれて次の見開きへ</b>、左ページで前へ（スワイプや ← → キーでも）。目次の項目を押すと、<b>そのページまでパラパラと一気にめくれる</b>。広告ページは「<b>広告欄……はありません。</b>」', fit: ['ストーリー性', '上質', '読み物向き'] },
+  { f: '14-swiss.html', n: 'Swiss Grid', j: '格子と赤い丸', tag: '12カラムのグリッド、黒と赤、大きな文字。スイス・スタイル（国際タイポグラフィ様式）に沿った、きっちりした案。', pal: ['#ffffff', '#111111', '#e30613', '#888888'], font: 'Inter Tight / Noto Sans JP', play: '赤い丸は<b>ドラッグで動かせる「赤いレンズ」</b>。丸を重ねたところにだけ、<b>隠れた Mitama や文字が浮かび上がる</b>（全4つ。見つけた数を表示）。「GRID」ボタンで<b>見えないグリッド線を表示</b>できる。', fit: ['信頼感', '読みやすい', '情報整理'] },
+  { f: '15-clay.html', n: 'Clay Soft', j: 'ぷっくり粘土', tag: '内側と外側の影で、ボタンやカードが粘土のようにぷっくり見える「クレイモーフィズム」。やわらかくて触りたくなる。', pal: ['#efe8ff', '#3a2f5c', '#9b7bff', '#ff8fb8', '#4fc9a8'], font: 'Fredoka / M PLUS Rounded 1c', play: '「<b>ぷにぷにチャレンジ</b>」で、トップ画面じゅうに顔つきスライムが<b>ふわふわ浮かぶ</b>。<b>タップでつかんで同じ色にぶつけると合体</b>し、5個分で<b>ポン！と弾けてスコア</b>に（続けるとCOMBO）。別の色はタップで持ちかえ。浮いているスライムどうしも、同じ色なら合体して2個分、違う色なら跳ね返る。', fit: ['やさしい', '子どもにも', '手ざわり感'] },
+  { f: '16-manga.html', n: 'Manga Panel', j: 'マンガのコマ割り', tag: 'ページ全体をマンガのコマ割りに。トーン、吹き出し、効果音の文字で「第1話」として作品を紹介する。', pal: ['#ffffff', '#111111', '#ff3b5c', '#ffd400'], font: 'Dela Gothic One / RocknRoll One', play: 'コマを押すと<b>集中線と「バーン!」などの効果音</b>が飛び出す。Mitama を押すと<b>吹き出しのセリフが変わる</b>。最後のコマは「<b>つづく…！</b>」。', fit: ['キャラ推し', 'ネタ性◎', '物語で見せる'] },
+  { f: '17-memphis.html', n: 'Memphis 80s', j: '80年代のポップ', tag: '三角、丸、ジグザグ、ドット。1980年代のメンフィス・デザインを思わせる、にぎやかで陽気な案。', pal: ['#fff5e6', '#1d1a3a', '#00b3a6', '#ff3e8a', '#ffd23f', '#6c4bd8'], font: 'Bungee / Righteous / Kosugi Maru', play: '背景の図形は<b>カーソルから逃げるように動く</b>。どこかをクリックすると<b>カラフルな図形が飛び散る</b>。', fit: ['陽気', 'レトロ', '覚えてもらえる'] },
+  { f: '18-cinema.html', n: 'Cinema', j: '映画のオープニング', tag: 'シネスコの黒帯、フィルムのざらつき、エンドロール。サイトを1本の映画に見立て、作品は「上映中のポスター」に。', pal: ['#050505', '#f2ede4', '#e8c26a', '#9a9286'], font: 'Bebas Neue / Cormorant / Noto Serif JP', play: '開くと<b>3・2・1のフィルムリーダー</b>が回る。「FLICKER」で<b>映写機のちらつき</b>をON。曲は「Original Soundtrack」、最後は<b>クレジット</b>。', fit: ['ドラマチック', '写真が主役', '大人っぽい'] },
+  { f: '19-rpg.html', n: 'RPG Quest', j: 'Mitama があらわれた！', tag: '昔ながらのRPGの画面。コマンドを選ぶと<b>上のゲーム画面そのものが切り替わり</b>、ゲーム・ツール・音楽の場面へワープする。', pal: ['#0d0f3a', '#ffffff', '#ffe14d', '#3fdc6c', '#4da6ff'], font: 'DotGothic16', play: '「あそぶ」で<b>ゲームの扉が並ぶダンジョン</b>、「どうぐ」で<b>道具袋</b>（カーソルを合わせると説明）、「うたう」で<b>ライブハウス</b>になり、曲を選ぶと<b>Sunoのプレイヤーで聴ける</b>。「たたかう」は<b>ドラクエ風のコマンドバトル</b>。出てきた <b>↑↓←→ の通りに入力</b>（PC＝矢印キー、スマホ＝画面の上下左右をタップ）すると、いかずち・じひびき・ほのお・きりさくの攻撃が決まる。間違うとHPが減り、強い敵ほど入力数が増えて制限時間が短くなる。インベーダー風の「バグ」6体を倒せばクリア。', fit: ['ゲーム推し', '遊び心MAX', 'なつかしい'] },
+  { f: '20-chalk.html', n: 'Chalkboard', j: '黒板の時間割', tag: '木の枠の黒板に、チョークの文字で「きょうの時間割」。作品は1時間目、2時間目……と授業のように並ぶ。日直は Mitama。', pal: ['#2d4a3a', '#f4f1e6', '#ffe680', '#ffb3c7', '#a9dcff'], font: 'Yusei Magic / Caveat', play: '「らくがきモード」で<b>黒板にチョークで落書きできる</b>（4色）。「黒板けし」を押すと<b>上から順にふわっと消える</b>。日付は今日の日付になる。', fit: ['親しみ', '教育・解説向き', '手描き感'] },
+]];
+document.querySelectorAll('.grid[data-set]').forEach(g => {
+  const set = +g.dataset.set;
+  g.innerHTML = SETS[set].map((p, i) => {
+    const no = String(set * 10 + i + 1).padStart(2, '0');
+    return `<article class="card" id="d${no}">
+      <a class="frame" href="${D + p.f}"><iframe src="${D + p.f}" loading="lazy" tabindex="-1" title="${p.n}" scrolling="no"></iframe><span class="open"><span>フル画面で触ってみる →</span></span></a>
+      <div class="info">
+        <span class="no">${no}</span>
+        <h3>${p.n}<small>${p.j}</small></h3>
+        <p class="tag">${p.tag}</p>
+        <dl class="det"><div><dt>Palette</dt><dd class="sw">${p.pal.map(c => `<i style="background:${c}" title="${c}"></i>`).join('')}</dd></div><div><dt>Type</dt><dd>${p.font}</dd></div></dl>
+        <p class="play">🎈 <b>遊び心</b>　${p.play}</p>
+        <div class="fit">${p.fit.map(t => `<span>${t}</span>`).join('')}</div>
+        <a class="full" href="${D + p.f}">フル画面で見る →</a>
+      </div>
+    </article>`;
+  }).join('');
+});
+// プレビュー（1440×900）をカードの幅に合わせて縮小
+const fit = () => document.querySelectorAll('.frame').forEach(fr => { const f = fr.querySelector('iframe'); if (f) f.style.transform = `scale(${fr.clientWidth / 1440})`; });
+new ResizeObserver(fit).observe(document.body); fit();
+</script>
+</body>
+</html>
